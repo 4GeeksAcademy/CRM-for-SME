@@ -3,17 +3,34 @@ import { Link } from "react-router-dom";
 
 export const Navbar = () => {
 	return (
-		<nav className="navbar navbar-light bg-light">
-			<div className="container">
-				<Link to="/">
-					<span className="navbar-brand mb-0 h1">React Boilerplate</span>
-				</Link>
-				<div className="ml-auto">
-					<Link to="/demo">
-						<button className="btn btn-primary">Check the Context in action</button>
-					</Link>
+			<nav class="navbar navbar-expand-lg navbar-light">
+			  <div class="container-fluid">
+			
+				<a class="navbar-brand" href="#">
+				  
+				</a>
+		
+				<!-- Barra de búsqueda -->
+				<form class="d-flex search-form">
+				  <input
+					class="form-control me-2"
+					type="search"
+					placeholder="Buscar"
+					aria-label="Search"
+				  />
+				  <button class="btn btn-outline-success" type="submit">Buscar</button>
+				</form>
+		
+				<!-- Botones: Clients, Tasks, User -->
+				<div class="navbar-nav ms-auto">
+				  <!-- Muevo los botones a la derecha -->
+				  <a class="nav-link" href="#">Clients</a>
+				  <a class="nav-link" href="#">Tasks</a>
+				  <a class="nav-link" href="#">User</a>
 				</div>
-			</div>
-		</nav>
+			  </div>
+			</nav>
+		  </body>
+		</html>
 	);
 };
