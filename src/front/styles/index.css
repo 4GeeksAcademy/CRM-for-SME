@@ -4,3 +4,29 @@
 * {
     font-family: 'Open Sans', sans-serif;
 }
+.navbar {
+    background-color: #afc0cc; 
+    height: 70px;
+    color: white; 
+    padding: 0 70px; 
+
+  .navbar-brand {
+    margin-right: 120px;
+    margin-left: 50px;
+  }
+
+  .search-form {
+    width: 400px;
+  }
+
+  .btn-outline-success {
+    color: #2f4e66;
+    border-color: #0d2333;
+  }
+
+  .btn-outline-success:hover {
+    color: #2f4e66;
+    background-color: #bde2ff;
+    border-color: #0d2333;
+  }
+}
