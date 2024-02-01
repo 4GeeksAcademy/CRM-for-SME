@@ -9,8 +9,8 @@ import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
-import { Footer } from "./component/footer";
-import {ModalAddClient} from"./component/modalAddClient.jsx";
+import { Footer } from "./component/Footer.jsx";
+import {ModalAddClient} from"./component/ModalAddClient.jsx";
 import {UserInfo} from"./pages/UserInfo.jsx";
 import { Login } from "./pages/Login.jsx";
 import { SignUp } from "./pages/SignUp.jsx";
