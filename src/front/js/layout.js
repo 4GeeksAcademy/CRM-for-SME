@@ -14,6 +14,7 @@ import {ModalAddClient} from"./component/ModalAddClient.jsx";
 import {UserInfo} from"./pages/UserInfo.jsx";
 import { Login } from "./pages/Login.jsx";
 import { SignUp } from "./pages/SignUp.jsx";
+import {Client} from "./pages/Client.jsx"
 
 //create your first component
 const Layout = () => {
@@ -38,6 +39,7 @@ const Layout = () => {
                         <Route element={<Demo />} path="/demo" />
                         <Route element={<Login />} path="/login" />
                         <Route element={<SignUp />} path="/signup" />
+                        <Route element={<Client />} path="/client" />
                     </Routes>
                     <Footer />
                 </ScrollToTop>
