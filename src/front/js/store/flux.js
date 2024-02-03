@@ -17,6 +17,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userName: null,
 			loggedIn: false,
 			token: null,
+			activity : [
+					{activity: 'created task',
+					date: '1/1/24'
+				},
+					{activity: 'created note',
+					date: '1/10/24'
+				},
+					{activity: 'created pago',
+					date: '1/12/24'
+				},
+			],
+			
 		},
 		actions: {
 			// Use getActions to call a function within a fuction

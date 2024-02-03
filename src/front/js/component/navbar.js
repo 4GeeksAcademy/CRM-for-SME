@@ -12,7 +12,7 @@ export const Navbar = () => {
 				</a>
 		
 
-				{/* <!-- Barra de búsqueda --> */}
+				
 
 				<form class="d-flex search-form">
 				  <input
@@ -29,14 +29,15 @@ export const Navbar = () => {
 				<div class="navbar-nav ms-auto">
 				  
 
-				{/* <!-- Botones: Clients, Tasks, User --> */}
+			
 				<div class="navbar-nav ms-auto">
-				  {/* <!-- Muevo los botones a la derecha --> */}
+				 
 
 				  <a class="nav-link" href="#">Clients</a>
 				  <a class="nav-link" href="#">Tasks</a>
 				  <a class="nav-link" href="#">User</a>
 				</div>
+			  </div>
 			  </div>
 			</nav>
 
