@@ -8,6 +8,7 @@ import { Activity } from "../component/Activity.jsx";
 import { Billing } from "../component/Billing.jsx";
 import { Tasks } from "../component/Tasks.jsx";
 import { Notes } from "../component/Notes.jsx";
+import { Navbar } from "../component/navbar.js";
 
 export const Client = () => {
 	const { store, actions } = useContext(Context);
@@ -20,7 +21,7 @@ export const Client = () => {
 
 	return (
         <>
-
+        <Navbar />
         <div className="row p-0">
         <div className="col-3 border border-black p-0" style={{height:"100vh"}}>
             <div className="d-flex justify-content-center align-items-center h-25 border border-black">

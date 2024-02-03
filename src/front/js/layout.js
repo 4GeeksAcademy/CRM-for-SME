@@ -28,17 +28,10 @@ const Layout = () => {
         <div>
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
-                    <Navbar />
                     <Routes>
-                        <Route element={<Home />} path="/" />
-                        <Route element={<Demo />} path="/demo" />
-                        <Route element={<Single />} path="/single/:theid" />
-                        <Route element={<h1>Not found!</h1>} />
-                        <Route element={<ModalAddClient />} path="/modal" />
-                        <Route element={<UserInfo />} path="/userinfo" />
-                        <Route element={<Demo />} path="/demo" />
-                        <Route element={<Login />} path="/login" />
+                        <Route element={<Login />} path="/" />
                         <Route element={<SignUp />} path="/signup" />
+                        <Route element={<UserInfo />} path="/userinfo" />
                         <Route element={<Client />} path="/client" />
                     </Routes>
                     <Footer />
