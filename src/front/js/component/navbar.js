@@ -8,7 +8,7 @@ export const Navbar = () => {
 			  <div class="container-fluid">
 			
 				<a class="navbar-brand" href="#">
-					<img style={{ width: 70, height: 70 }} src={Logo} alt="CRM Logo" />
+					<img style={{ width: 130, height: 130 }} src={Logo} alt="CRM Logo" />
 				</a>
 		
 
