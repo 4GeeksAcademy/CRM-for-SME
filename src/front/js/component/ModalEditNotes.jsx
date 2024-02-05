@@ -5,7 +5,7 @@ import { Context } from "../store/appContext";
 
 export const ModalEditNotes = props => {
     const [state, setState] = useState("");
-    const [inputEditTask, setInputEditTask] = useState("");
+    const [inputEditNotes, setInputEditNotes] = useState("");
     const { store, actions } = useContext(Context);
 
     return (
@@ -31,8 +31,8 @@ export const ModalEditNotes = props => {
                             type="text"
                             className="form-control mb-1 border border-secondary"
                             placeholder="Eddit Note"
-                            onChange={e => setInputEditTask(e.target.value)}
-                            value={inputEditTask}
+                            onChange={e => setInputEditNotes(e.target.value)}
+                            value={inputEditNotes}
                         />
                     </div>
                     <div className="modal-footer">
