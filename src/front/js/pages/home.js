@@ -1,6 +1,6 @@
 import React, { useContext, useState} from "react";
 import { Context } from "../store/appContext";
-import { ModalAddNotes } from "../component/ModalAddNotes.jsx";
+import { ModalEditTask } from "../component/ModalEditTask.jsx";
 
 
 export const Home = () => {
@@ -12,7 +12,7 @@ export const Home = () => {
 			<button className="btn btn-secondary" onClick={() => setState(true)}>
 				test
 			</button>
-			<ModalAddNotes show={state} onClose={() => setState(false)}   />
+			<ModalEditTask show={state} onClose={() => setState(false)}   />
 		</div>
 	);
 };
