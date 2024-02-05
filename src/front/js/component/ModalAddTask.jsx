@@ -37,6 +37,7 @@ export const ModalAddTask = props => {
                             onChange={e => setInputTask(e.target.value)}
                             value={inputTask}
                         />
+                        <label htmlFor="priority" className="form-label d-flex justify-content-start align-items-start">Assign Task</label>
                         <select
                             className="form-control mb-1 border border-secondary"
                             onChange={e => setInputAssignTask(e.target.value)}
@@ -48,6 +49,7 @@ export const ModalAddTask = props => {
                             <option>4</option>
                             <option>5</option>
                         </select>
+                        <label htmlFor="priority" className="form-label d-flex justify-content-start align-items-start">Date</label>
                         <input
                             type="date"
                             className="form-control mb-1 border border-secondary"
@@ -55,11 +57,13 @@ export const ModalAddTask = props => {
                             onChange={e => setInputDateTask(e.target.value)}
                             value={inputDateTask}
                         />
+                        <label htmlFor="priority" className="form-label d-flex justify-content-start align-items-start">Priority</label>
                         <select
+                            id="priority"
                             className="form-control mb-1 border border-secondary"
-                            onChange={e => setInputAssignTask(e.target.value)}
-                            value={inputAssignTask}
-                            placeholder="Assign Task">
+                            onChange={e => setInputTaskPriority(e.target.value)}
+                            value={inputTaskPriority}
+                            placeholder="Task Priority">
                             <option>Low</option>
                             <option>Medium</option>
                             <option>High</option>
@@ -73,7 +77,7 @@ export const ModalAddTask = props => {
                             onClick={() => {
                                 props.onClose();
                             }}>
-                            Add Client
+                            Add Task
                         </button>
                         <button type="button" className="btn btn-secondary" onClick={() => props.onClose()}>
                             Cancel
