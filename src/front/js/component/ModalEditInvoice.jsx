@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
 
-export const ModalEditPayment = props => {
+export const ModalEditInvoice = props => {
     const [state, setState] = useState("");
     const [inputDetalles,setInputDetalles] = useState("");
     const [inputTextAmount, setInputTextAmount] = useState("");
@@ -15,7 +15,7 @@ export const ModalEditPayment = props => {
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Edit Payment </h5>
+                        <h5 className="modal-title">Edit Invoice </h5>
                         {props.onClose ? (
                             <button
                                 type="button"
@@ -61,7 +61,7 @@ export const ModalEditPayment = props => {
                             onClick={() => {
                                 props.onClose();
                             }}>
-                           Add Payment
+                           Add Invoice
                         </button>
                         <button type="button" className="btn btn-secondary" onClick={() => props.onClose()}>
                             Cancel
@@ -73,12 +73,12 @@ export const ModalEditPayment = props => {
     );
 };
 
-ModalEditPayment.propTypes = {
+ModalEditInvoice.propTypes = {
     onClose: PropTypes.func,
     show: PropTypes.bool,
 };
 
-ModalEditPayment.defaultProps = {
+ModalEditInvoice.defaultProps = {
     show: false,
     onClose: null
 };
