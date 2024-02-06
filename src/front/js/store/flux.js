@@ -28,6 +28,53 @@ const getState = ({ getStore, getActions, setStore }) => {
 					date: '1/12/24'
 				},
 			],
+			tasks: [
+				{
+					client: 'Daniel test',
+					idTask: 1234567,
+					title:'Test task 1',
+					description: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste nihil tenetur suscipit expedita voluptatibus impedit!',
+					dueDate: "2/10/2024",
+					priority:'Medium',
+					userAsing:'Daniel User',
+					complete: false
+
+				},
+				{
+					client: 'Daniel test',
+					idTask: 1234578,
+					title:'Test task 2',
+					description: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste nihil tenetur suscipit expedita voluptatibus impedit!',
+					dueDate: "2/10/2024",
+					priority:'Low',
+					userAsing:'Fabian User',
+					complete: false
+
+				},
+				{
+					client: 'Daniel test',
+					idTask: 1234590,
+					title:'Test task 3',
+					description: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste nihil tenetur suscipit expedita voluptatibus impedit!',
+					dueDate: "2/10/2024",
+					priority:'High',
+					userAsing:'Ricardo User',
+					complete: false
+
+				},
+				{
+					client: 'Daniel test',
+					idTask: 1234521,
+					title:'Test task 4',
+					description: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste nihil tenetur suscipit expedita voluptatibus impedit!',
+					dueDate: "2/10/2024",
+					priority:'Medium',
+					userAsing:'Daniel Abarca User',
+					complete: false
+
+				},
+
+			]
 			
 		},
 		actions: {
@@ -125,6 +172,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 				localStorage.removeItem("token");
 				setStore({ token: null, userName: null});
 			},
+			taskAsDone: (id) => {
+					const store = getStore()
+					const storedTasks = store.tasks
+					const correctTask = storedTasks.findIndex(task => task.idTask === id)
+					storedTasks[correctTask].complete == false ? storedTasks[correctTask].complete = true : storedTasks[correctTask].complete = false
+					setStore({tasks: storedTasks})
+					
+
+			}
 		}
 	};
 };
