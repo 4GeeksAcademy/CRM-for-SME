@@ -7,7 +7,7 @@ export const Tasks = () => {
 	const { store, actions } = useContext(Context);
     const [state, useState] = ('') 
     
-    
+
     
 
 	return (

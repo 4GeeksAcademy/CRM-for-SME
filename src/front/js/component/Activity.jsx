@@ -19,7 +19,7 @@ export const Activity = () => {
 							return (
 								<li className="border border-dark p-5 my-2 d-flex justify-content-end row bg-light" style={{width:'30rem'}}key={index}>
                                     <span className="col-6">{activity.activity}</span> 
-                                    <span className="col-6">Date created:{activity.date}</span> 
+                                    <span className="col-6">Date created: {activity.date}</span> 
                                  </li>
 							);
 						})}                              
