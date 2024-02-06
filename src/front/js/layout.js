@@ -15,6 +15,7 @@ import {UserInfo} from"./pages/UserInfo.jsx";
 import { Login } from "./pages/Login.jsx";
 import { SignUp } from "./pages/SignUp.jsx";
 import {Client} from "./pages/Client.jsx"
+import {MainPage} from"./pages/MainPage.jsx";
 
 //create your first component
 const Layout = () => {
@@ -34,6 +35,7 @@ const Layout = () => {
                         <Route element={<UserInfo />} path="/userinfo" />
                         <Route element={<Client />} path="/client" />
                         <Route element={<Home />} path="/home" />
+                        <Route element={<MainPage />} path="/mainpage" />   
                     </Routes>
                     <Footer />
                 </ScrollToTop>
