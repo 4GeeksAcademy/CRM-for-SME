@@ -74,6 +74,36 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				},
 
+			],
+			notes: [
+				{
+					client: 'Daniel test',
+					addedByUser: 'Daniel User',
+					dateCreated: '5/2/2024',
+					text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam quam libero, in, deserunt sed quasi autem, repellat placeat impedit nemo aperiam est quidem. Sint, sed?',
+					idNote:'12345635'
+				},
+				{
+					client: 'Daniel test',
+					addedByUser: 'Ricardo User',
+					dateCreated: '1/2/2024',
+					text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam quam libero, in, deserunt sed quasi autem, repellat placeat impedit nemo aperiam est quidem. Sint, sed? Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab, tenetur vitae modi accusantium autem, minus nesciunt numquam voluptatibus quaerat labore error qui ratione mollitia quibusdam.',
+					idNote:'12345689'
+				},
+				{
+					client: 'Daniel test',
+					addedByUser: 'Fabian User',
+					dateCreated: '7/2/2024',
+					text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam quam libero, in, deserunt sed quasi autem, repellat placeat impedit nemo aperiam est quidem. Sint, sed?',
+					idNote:'12345690'
+				},
+				{
+					client: 'Daniel test',
+					addedByUser: 'Daniel User',
+					dateCreated: '10/2/2024',
+					text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam quam libero, in, deserunt sed quasi autem, repellat placeat impedit nemo aperiam est quidem. Sint, sed?',
+					idNote:'12345667'
+				},
 			]
 			
 		},
