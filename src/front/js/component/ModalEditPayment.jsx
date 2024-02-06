@@ -15,7 +15,7 @@ export const ModalEditPayment = props => {
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Edit Payment </h5>
+                        <h5 className="modal-title">Edit Payment/Invoice </h5>
                         {props.onClose ? (
                             <button
                                 type="button"
@@ -61,7 +61,7 @@ export const ModalEditPayment = props => {
                             onClick={() => {
                                 props.onClose();
                             }}>
-                           Edit Payment
+                           Edit Payment/ Invoice
                         </button>
                         <button type="button" className="btn btn-secondary" onClick={() => props.onClose()}>
                             Cancel
