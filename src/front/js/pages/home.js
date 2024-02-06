@@ -1,6 +1,6 @@
 import React, { useContext, useState} from "react";
 import { Context } from "../store/appContext";
-import { ModalAddPayment} from "../component/ModalAddPayment.jsx";
+import { ModalAddChargeInvoice} from "../component/ModalAddChargeInvoice.jsx";
 
 
 export const Home = () => {
@@ -12,7 +12,7 @@ export const Home = () => {
 			<button className="btn btn-secondary" onClick={() => setState(true)}>
 				test
 			</button>
-			<ModalAddPayment show={state} onClose={() => setState(false)}   />
+			<ModalAddChargeInvoice show={state} onClose={() => setState(false)}   />
 		</div>
 	);
 };
