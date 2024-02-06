@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
 
-export const ModalDelete = props => {
+export const ModalDeleteNote = props => {
     const [state, setState] = useState("");
     const { store, actions } = useContext(Context);
 
@@ -25,7 +25,7 @@ export const ModalDelete = props => {
                             ""
                         )}
                     </div>
-                    <p className="p-2">Are you sure?</p>
+                    <p className="p-2 text-center">Are you sure?</p>
                     <div className="modal-footer">
                         <button
                             type="button"
@@ -46,12 +46,12 @@ export const ModalDelete = props => {
     );
 };
 
-ModalDelete.propTypes = {
+ModalDeleteNote.propTypes = {
     onClose: PropTypes.func,
     show: PropTypes.bool,
 };
 
-ModalDelete.defaultProps = {
+ModalDeleteNote.defaultProps = {
     show: false,
     onClose: null
 };

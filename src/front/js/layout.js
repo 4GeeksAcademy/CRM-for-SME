@@ -8,7 +8,7 @@ import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
 
-import { Navbar } from "./component/navbar";
+import { Navbar } from "./component/Navbar.jsx";
 import { Footer } from "./component/Footer.jsx";
 import {ModalAddClient} from"./component/ModalAddClient.jsx";
 import {UserInfo} from"./pages/UserInfo.jsx";
@@ -34,10 +34,9 @@ const Layout = () => {
                         <Route element={<SignUp />} path="/signup" />
                         <Route element={<UserInfo />} path="/userinfo" />
                         <Route element={<Client />} path="/client" />
-                        <Route element={<Home />} path="/home" />
-                        <Route element={<MainPage />} path="/mainpage" />   
+                        <Route element={<Home />} path="/test" />
+                        <Route element={<MainPage />} path="/home" />   
                     </Routes>
-                    <Footer />
                 </ScrollToTop>
             </BrowserRouter>
         </div>

@@ -61,7 +61,7 @@ export const ModalAddPayment = props => {
                             onClick={() => {
                                 props.onClose();
                             }}>
-                            Payment
+                            Add Payment
                         </button>
                         <button type="button" className="btn btn-secondary" onClick={() => props.onClose()}>
                             Cancel
