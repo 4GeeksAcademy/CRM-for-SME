@@ -28,6 +28,83 @@ const getState = ({ getStore, getActions, setStore }) => {
 					date: '1/12/24'
 				},
 			],
+			tasks: [
+				{
+					client: 'Daniel test',
+					idTask: 1234567,
+					title:'Test task 1',
+					description: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste nihil tenetur suscipit expedita voluptatibus impedit!',
+					dueDate: "2/10/2024",
+					priority:'Medium',
+					userAsing:'Daniel User',
+					complete: false
+
+				},
+				{
+					client: 'Daniel test',
+					idTask: 1234578,
+					title:'Test task 2',
+					description: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste nihil tenetur suscipit expedita voluptatibus impedit!',
+					dueDate: "2/10/2024",
+					priority:'Low',
+					userAsing:'Fabian User',
+					complete: false
+
+				},
+				{
+					client: 'Daniel test',
+					idTask: 1234590,
+					title:'Test task 3',
+					description: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste nihil tenetur suscipit expedita voluptatibus impedit!',
+					dueDate: "2/10/2024",
+					priority:'High',
+					userAsing:'Ricardo User',
+					complete: false
+
+				},
+				{
+					client: 'Daniel test',
+					idTask: 1234521,
+					title:'Test task 4',
+					description: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste nihil tenetur suscipit expedita voluptatibus impedit!',
+					dueDate: "2/10/2024",
+					priority:'Medium',
+					userAsing:'Daniel Abarca User',
+					complete: false
+
+				},
+
+			],
+			notes: [
+				{
+					client: 'Daniel test',
+					addedByUser: 'Daniel User',
+					dateCreated: '5/2/2024',
+					text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam quam libero, in, deserunt sed quasi autem, repellat placeat impedit nemo aperiam est quidem. Sint, sed?',
+					idNote:'12345635'
+				},
+				{
+					client: 'Daniel test',
+					addedByUser: 'Ricardo User',
+					dateCreated: '1/2/2024',
+					text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam quam libero, in, deserunt sed quasi autem, repellat placeat impedit nemo aperiam est quidem. Sint, sed? Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab, tenetur vitae modi accusantium autem, minus nesciunt numquam voluptatibus quaerat labore error qui ratione mollitia quibusdam.',
+					idNote:'12345689'
+				},
+				{
+					client: 'Daniel test',
+					addedByUser: 'Fabian User',
+					dateCreated: '7/2/2024',
+					text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam quam libero, in, deserunt sed quasi autem, repellat placeat impedit nemo aperiam est quidem. Sint, sed?',
+					idNote:'12345690'
+				},
+				{
+					client: 'Daniel test',
+					addedByUser: 'Daniel User',
+					dateCreated: '10/2/2024',
+					text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam quam libero, in, deserunt sed quasi autem, repellat placeat impedit nemo aperiam est quidem. Sint, sed?',
+					idNote:'12345667'
+				},
+			]
 			
 		},
 		actions: {
@@ -125,6 +202,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 				localStorage.removeItem("token");
 				setStore({ token: null, userName: null});
 			},
+			taskAsDone: (id) => {
+					const store = getStore()
+					const storedTasks = store.tasks
+					const correctTask = storedTasks.findIndex(task => task.idTask === id)
+					storedTasks[correctTask].complete == false ? storedTasks[correctTask].complete = true : storedTasks[correctTask].complete = false
+					setStore({tasks: storedTasks})
+					
+
+			}
 		}
 	};
 };
