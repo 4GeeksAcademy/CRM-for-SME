@@ -16,7 +16,7 @@ export const ModalEditTask = props => {
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Eddit Task</h5>
+                        <h5 className="modal-title">Edit Task</h5>
                         {props.onClose ? (
                             <button
                                 type="button"
