@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import Swal from 'sweetalert2'
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +16,9 @@ export const Login = () => {
   }
 
   return (
+  <div className="container ">
+    <div class="row">
+      <div class="col col-xs-1"> 
     <div className="body" style={{ backgroundImage:`url(${background})`}}>
       {store.loggedIn ? (navigate("/home")) : (
         <div className="text-center justify-content-center d-md-flex pt-5">
@@ -50,7 +54,12 @@ export const Login = () => {
                     if (inputUser != "" && inputPassword != "") {
                       save();
                     } else {
-                      alert("Please fill out all input fields");
+                      // alert("Please fill out all input fields");
+                      Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Please fill out all input fields",
+                      });
                     }
                   }}>Log in</button>
                 <Link
@@ -64,5 +73,8 @@ export const Login = () => {
         </div>
       )}
     </div>
+  </div>
+  </div>
+  </div>
   );
 };
