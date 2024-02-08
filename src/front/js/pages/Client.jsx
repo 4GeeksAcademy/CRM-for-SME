@@ -20,6 +20,8 @@ import { ModalAddInvoice } from "../component/ModalAddInvoice.jsx"
 import { ModalAddPayment } from "../component/ModalAddPayment.jsx"
 import { ModalEditInvoice } from "../component/ModalEditInvoice.jsx"
 import { ModalEditPayment } from "../component/ModalEditPayment.jsx"
+import { ModalEditClient } from "../component/ModalEditClient.jsx"
+
 
 export const Client = () => {
     const { store, actions } = useContext(Context);
@@ -34,6 +36,7 @@ export const Client = () => {
     const [showModalAddPayment, setShowModalAddPayment] = useState(false);
     const [showModalEditInvoice, setShowModalEditInvoice] = useState(false);
     const [showModalEditPayment, setShowModalEditPayment] = useState(false);
+    const [showModalEditClient, setShowModalEditClient] = useState(false);
 
     const activeSection = (id) => {
         setState(id)
@@ -44,34 +47,33 @@ export const Client = () => {
             <Navbar />
             <div className="row p-0">
                 <div className="col-3 border border-black p-0" style={{ height: "100vh" }}>
-                    <div className="d-flex justify-content-center align-items-center h-25 border border-black">
-                        <img src={Logo} style={{ width: '100px', height: '100px' }} alt="client Avatar" />
-                        <h4>Client's Name</h4>
+                    <div className="d-flex flex-column justify-content-center align-items-center h-25 border border-black">
+                        <div className="d-flex align-items-center"> 
+                            <img src={Logo} style={{ width: '100px', height: '100px' }} alt="client Avatar" />
+                            <h4>Client's Name</h4>
+                        </div>
+                        <div className="d-flex justify-content-center">
+                            <h6 className="p-1 fw-bold">Edit Client's information</h6>
+                            <i className=" p-1 fa-solid fa-pen cursor" onClick={() => setShowModalEditClient(true)}></i>
+                        </div>
                     </div>
                     <div className="container h-50 my-4">
-                        <div className="container d-flex justify-content-between w-100">
+                        <div className="container d-flex ween w-100">
                             <h6 className='m-1 fw-bold'>Email:</h6>
                             <p className='m-1'>John@email.com</p>
-                            <i className="fa-solid fa-pen cursor"></i>
-
                         </div>
 
-                        <div className="container d-flex justify-content-between w-100">
+                        <div className="container d-flex w-100">
                             <h6 className='m-1 fw-bold'>Phone:</h6>
-                            <p className='m-1'>314567890</p>
-                            <i className="fa-solid fa-pen cursor"></i>
+                            <p className='m-1'>314567890</p> 
                         </div>
-
-                        <div className="container d-flex justify-content-between w-100">
+                        <div className="container d-flex w-100">
                             <h6 className='m-1 fw-bold'>Company:</h6>
                             <p className='m-1'>Google</p>
-                            <i className="fa-solid fa-pen cursor"></i>
                         </div>
-
-                        <div className="container d-flex justify-content-between w-100">
+                        <div className="container d-flex  w-100">
                             <h6 className='m-1 fw-bold'>Address: </h6>
                             <p className='m-1' >John doe avenue John street Lorem ipsum dolor sit amet. </p>
-                            <i className="fa-solid fa-pen cursor"></i>
                         </div>
                     </div>
 
@@ -120,6 +122,7 @@ export const Client = () => {
             <ModalEditPayment show={showModalEditPayment} onClose={() => setShowModalEditPayment(false)} />
             <ModalAddInvoice show={showModalAddInvoice} onClose={() => setShowModalAddInvoice(false)} />
             <ModalEditInvoice show={showModalEditInvoice} onClose={() => setShowModalEditInvoice(false)} />
+            <ModalEditClient show={showModalEditClient} onClose={() => setShowModalEditClient(false)} />
         </>
     );
 };
