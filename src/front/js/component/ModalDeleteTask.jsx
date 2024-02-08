@@ -3,9 +3,8 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
 
-export const ModalEditNotes = props => {
+export const ModalDeleteTask = props => {
     const [state, setState] = useState("");
-    const [inputEditNotes, setInputEditNotes] = useState("");
     const { store, actions } = useContext(Context);
 
     return (
@@ -13,7 +12,7 @@ export const ModalEditNotes = props => {
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Edit Note</h5>
+                        <h5 className="modal-title">Delete Item</h5>
                         {props.onClose ? (
                             <button
                                 type="button"
@@ -26,15 +25,7 @@ export const ModalEditNotes = props => {
                             ""
                         )}
                     </div>
-                    <div className="modal-body">
-                        <textarea
-                            type="text"
-                            className="form-control mb-1 border border-secondary"
-                            placeholder="Edit Note"
-                            onChange={e => setInputEditNotes(e.target.value)}
-                            value={inputEditNotes}
-                        />
-                    </div>
+                    <p className="p-2 text-center">Are you sure?</p>
                     <div className="modal-footer">
                         <button
                             type="button"
@@ -43,10 +34,10 @@ export const ModalEditNotes = props => {
                             onClick={() => {
                                 props.onClose();
                             }}>
-                            Add Note
+                            Yes
                         </button>
                         <button type="button" className="btn btn-secondary" onClick={() => props.onClose()}>
-                            Cancel
+                            No
                         </button>
                     </div>
                 </div>
@@ -55,12 +46,12 @@ export const ModalEditNotes = props => {
     );
 };
 
-ModalEditNotes.propTypes = {
+ModalDeleteTask.propTypes = {
     onClose: PropTypes.func,
-
+    show: PropTypes.bool,
 };
 
-ModalEditNotes.defaultProps = {
+ModalDeleteTask.defaultProps = {
     show: false,
     onClose: null
 };
