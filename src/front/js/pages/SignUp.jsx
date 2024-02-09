@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
-import Logo from "../../img/Logo.png"
+import Swal from 'sweetalert2'
 import background from "../../img/background.png"
 import "../../styles/signup.css"
 
@@ -78,7 +78,11 @@ export const SignUp = () => {
                                                 type="submit"
                                                 onClick={() => {
                                                     if (inputPassword != inputConfirmPassword) {
-                                                        alert("Please confirm your password to continue")
+                                                        Swal.fire({
+                                                            icon: "info",
+                                                            title: "Alert",
+                                                            text: "Please confirm your password to continue",
+                                                          });
                                                     } else {
                                                         if (inputUser != "" &&
                                                             inputEmail != "" &&
@@ -86,7 +90,11 @@ export const SignUp = () => {
                                                             inputConfirmPassword != "") {
                                                             save();
                                                         } else {
-                                                            alert("Please fill out all input fields");
+                                                            Swal.fire({
+                                                                icon: "error",
+                                                                title: "Error",
+                                                                text: "Please fill out all input fields",
+                                                              });
                                                         }
                                                     }
                                                 }}>Create User</button>
