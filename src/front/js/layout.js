@@ -2,20 +2,14 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
-
-import { Home } from "./pages/home";
-import { Demo } from "./pages/demo";
-import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
-
-import { Navbar } from "./component/Navbar.jsx";
-import { Footer } from "./component/Footer.jsx";
-import {ModalAddClient} from"./component/ModalAddClient.jsx";
 import {UserInfo} from"./pages/UserInfo.jsx";
 import { Login } from "./pages/Login.jsx";
 import { SignUp } from "./pages/SignUp.jsx";
 import {Client} from "./pages/Client.jsx"
 import {MainPage} from"./pages/MainPage.jsx";
+import PaymentSuccess from "./pages/PaymentSuccess.jsx";
+import PaymentCancel from "./pages/PaymentCancel.jsx";
 
 //create your first component
 const Layout = () => {
@@ -34,8 +28,9 @@ const Layout = () => {
                         <Route element={<SignUp />} path="/signup" />
                         <Route element={<UserInfo />} path="/userinfo" />
                         <Route element={<Client />} path="/client" />
-                        <Route element={<Home />} path="/test" />
                         <Route element={<MainPage />} path="/home" />   
+                        <Route element={<PaymentSuccess />} path="/success" />   
+                        <Route element={<PaymentCancel />} path="/cancel" />   
                     </Routes>
                 </ScrollToTop>
             </BrowserRouter>

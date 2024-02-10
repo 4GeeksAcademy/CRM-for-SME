@@ -5,6 +5,10 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
+import stripe
+import os
+
+stripe.api_key = os.getenv("STRIPE_TOKEN")
 
 api = Blueprint('api', __name__)
 
@@ -20,3 +24,28 @@ def handle_hello():
     }
 
     return jsonify(response_body), 200
+
+@api.route('/payment-link', methods=['POST'])
+def payment_link():
+    name = request.json.get('name')
+    unit_amount = int(request.json.get('unit_amount'))
+    
+    session = stripe.checkout.Session.create(
+        payment_method_types=['card'],
+        line_items=[{
+            'price_data': {
+                'currency': 'usd',
+                'product_data': {
+                    'name': name,
+                },
+                'unit_amount': unit_amount,
+            },
+            'quantity': 1,
+        }],
+        mode='payment',
+        success_url='https://silver-halibut-g4q4vxqwvg4xhvvqw-3000.app.github.dev/success',
+        cancel_url='https://silver-halibut-g4q4vxqwvg4xhvvqw-3000.app.github.dev/cancel',
+    )
+    payment_url = session.url
+
+    return jsonify(payment_url=payment_url)

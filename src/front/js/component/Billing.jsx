@@ -25,9 +25,9 @@ export const Billing = props => {
             </div>
         </div>
         <div className="container d-flex justify-content-between my-3">
-            <button type="button" class="btn btn-danger" onClick={() => props.onAddInvoice()}>Add Invoice</button>
-            <button type="button" class="btn btn-primary" onClick={() => props.onAddPayment()}>Add payment</button>
-            <button type="button" class="btn btn-warning" onClick={() => props.onAddMercadoPago()}>MercadoPago</button>
+            <button type="button" className="btn btn-danger" onClick={() => props.onAddInvoice()}>Add Invoice</button>
+            <button type="button" className="btn btn-primary" onClick={() => props.onAddPayment()}>Add payment</button>
+            <button type="button" className="btn btn-warning" onClick={() => props.onAddPaymentLink()}>Create Payment Link</button>
         </div>
         <div className="container row d-flex justify-content-between my-2">
             <div className="col-6 d-flex flex-column align-items-center border border-dark bg-light rounded box">
