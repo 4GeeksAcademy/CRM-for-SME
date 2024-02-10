@@ -21,7 +21,7 @@ import { ModalAddPayment } from "../component/ModalAddPayment.jsx"
 import { ModalEditInvoice } from "../component/ModalEditInvoice.jsx"
 import { ModalEditPayment } from "../component/ModalEditPayment.jsx"
 import { ModalEditClient } from "../component/ModalEditClient.jsx"
-
+import { ModalPaymentLink } from "../component/ModalPaymentLink.jsx"
 
 export const Client = () => {
     const { store, actions } = useContext(Context);
@@ -37,18 +37,19 @@ export const Client = () => {
     const [showModalEditInvoice, setShowModalEditInvoice] = useState(false);
     const [showModalEditPayment, setShowModalEditPayment] = useState(false);
     const [showModalEditClient, setShowModalEditClient] = useState(false);
+    const [showModalPaymentLink, setShowModalPaymentLink] = useState(false);
 
     const activeSection = (id) => {
         setState(id)
     }
-    
+
     return (
         <>
             <Navbar />
             <div className="row p-0">
                 <div className="col-3 border border-black p-0" style={{ height: "100vh" }}>
                     <div className="d-flex flex-column justify-content-center align-items-center h-25 border border-black">
-                        <div className="d-flex align-items-center"> 
+                        <div className="d-flex align-items-center">
                             <img src={Logo} style={{ width: '100px', height: '100px' }} alt="client Avatar" />
                             <h4>Client's Name</h4>
                         </div>
@@ -65,7 +66,7 @@ export const Client = () => {
 
                         <div className="container d-flex w-100">
                             <h6 className='m-1 fw-bold'>Phone:</h6>
-                            <p className='m-1'>314567890</p> 
+                            <p className='m-1'>314567890</p>
                         </div>
                         <div className="container d-flex w-100">
                             <h6 className='m-1 fw-bold'>Company:</h6>
@@ -89,25 +90,26 @@ export const Client = () => {
 
                     </div>
                     <div className="container row mb-5">
-                        {state == 'Activity' ? 
-                        <Activity 
-                        /> : state == 'Tasks' ? 
-                        <Tasks 
-                            onAddTask={() => setShowModalAddTask(true)} 
-                            onEditTask={() => setShowModalEditTask(true)} 
-                            onDeleteTask={() => setShowModalDeleteTask(true)} 
-                        /> : state == 'Notes' ? 
-                        <Notes
-                            onAddNote={() => setShowModalAddNote(true)} 
-                            onEditNote={() => setShowModalEditNote(true)} 
-                            onDeleteNote={() => setShowModalDeleteNote(true)}  
-                        /> : 
-                        <Billing
-                            onAddInvoice={() => setShowModalAddInvoice(true)}
-                            onEditInvoice={() => setShowModalEditInvoice(true)}
-                            onAddPayment={() => setShowModalAddPayment(true)}
-                            onEditPayment={() => setShowModalEditPayment(true)}
-                        />}
+                        {state == 'Activity' ?
+                            <Activity
+                            /> : state == 'Tasks' ?
+                                <Tasks
+                                    onAddTask={() => setShowModalAddTask(true)}
+                                    onEditTask={() => setShowModalEditTask(true)}
+                                    onDeleteTask={() => setShowModalDeleteTask(true)}
+                                /> : state == 'Notes' ?
+                                    <Notes
+                                        onAddNote={() => setShowModalAddNote(true)}
+                                        onEditNote={() => setShowModalEditNote(true)}
+                                        onDeleteNote={() => setShowModalDeleteNote(true)}
+                                    /> :
+                                    <Billing
+                                        onAddInvoice={() => setShowModalAddInvoice(true)}
+                                        onEditInvoice={() => setShowModalEditInvoice(true)}
+                                        onAddPayment={() => setShowModalAddPayment(true)}
+                                        onEditPayment={() => setShowModalEditPayment(true)}
+                                        onAddPaymentLink={() => setShowModalPaymentLink(true)}
+                                    />}
                     </div>
                 </div>
             </div>
@@ -123,6 +125,7 @@ export const Client = () => {
             <ModalAddInvoice show={showModalAddInvoice} onClose={() => setShowModalAddInvoice(false)} />
             <ModalEditInvoice show={showModalEditInvoice} onClose={() => setShowModalEditInvoice(false)} />
             <ModalEditClient show={showModalEditClient} onClose={() => setShowModalEditClient(false)} />
+            <ModalPaymentLink show={showModalPaymentLink} onClose={() => setShowModalPaymentLink(false)} />
         </>
     );
 };
