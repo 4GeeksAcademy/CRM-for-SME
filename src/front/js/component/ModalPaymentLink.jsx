@@ -2,12 +2,6 @@ import React, { useState } from 'react';
 import PropTypes from "prop-types";
 import Swal from 'sweetalert2'
 
-const extractDomain = (url) => {
-    if (!url) return '';
-    const domain = new URL(url).hostname;
-    return domain;
-};
-
 export const ModalPaymentLink = props => {
     const [paymentUrl, setPaymentUrl] = useState('');
     const [productName, setProductName] = useState('');
@@ -28,7 +22,6 @@ export const ModalPaymentLink = props => {
         })
             .then(response => response.json())
             .then(data => {
-                // Set the payment URL in state
                 setPaymentUrl(data.payment_url);
                 console.log(data.payment_url);
 
@@ -40,7 +33,6 @@ export const ModalPaymentLink = props => {
         navigator.clipboard.writeText(paymentUrl)
             .then(() => {
                 console.log('Payment URL copied to clipboard');
-                // Optionally, you can provide feedback to the user that the URL has been copied
             })
             .catch(error => {
                 console.error('Error copying payment URL to clipboard:', error);

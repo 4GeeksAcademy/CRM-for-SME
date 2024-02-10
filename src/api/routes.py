@@ -1,7 +1,7 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from flask import Flask, request, jsonify, url_for, Blueprint, render_template, redirect
+from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
@@ -46,9 +46,6 @@ def payment_link():
         success_url='https://silver-halibut-g4q4vxqwvg4xhvvqw-3000.app.github.dev/success',
         cancel_url='https://silver-halibut-g4q4vxqwvg4xhvvqw-3000.app.github.dev/cancel',
     )
-      
-     # Get the payment link URL from the session object
     payment_url = session.url
 
-    # Return the payment link URL as JSON
     return jsonify(payment_url=payment_url)
