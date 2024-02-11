@@ -1,0 +1,16 @@
+ .dropdown button {
+     height: calc(2.25rem - 12px);
+     margin-top: 6px;
+     margin-right: 35px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+ }
+
+ .dropdown button .bi {
+     margin-right: 5px;
+ }
+
+ .dropdown button .bi-person-fill {
+     font-size: 1.5rem;
+ }
