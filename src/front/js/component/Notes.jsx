@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
-
+import "../../styles/notes.css";
 
 export const Notes = props => {
     const { store, actions } = useContext(Context);
@@ -26,9 +26,9 @@ export const Notes = props => {
                                     <h7 className="fw-bold" >Date Created</h7>
                                     <span>{note.dateCreated}</span>
                                 </div>
-                                <div className="col-2 d-flex">
-                                    <i className="fa-solid fa-pen mx-1" onClick={() => props.onEditNote()}></i>
-                                    <i className="fa-solid fa-trash mx-1" onClick={() => props.onDeleteNote()}></i>
+                                <div className="col-2 d-flex align-items-center">
+                                    <i className="fa-solid fa-pen mx-1 cursor" onClick={() => props.onEditNote()}></i>
+                                    <i className="fa-solid fa-trash mx-1 cursor" onClick={() => props.onDeleteNote()}></i>
                                 </div>
                             </div>
                         </li>
