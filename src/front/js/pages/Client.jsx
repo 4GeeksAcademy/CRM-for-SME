@@ -26,6 +26,7 @@ import { ModalPaymentLink } from "../component/ModalPaymentLink.jsx"
 export const Client = () => {
     const { store, actions } = useContext(Context);
     const [state, setState] = useState('Activity');
+    const [active, setActive] = useState(false)
     const [showModalAddTask, setShowModalAddTask] = useState(false);
     const [showModalEditTask, setShowModalEditTask] = useState(false);
     const [showModalDeleteTask, setShowModalDeleteTask] = useState(false);
@@ -41,8 +42,10 @@ export const Client = () => {
 
     const activeSection = (id) => {
         setState(id)
+       
     }
 
+      
     return (
         <>
             <Navbar />
@@ -83,10 +86,10 @@ export const Client = () => {
                 <div className="col-9 p-0 h-100">
 
                     <div className="d-flex w-100 justify-content-center bg-dark pt-3">
-                        <h5 className="text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor" onClick={() => activeSection('Activity')}>Activity</h5>
-                        <h5 className="text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor" onClick={() => activeSection('Tasks')}>Tasks</h5>
-                        <h5 className="text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor" onClick={() => activeSection('Notes')}>Notes</h5>
-                        <h5 className="text-light border border-light border-bottom-0  rounded p-1 mx-2 mt-1 cursor" onClick={() => activeSection('Billing')}>Billing</h5>
+                        <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Activity' ? 'active' : ''}`} onClick={() => activeSection('Activity')}>Activity</h5>
+                        <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Tasks' ? 'active' : ''}`} onClick={() => activeSection('Tasks')}>Tasks</h5>
+                        <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Notes' ? 'active' : ''}`} onClick={() => activeSection('Notes')}>Notes</h5>
+                        <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Billing' ? 'active' : ''}`} onClick={() => activeSection('Billing')}>Billing</h5>
 
                     </div>
                     <div className="container row mb-5">

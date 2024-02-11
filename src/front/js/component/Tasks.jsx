@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
+import "../../styles/tasks.css";
 
 export const Tasks = props => {
     const { store, actions } = useContext(Context);
@@ -41,9 +42,9 @@ export const Tasks = props => {
                                 <button type="button" className={task.complete == false ? 'btn btn-secondary' : 'btn btn-success'} onClick={() => actions.taskAsDone(task.idTask)}>{task.complete == false ? 'Pending' : 'Completed'}</button>
                             </div>
 
-                            <div className="col-1 d-flex">
-                                <i className="fa-solid fa-pen mx-1" onClick={() => props.onEditTask()}></i>
-                                <i className="fa-solid fa-trash mx-1" onClick={() => props.onDeleteTask()}></i>
+                            <div className="col-1 d-flex align-items-center">
+                                <i className="fa-solid fa-pen mx-1 cursor" onClick={() => props.onEditTask()}></i>
+                                <i className="fa-solid fa-trash mx-1 cursor" onClick={() => props.onDeleteTask()}></i>
                             </div>
                         </li>
                     );
