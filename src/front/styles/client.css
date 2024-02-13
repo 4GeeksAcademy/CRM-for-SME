@@ -46,5 +46,9 @@ body {
     color: #182833; /* Azul oscuro para el icono de edición */
   }
   
+  .active {
+    background-color: #c2e2fd;
+    color:#182833!important;
+  }
   /* Otros estilos para Client según sea necesario */
   
