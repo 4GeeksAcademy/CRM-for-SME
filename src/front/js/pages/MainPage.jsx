@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Navbar } from '../component/Navbar.jsx';
 import { Footer } from '../component/Footer.jsx';
 import { ModalAddClient } from '../component/ModalAddClient.jsx';
+import "../../styles/MainPage.css";
+
 
 export const MainPage = () => {
   const [clients, setClients] = useState([]);
@@ -69,8 +71,8 @@ export const MainPage = () => {
           </table>
         </div>
       </div>
-    <Footer /> 
-    <ModalAddClient show={showAddClientModal} onClose={() => setShowAddClientModal(false)} />           
+      <Footer />
+      <ModalAddClient show={showAddClientModal} onClose={() => setShowAddClientModal(false)} />
     </div>
   );
 };

@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 
+import "../../styles/client.css";
 import { Context } from "../store/appContext";
 import Logo from "../../img/Logo.png"
-import "../../styles/client.css";
 import { Activity } from "../component/Activity.jsx";
 import { Billing } from "../component/Billing.jsx";
 import { Tasks } from "../component/Tasks.jsx";

@@ -16,6 +16,7 @@ import { Login } from "./pages/Login.jsx";
 import { SignUp } from "./pages/SignUp.jsx";
 import {Client} from "./pages/Client.jsx"
 import {MainPage} from"./pages/MainPage.jsx";
+import { TotalTasks } from "./pages/TotalTasks.jsx";
 
 //create your first component
 const Layout = () => {
@@ -36,6 +37,7 @@ const Layout = () => {
                         <Route element={<Client />} path="/client" />
                         <Route element={<Home />} path="/test" />
                         <Route element={<MainPage />} path="/home" />   
+                        <Route element={<TotalTasks />} path="/totaltasks" />  
                     </Routes>
                 </ScrollToTop>
             </BrowserRouter>

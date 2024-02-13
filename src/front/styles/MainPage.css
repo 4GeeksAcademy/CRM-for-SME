@@ -1,0 +1,17 @@
+/* MainPage Styles */
+body {
+    background-color: #c2e2fd8e; /* Azul claro para el fondo de la página */
+  }
+  
+  .btn-primary {
+    background-color: #42637D; 
+  }
+  
+  .btn-primary:hover {
+    background-color: #182833; 
+  }
+  
+  .table th,
+  .table td {
+    color: #182833; 
+  }
