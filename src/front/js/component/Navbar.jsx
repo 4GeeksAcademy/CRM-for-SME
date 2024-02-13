@@ -25,7 +25,7 @@ export const Navbar = () => {
             <Link className="nav-link" to={'/client'}>
               Clients
             </Link>
-            <a className="nav-link" href="/taskstotales">
+            <a className="nav-link" href="/totaltasks">
               Tasks
             </a>
             

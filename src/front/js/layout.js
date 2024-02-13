@@ -8,6 +8,7 @@ import { Login } from "./pages/Login.jsx";
 import { SignUp } from "./pages/SignUp.jsx";
 import {Client} from "./pages/Client.jsx"
 import {MainPage} from"./pages/MainPage.jsx";
+import { TotalTasks } from "./pages/TotalTasks.jsx";
 import PaymentSuccess from "./pages/PaymentSuccess.jsx";
 import PaymentCancel from "./pages/PaymentCancel.jsx";
 
@@ -29,6 +30,7 @@ const Layout = () => {
                         <Route element={<UserInfo />} path="/userinfo" />
                         <Route element={<Client />} path="/client" />
                         <Route element={<MainPage />} path="/home" />   
+                        <Route element={<TotalTasks />} path="/totaltasks" />  
                         <Route element={<PaymentSuccess />} path="/success" />   
                         <Route element={<PaymentCancel />} path="/cancel" />   
                     </Routes>

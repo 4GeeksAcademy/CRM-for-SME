@@ -1,7 +1,36 @@
-/*
-    home.css: This website contains selectors only used in home.css
+body {
+  background-color: #8AA7BD; /* Azul medio para el fondo de la página */
+}
 
-    All pages share the styles on index.css but you should create 
-    one more css for each page that will contain the selected used 
-    on that page only (the ones not reused in other pages).
-*/
+.left-panel {
+  background-color: #c2e2fd; /* Azul claro para la parte izquierda */
+  margin-right: 10px; /* Margen a la derecha para separar del panel derecho */
+  padding: 10px; /* Relleno para un aspecto más espaciado */
+}
+
+.right-panel {
+  background-color: #42637D; /* Azul oscuro para la parte derecha */
+  margin-left: 10px; /* Margen a la izquierda para separar del panel izquierdo */
+  padding: 10px; /* Relleno para un aspecto más espaciado */
+}
+
+.btn-primary {
+  background-color: #3A4B57; /* Azul oscuro para el fondo del botón primario */
+  margin-bottom: 10px; /* Margen inferior para separar del contenido siguiente */
+}
+
+.btn-primary:hover {
+  background-color: #182833; /* Cambio de color al pasar el mouse */
+}
+
+.table th,
+.table td {
+  color: #182833; /* Azul oscuro para el texto de la tabla */
+}
+
+/* Otros estilos para Client según sea necesario */
+
+
+.btn-secondary:hover {
+  background-color: #3A4B57; 
+}
