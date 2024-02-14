@@ -20,8 +20,7 @@ class User(db.Model):
     
 class Client(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(250), nullable=False)
-    last_name = db.Column(db.String(250), nullable=False)
+    full_name = db.Column(db.String(250), nullable=False)
     email = db.Column(db.String(250), nullable=False)
     phone =  db.Column(db.String(250), nullable=False)
     address = db.Column(db.String(250))
@@ -34,8 +33,7 @@ class Client(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "first_name": self.first_name,
-            "last_name": self.last_name,
+            "full_name": self.full_name,
             "email": self.email,
             'phone': self.phone,
             'address': self.address,

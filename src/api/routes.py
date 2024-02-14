@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User
+from api.models import db, User, Client
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 import stripe
@@ -121,3 +121,26 @@ def change_password():
     db.session.commit()
 
     return jsonify({"message": "Password changed successfully"}), 200
+
+@api.route('/add_client', methods=['POST'])
+def create_client():
+    client = Client(
+        full_name=request.json.get('full_name'),
+        email=request.json.get('email'),
+        phone=request.json.get('phone'),
+        address=request.json.get('address'),
+        company=request.json.get('company')
+    )
+
+    db.session.add(client)
+    db.session.commit()
+    
+    return jsonify({"msg": "Client created successfully"}), 200
+
+@api.route('/clients', methods=['GET'])
+def get_clients():
+    clients = Client.query.all()
+    results = []
+    for client in clients:
+        results.append(client.serialize())
+    return jsonify(results), 200
