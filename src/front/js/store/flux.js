@@ -281,7 +281,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (!response.ok) {
 						throw new Error('Failed to add client');
 					}
-					console.log(json);
+					getActions().getClients();
 				} catch (error) {
 					console.error('Error adding client:', error);
 				}
@@ -292,8 +292,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				  const response = await fetch(process.env.BACKEND_URL + '/api/clients');
 				  const data = await response.json();
 				  setStore({ clients: data })
-				  const store = getStore()
-				  console.log(store.clients);
+				  
 				} catch (error) {
 				  console.error('Error fetching clients:', error);
 				}
