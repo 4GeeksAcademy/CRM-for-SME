@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { Context } from "../store/appContext";
 import { Navbar } from '../component/Navbar.jsx';
 import { Footer } from '../component/Footer.jsx';
 import { ModalAddClient } from '../component/ModalAddClient.jsx';
@@ -6,26 +7,14 @@ import "../../styles/MainPage.css";
 
 
 export const MainPage = () => {
-  const [clients, setClients] = useState([]);
+  const { store, actions } = useContext(Context)
   const [showAddClientModal, setShowAddClientModal] = useState(false);
-
-  // Función para obtener la lista de clientes 
-/*   const fetchClients = async () => {
-    try {
-
-      const response = await fetch('https://api.example.com/clients');
-      const data = await response.json();
-      setClients(data);
-    } catch (error) {
-      console.error('Error fetching clients:', error);
-    }
-  };
 
   useEffect(() => {
     // Llama a la función de obtener clientes al cargar la página
-    fetchClients();
-  }, []);
- */
+    actions.getClients();
+  }, [store.clients]);
+
   return (
     <div>
       <Navbar />
@@ -52,18 +41,20 @@ export const MainPage = () => {
           <table className="table">
             <thead>
               <tr>
-                <th scope="col ">Clients Name</th>
-                <th scope="col">Clients Email</th>
-                <th scope="col">Clients Phone Number</th>
-                <th scope="col">Clients Company</th>
+                <th scope="col ">Client's Name</th>
+                <th scope="col">Client's Email</th>
+                <th scope="col">Client's Phone Number</th>
+                <th scope="col">Client's Address</th>
+                <th scope="col">Client's Company</th>
               </tr>
             </thead>
             <tbody>
-              {clients.map((client) => (
+              {store.clients.map((client) => (
                 <tr key={client.id}>
-                  <td>{client.name}</td>
+                  <td>{client.full_name}</td>
                   <td>{client.email}</td>
                   <td>{client.phone}</td>
+                  <td>{client.address}</td>
                   <td>{client.company}</td>
                 </tr>
               ))}

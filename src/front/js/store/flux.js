@@ -93,7 +93,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam quam libero, in, deserunt sed quasi autem, repellat placeat impedit nemo aperiam est quidem. Sint, sed?',
 				idNote:'12345667'
 			},
-			]
+			],
+			clients: []
 		},
 		actions: {
 			postLogin: async (user, password) => {
@@ -250,7 +251,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 				}
 			},
-			
 			taskAsDone: (id) => {
 					const store = getStore()
 					const storedTasks = store.tasks
@@ -259,7 +259,45 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({tasks: storedTasks})
 					
 
-			}
+			},
+			addClient: async (inputFullName, inputEmail, inputPhone, inputAddress, inputCompany) => {
+				const newClient = {
+					full_name: inputFullName,
+					email: inputEmail,
+					phone: inputPhone,
+					address: inputAddress,
+					company: inputCompany
+				};
+				try {
+					const response = await fetch(process.env.BACKEND_URL + '/api/add_client', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(newClient)
+					});
+					const json = await response.json();
+		
+					if (!response.ok) {
+						throw new Error('Failed to add client');
+					}
+					console.log(json);
+				} catch (error) {
+					console.error('Error adding client:', error);
+				}
+			},
+			getClients: async () => {
+				try {
+			
+				  const response = await fetch(process.env.BACKEND_URL + '/api/clients');
+				  const data = await response.json();
+				  setStore({ clients: data })
+				  const store = getStore()
+				  console.log(store.clients);
+				} catch (error) {
+				  console.error('Error fetching clients:', error);
+				}
+			},
 		}
 	};
 };
