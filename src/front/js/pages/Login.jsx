@@ -1,26 +1,29 @@
 import React, { useContext, useState } from "react";
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 import { Context } from "../store/appContext";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import background from "../../img/background.png"
-import "../../styles/login.css"
+import background from "../../img/background.png";
+import "../../styles/login.css";
 
 export const Login = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { store, actions } = useContext(Context);
   const [inputUser, setInputUser] = useState("");
   const [inputPassword, setInputPassword] = useState("");
+
   function save() {
     actions.postLogin(inputUser, inputPassword);
+    navigate("/home");
   }
 
   return (
     <div className="container ">
-      <div class="row">
-        <div class="col col-xs-1">
-          <div className="body" style={{ backgroundImage: `url(${background})` }}>
-            {store.loggedIn ? (navigate("/home")) : (
+      {store.loggedIn ? (
+        navigate("/home")
+      ) : (
+        <div className="row">
+          <div className="col col-xs-1">
+            <div className="body" style={{ backgroundImage: `url(${background})` }}>
               <div className="text-center justify-content-center d-md-flex m-5">
                 <div className="form-signin">
                   <form className="text-center">
@@ -51,7 +54,7 @@ export const Login = () => {
                         className="w-100 btn btn-sm btn-primary"
                         type="button"
                         onClick={() => {
-                          if (inputUser != "" && inputPassword != "") {
+                          if (inputUser !== "" && inputPassword !== "") {
                             save();
                           } else {
                             Swal.fire({
@@ -60,20 +63,22 @@ export const Login = () => {
                               text: "Please fill out all input fields",
                             });
                           }
-                        }}>Log in</button>
-                      <Link
-                        to={'/signup'}
-                        className="w-100 btn btn-sm btn-secondary mt-1"
+                        }}>Log in
+                      </button>
+                      <button
+                        className="w-100 btn btn-sm btn-secondary"
                         type="button"
-                      >Sign Up</Link>
+                        onClick={() => navigate("/signup")}
+                      >Sign Up
+                      </button>
                     </div>
                   </form>
                 </div>
               </div>
-            )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

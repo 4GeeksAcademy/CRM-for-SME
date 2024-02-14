@@ -1,10 +1,19 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../img/Logo.png";
-import "../../styles/navbar.css"; 
+import "../../styles/navbar.css";
 import "../../styles/dropdown.css";
+import { Context } from "../store/appContext";
 
 export const Navbar = () => {
+  const navigate = useNavigate();
+  const { store, actions } = useContext(Context);
+
+  function handleLogOut() {
+    actions.tokenLogout();
+    navigate("/");
+  }
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light">
       <div className="container-fluid">
@@ -28,7 +37,7 @@ export const Navbar = () => {
             <a className="nav-link" href="/totaltasks">
               Tasks
             </a>
-            
+
             <div className="dropdown">
               <button
                 className="btn btn-secondary dropdown-toggle"
@@ -37,10 +46,10 @@ export const Navbar = () => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <i className="fas fa-user" style={{ fontSize: "1.1rem" }}></i> 
+                <i className="fas fa-user" style={{ fontSize: "1.1rem" }}></i>
               </button>
               <ul className="dropdown-menu" aria-labelledby="userDropdown">
-                <li><Link className="dropdown-item" to="/">Log Out</Link></li>
+                <li type="button" className="dropdown-item" onClick={handleLogOut}>Log Out</li>
                 <li><Link className="dropdown-item" to="/userinfo">User Information</Link></li>
               </ul>
             </div>

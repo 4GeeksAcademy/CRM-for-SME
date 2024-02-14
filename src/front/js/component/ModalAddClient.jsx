@@ -4,14 +4,23 @@ import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
 
 export const ModalAddClient = props => {
-    const [state, setState] = useState("");
-    const [inputFirstName, setInputFirstName] = useState("");
-	const [inputLastName, setInputLastName] = useState("");
+    const [inputFullName, setInputFullName] = useState("");
     const [inputEmail, setInputEmail] = useState("");
 	const [inputPhone, setInputPhone] = useState("");
 	const [inputAddress, setInputAddress] = useState("");
 	const [inputCompany, setInputCompany] = useState("");
     const { store, actions } = useContext(Context);
+
+    function handleAddClient() {
+        actions.addClient(inputFullName, inputEmail, inputPhone, inputAddress, inputCompany);
+        props.onClose();
+        setInputFullName("");
+        setInputEmail("");
+        setInputPhone("");
+        setInputAddress("");
+        setInputCompany("");
+        
+    } 
 
         return (
             <div className="modal bg-secondary py-5" tabIndex="-1" role="dialog" style={{ display: props.show ? "inline-block" : "none" }}>
@@ -35,30 +44,26 @@ export const ModalAddClient = props => {
                             <input 
                                 type="text"
                                 className="form-control mb-1 border border-secondary" 
-                                placeholder="First name"
-                                onChange={e => setInputFirstName(e.target.value)}
-								value={inputFirstName} 
-                            />
-                            <input 
-                                type="text"
-                                className="form-control mb-1 border border-secondary" 
-                                placeholder="Last name"
-                                onChange={e => setInputLastName(e.target.value)}
-								value={inputLastName} 
+                                placeholder="Full name"
+                                onChange={e => setInputFullName(e.target.value)}
+								value={inputFullName}
+                                required 
                             />
                             <input 
                                 type="email"
                                 className="form-control mb-1 border border-secondary" 
                                 placeholder="Email"
                                 onChange={e => setInputEmail(e.target.value)}
-								value={inputEmail} 
+								value={inputEmail}
+                                required 
                             />
                             <input
                                 type="text" 
                                 className="form-control mb-1 border border-secondary" 
                                 placeholder="Phone number"
                                 onChange={e => setInputPhone(e.target.value)}
-								value={inputPhone} 
+								value={inputPhone}
+                                required 
                             />
                             <input
                                 type="text"  
@@ -80,9 +85,7 @@ export const ModalAddClient = props => {
                                 type="button"
                                 className="btn btn-primary"
                                 data-dismiss="modal"
-                                onClick={() => {
-                                    props.onClose();
-                                }}>
+                                onClick={() => handleAddClient()}>
                                 Add Client
                             </button>
                             <button type="button" className="btn btn-secondary" onClick={() => props.onClose()}>

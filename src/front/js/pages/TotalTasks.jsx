@@ -7,7 +7,18 @@ import PropTypes from "prop-types";
 export const TotalTasks = (props) => {
     const { store, actions } = useContext(Context);
 
+<<<<<<< HEAD
     return (
+=======
+    <div>
+         <Navbar />
+      <h1>Total Tasks</h1>
+      {<li className="border border-dark p-2 my-2 d-flex justify-content-between row bg-light">
+                            <div className="col-2 d-flex flex-column">
+                                <h5 className="fw-bold">User Asign</h5>
+                                {/* <span>{task.userAsing}</span> */}
+                            </div>
+>>>>>>> ae14221355e2be8cb04102f476d8bece72efc2d9
 
         <div>
             <Navbar />

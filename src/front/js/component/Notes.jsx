@@ -19,11 +19,11 @@ export const Notes = props => {
                             <span className="col-8">{note.text}</span>
                             <div className="row col-4">
                                 <div className="col-5 d-flex flex-column">
-                                    <h7 className="fw-bold">User</h7>
+                                    <h6 className="fw-bold">User</h6>
                                     <span>{note.addedByUser}</span>
                                 </div>
                                 <div className="col-5 d-flex flex-column">
-                                    <h7 className="fw-bold" >Date Created</h7>
+                                    <h6 className="fw-bold" >Date Created</h6>
                                     <span>{note.dateCreated}</span>
                                 </div>
                                 <div className="col-2 d-flex align-items-center">
