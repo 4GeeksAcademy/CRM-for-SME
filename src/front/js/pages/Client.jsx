@@ -42,15 +42,15 @@ export const Client = () => {
 
     const activeSection = (id) => {
         setState(id)
-       
+
     }
 
-      
+
     return (
         <>
             <Navbar />
             <div className="row p-0">
-                <div className="col-3 border border-black p-0" style={{ height: "100vh" }}>
+                <div className="col-3 border border-black p-0" style={{ height: "100vh", backgroundColor: "#b9cedff1" }}>
                     <div className="d-flex flex-column justify-content-center align-items-center h-25 border border-black">
                         <div className="d-flex align-items-center">
                             <img src={Logo} style={{ width: '100px', height: '100px' }} alt="client Avatar" />
@@ -86,10 +86,10 @@ export const Client = () => {
                 <div className="col-9 p-0 h-100">
 
                     <div className="d-flex w-100 justify-content-center bg-dark pt-3">
-                        <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Activity' ? 'active' : ''}`} onClick={() => activeSection('Activity')}>Activity</h5>
-                        <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Tasks' ? 'active' : ''}`} onClick={() => activeSection('Tasks')}>Tasks</h5>
-                        <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Notes' ? 'active' : ''}`} onClick={() => activeSection('Notes')}>Notes</h5>
-                        <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Billing' ? 'active' : ''}`} onClick={() => activeSection('Billing')}>Billing</h5>
+                        <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Activity' ? 'active' : ''}`} onClick={() => activeSection('Activity')} style={{ backgroundColor: state === 'Activity' ? '#42637D' : '' }}>Activity</h5>
+                        <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Tasks' ? 'active' : ''}`} onClick={() => activeSection('Tasks')} style={{ backgroundColor: state === 'Tasks' ? '#42637D' : '' }}>Tasks</h5>
+                        <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Notes' ? 'active' : ''}`} onClick={() => activeSection('Notes')} style={{ backgroundColor: state === 'Notes' ? '#42637D' : '' }}>Notes</h5>
+                        <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Billing' ? 'active' : ''}`} onClick={() => activeSection('Billing')} style={{ backgroundColor: state === 'Billing' ? '#42637D' : '' }}>Billing</h5>
 
                     </div>
                     <div className="container row mb-5">

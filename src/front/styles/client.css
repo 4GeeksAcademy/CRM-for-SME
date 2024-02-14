@@ -1,29 +1,14 @@
-/* Client Styles */
-body {
-    background-color: #c2e2fd; /* Azul claro para el fondo de la página */
-  }
-  
-  .left-panel {
-    background-color: #c2e2fd; /* Azul claro para la parte izquierda */
-    margin-right: 10px; /* Margen a la derecha para separar del panel derecho */
-    padding: 10px; /* Relleno para un aspecto más espaciado */
-  }
-  
-  .right-panel {
-    background-color: #a0c9f8; /* Azul claro más oscuro para la parte derecha */
-    margin-left: 10px; /* Margen a la izquierda para separar del panel izquierdo */
-    padding: 10px; /* Relleno para un aspecto más espaciado */
-  }
-  
-  .btn-primary {
-    background-color: #3A4B57; /* Azul oscuro para el fondo del botón primario */
+ .btn-primary {
+    background-color: #db1010; /* Azul oscuro para el fondo del botón primario */
     margin-bottom: 10px; /* Margen inferior para separar del contenido siguiente */
   }
   
   .btn-primary:hover {
-    background-color: #182833; /* Cambio de color al pasar el mouse */
+    background-color: #b9cedff1; 
   }
   
+<<<<<<< HEAD
+=======
   .table th,
   .table td {
     color: #182833; /* Azul oscuro para el texto de la tabla */
@@ -51,4 +36,5 @@ body {
     color:#182833!important;
   }
   /* Otros estilos para Client según sea necesario */
+>>>>>>> ae14221355e2be8cb04102f476d8bece72efc2d9
   
