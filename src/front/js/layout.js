@@ -11,6 +11,7 @@ import {MainPage} from"./pages/MainPage.jsx";
 import { TotalTasks } from "./pages/TotalTasks.jsx";
 import PaymentSuccess from "./pages/PaymentSuccess.jsx";
 import PaymentCancel from "./pages/PaymentCancel.jsx";
+import { ChangePassword } from "./pages/ChangePassword.jsx";
 
 //create your first component
 const Layout = () => {
@@ -33,6 +34,7 @@ const Layout = () => {
                         <Route element={<TotalTasks />} path="/totaltasks" />  
                         <Route element={<PaymentSuccess />} path="/success" />   
                         <Route element={<PaymentCancel />} path="/cancel" />   
+                        <Route element={<ChangePassword />} path="/changepassword" />   
                     </Routes>
                 </ScrollToTop>
             </BrowserRouter>
