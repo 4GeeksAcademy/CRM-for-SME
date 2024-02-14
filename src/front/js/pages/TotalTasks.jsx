@@ -9,7 +9,7 @@ export const TotalTasks = props => {
 
     <div>
          <Navbar />
-      <h1>TasksTotales</h1>
+      <h1>Total Tasks</h1>
       {<li className="border border-dark p-2 my-2 d-flex justify-content-between row bg-light">
                             <div className="col-2 d-flex flex-column">
                                 <h5 className="fw-bold">User Asign</h5>

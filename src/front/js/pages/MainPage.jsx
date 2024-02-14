@@ -10,7 +10,7 @@ export const MainPage = () => {
   const [showAddClientModal, setShowAddClientModal] = useState(false);
 
   // Función para obtener la lista de clientes 
-  const fetchClients = async () => {
+/*   const fetchClients = async () => {
     try {
 
       const response = await fetch('https://api.example.com/clients');
@@ -25,7 +25,7 @@ export const MainPage = () => {
     // Llama a la función de obtener clientes al cargar la página
     fetchClients();
   }, []);
-
+ */
   return (
     <div>
       <Navbar />
