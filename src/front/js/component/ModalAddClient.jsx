@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
 
 export const ModalAddClient = props => {
-    const [state, setState] = useState("");
     const [inputFullName, setInputFullName] = useState("");
     const [inputEmail, setInputEmail] = useState("");
 	const [inputPhone, setInputPhone] = useState("");
@@ -20,6 +19,7 @@ export const ModalAddClient = props => {
         setInputPhone("");
         setInputAddress("");
         setInputCompany("");
+        
     } 
 
         return (

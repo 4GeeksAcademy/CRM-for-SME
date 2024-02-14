@@ -13,7 +13,7 @@ export const MainPage = () => {
   useEffect(() => {
     // Llama a la función de obtener clientes al cargar la página
     actions.getClients();
-  }, [store.clients]);
+  }, []);
 
   return (
     <div>
