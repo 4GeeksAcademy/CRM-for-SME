@@ -11,14 +11,16 @@ export const Notes = props => {
         actions.getNotes();
       }, []);
 
-    
+      const filteredNotes = store.notes.filter(note => note.client_id === props.clientId);
+      console.log(filteredNotes);
+
     return (
         <div className="container d-flex flex-column justify-content-center align-items-center m-4 row">
             <div className="col-12 d-flex justify-content-end align-items-end">
                 <button type="button" className="btn btn-primary" onClick={() => props.onAddNote()}>Add Note</button>
             </div>
             <ul>
-                {store.notes.map((note, index) => {
+                {filteredNotes.map((note, index) => {
                     return (
                         <li className="border border-dark p-2 my-2 d-flex row bg-light" key={index}>
                             <span className="col-8">{note.note_content}</span>

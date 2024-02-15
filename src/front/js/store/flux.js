@@ -265,7 +265,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				  console.error('Error fetching clients:', error);
 				}
 			},
-			addNote: async (noteContent) => {
+			addNote: async (noteContent, clientId) => {
 				try {
 					const store = getStore();
 					const token = store.token || localStorage.getItem("token"); 
@@ -280,20 +280,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Content-Type": "application/json",
 							"Authorization": "Bearer " + token
 						},
-						body: JSON.stringify({ note_content: noteContent })
+						body: JSON.stringify({ note_content: noteContent, client_id: clientId })
 					});
 			
 					const data = await response.json();
-					
+					console.log(data);
 					if (!response.ok) {
 						throw new Error('Failed to add note');
 					}
-					getActions().getNotes();
-					
+					setStore(prevStore => ({
+						...prevStore,
+						notes: [...prevStore.notes, data] // Assuming data contains the newly added note
+					}));
+					const updatedStore = getStore(); // Fetch the updated store
+					console.log(updatedStore.notes);
+					getActions().getNotes()
 				} catch (error) {
 					console.error("Error creating note:", error);
 				}
-			},
+			},			
 			getNotes: async () => {
 				try {
 			
