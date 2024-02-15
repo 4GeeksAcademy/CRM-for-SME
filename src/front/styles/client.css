@@ -6,35 +6,8 @@
   .btn-primary:hover {
     background-color: #b9cedff1; 
   }
-  
-<<<<<<< HEAD
-=======
-  .table th,
-  .table td {
-    color: #182833; /* Azul oscuro para el texto de la tabla */
-  }
-  
-  /* Estilos específicos para la parte izquierda */
-  .left-panel .container {
-    background-color: #a0c9f8; /* Azul claro más oscuro para el fondo de la información del cliente */
-    border: 1px solid #182833; /* Borde oscuro para resaltar el bloque de información */
-    border-radius: 5px; /* Esquinas redondeadas para un aspecto más suave */
-    padding: 10px; /* Relleno para un aspecto más espaciado */
-    margin-top: 10px; /* Margen superior para separar del contenido anterior */
-  }
-  
-  .left-panel h4 {
-    color: #182833; /* Azul oscuro para el nombre del cliente */
-  }
-  
-  .left-panel .fa-pen {
-    color: #182833; /* Azul oscuro para el icono de edición */
-  }
-  
   .active {
-    background-color: #c2e2fd;
-    color:#182833!important;
+    background-color: white;
+    color: #182833!important;
   }
-  /* Otros estilos para Client según sea necesario */
->>>>>>> ae14221355e2be8cb04102f476d8bece72efc2d9
   

@@ -292,11 +292,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 				  const response = await fetch(process.env.BACKEND_URL + '/api/clients');
 				  const data = await response.json();
 				  setStore({ clients: data })
-				  
-				} catch (error) {
+				  } catch (error) {
 				  console.error('Error fetching clients:', error);
 				}
 			},
+			
 		}
 	};
 };

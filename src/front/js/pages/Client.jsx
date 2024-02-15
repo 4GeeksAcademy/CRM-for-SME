@@ -86,10 +86,10 @@ export const Client = () => {
                 <div className="col-9 p-0 h-100">
 
                     <div className="d-flex w-100 justify-content-center bg-dark pt-3">
-                        <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Activity' ? 'active' : ''}`} onClick={() => activeSection('Activity')} style={{ backgroundColor: state === 'Activity' ? '#42637D' : '' }}>Activity</h5>
-                        <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Tasks' ? 'active' : ''}`} onClick={() => activeSection('Tasks')} style={{ backgroundColor: state === 'Tasks' ? '#42637D' : '' }}>Tasks</h5>
-                        <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Notes' ? 'active' : ''}`} onClick={() => activeSection('Notes')} style={{ backgroundColor: state === 'Notes' ? '#42637D' : '' }}>Notes</h5>
-                        <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Billing' ? 'active' : ''}`} onClick={() => activeSection('Billing')} style={{ backgroundColor: state === 'Billing' ? '#42637D' : '' }}>Billing</h5>
+                        <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Activity' ? 'active' : ''}`} onClick={() => activeSection('Activity')} >Activity</h5>
+                        <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Tasks' ? 'active' : ''}`} onClick={() => activeSection('Tasks')}>Tasks</h5>
+                        <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Notes' ? 'active' : ''}`} onClick={() => activeSection('Notes')} >Notes</h5>
+                        <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Billing' ? 'active' : ''}`} onClick={() => activeSection('Billing')}>Billing</h5>
 
                     </div>
                     <div className="container row mb-5">
