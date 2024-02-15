@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { useParams } from "react-router-dom";
 import "../../styles/client.css";
 import { Context } from "../store/appContext";
 import Logo from "../../img/Logo.png"
@@ -25,7 +25,6 @@ import { ModalPaymentLink } from "../component/ModalPaymentLink.jsx"
 export const Client = () => {
     const { store, actions } = useContext(Context);
     const [state, setState] = useState('Activity');
-    const [active, setActive] = useState(false)
     const [showModalAddTask, setShowModalAddTask] = useState(false);
     const [showModalEditTask, setShowModalEditTask] = useState(false);
     const [showModalDeleteTask, setShowModalDeleteTask] = useState(false);
@@ -38,17 +37,20 @@ export const Client = () => {
     const [showModalEditPayment, setShowModalEditPayment] = useState(false);
     const [showModalEditClient, setShowModalEditClient] = useState(false);
     const [showModalPaymentLink, setShowModalPaymentLink] = useState(false);
+    const [selectedNote, setSelectedNote] = useState(null);
+
+    const handleEditNote = (note) => {
+        setSelectedNote(note);
+        setShowModalEditNote(true);
+    };
 
     const activeSection = (id) => {
         setState(id)
-
     }
 
     const params = useParams();
 	const intParams =  parseInt(params.id)
-    console.log(store.clients)
 	const correctClient = store.clients.filter(client => client.id === intParams )
-    console.log(correctClient)
     return (
         <>
             <Navbar page ="Client" />
@@ -83,17 +85,13 @@ export const Client = () => {
                             <p className='m-1' >{correctClient[0].address? correctClient[0].address: "" }</p>
                         </div>
                     </div>
-
-
                 </div>
                 <div className="col-9 p-0 h-100">
-
                     <div className="d-flex w-100 justify-content-center bg-dark pt-3">
                         <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Activity' ? 'active' : ''}`} onClick={() => activeSection('Activity')} >Activity</h5>
                         <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Tasks' ? 'active' : ''}`} onClick={() => activeSection('Tasks')}>Tasks</h5>
                         <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Notes' ? 'active' : ''}`} onClick={() => activeSection('Notes')} >Notes</h5>
                         <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Billing' ? 'active' : ''}`} onClick={() => activeSection('Billing')}>Billing</h5>
-
                     </div>
                     <div className="container row mb-5">
                         {state == 'Activity' ?
@@ -107,7 +105,7 @@ export const Client = () => {
                                     <Notes
                                         clientId={correctClient[0].id}
                                         onAddNote={() => setShowModalAddNote(true)}
-                                        onEditNote={() => setShowModalEditNote(true)}
+                                        onEditNote={handleEditNote}
                                         onDeleteNote={() => setShowModalDeleteNote(true)}
                                     /> :
                                     <Billing
@@ -125,7 +123,7 @@ export const Client = () => {
             <ModalEditTask show={showModalEditTask} onClose={() => setShowModalEditTask(false)} />
             <ModalDeleteTask show={showModalDeleteTask} onClose={() => setShowModalDeleteTask(false)} />
             <ModalAddNotes show={showModalAddNote} onClose={() => setShowModalAddNote(false)} clientId={correctClient.length > 0 ? correctClient[0].id : null} />
-            <ModalEditNotes show={showModalEditNote} onClose={() => setShowModalEditNote(false)} />
+            <ModalEditNotes show={showModalEditNote} onClose={() => setShowModalEditNote(false)} note={selectedNote} />
             <ModalDeleteNote show={showModalDeleteNote} onClose={() => setShowModalDeleteNote(false)} />
             <ModalAddPayment show={showModalAddPayment} onClose={() => setShowModalAddPayment(false)} />
             <ModalEditPayment show={showModalEditPayment} onClose={() => setShowModalEditPayment(false)} />

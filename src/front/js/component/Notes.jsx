@@ -5,14 +5,11 @@ import "../../styles/notes.css";
 
 export const Notes = props => {
     const { store, actions } = useContext(Context);
-    const [state, useState] = ('')
+    const filteredNotes = store.notes.filter(note => note.client_id === props.clientId);
 
     useEffect(() => {
         actions.getNotes();
       }, []);
-
-      const filteredNotes = store.notes.filter(note => note.client_id === props.clientId);
-      console.log(filteredNotes);
 
     return (
         <div className="container d-flex flex-column justify-content-center align-items-center m-4 row">
@@ -34,7 +31,7 @@ export const Notes = props => {
                                     <span>{note.date_created}</span>
                                 </div>
                                 <div className="col-2 d-flex align-items-center">
-                                    <i className="fa-solid fa-pen mx-1 cursor" onClick={() => props.onEditNote()}></i>
+                                    <i className="fa-solid fa-pen mx-1 cursor" onClick={() => props.onEditNote(note)}></i>
                                     <i className="fa-solid fa-trash mx-1 cursor" onClick={() => props.onDeleteNote()}></i>
                                 </div>
                             </div>
