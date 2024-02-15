@@ -10,7 +10,7 @@ export const TotalTasks = (props) => {
     return (
 
         <div>
-            <Navbar />
+            <Navbar page="Tasks" />
             <div className="col-12 d-flex ">
                 <button type="button" className="btn btn-primary" onClick={() => props.onAddTask()}>Add Task</button>
             </div>

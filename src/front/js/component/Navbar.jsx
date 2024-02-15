@@ -4,8 +4,9 @@ import Logo from "../../img/Logo.png";
 import "../../styles/navbar.css";
 import "../../styles/dropdown.css";
 import { Context } from "../store/appContext";
+import PropTypes from "prop-types";
 
-export const Navbar = ({ onSearchChange }) => {
+export const Navbar = (props) => {
   const navigate = useNavigate();
   const { store, actions } = useContext(Context);
   const [searchParams, setSearchParams] = useState('')
@@ -17,16 +18,15 @@ export const Navbar = ({ onSearchChange }) => {
 
   const handleSearchChange = (e) => {
     setSearchParams(e.target.value);
-    onSearchChange(e.target.value); 
-  };
-
+    props.onSearchChange(e.target.value); 
+  };  
   return (
     <nav className="navbar navbar-expand-lg navbar-light">
       <div className="container-fluid">
         <Link className="navbar-brand" to={'/home'}>
           <img style={{ width: 130, height: 130 }} src={Logo} alt="CRM Logo" />
         </Link>
-        <form className="d-flex search-form">
+          {props.page == 'Tasks' || props.page == 'Client'? "": <form className="d-flex search-form">
           <input
             className="form-control me-2"
             type="search"
@@ -34,8 +34,7 @@ export const Navbar = ({ onSearchChange }) => {
             value={searchParams}
             onChange={handleSearchChange}
           />
-          {/* <button className="btn btn-outline-success" onClick={handleSearch}>Buscar</button> */}
-        </form>
+        </form> }
         <div className="navbar-nav ms-auto">
           <div className="navbar-nav ms-auto">
             <Link className="nav-link" to={'/home'}>
@@ -65,4 +64,9 @@ export const Navbar = ({ onSearchChange }) => {
       </div>
     </nav>
   );
+};
+Navbar.propTypes = {
+  onSearchChange: PropTypes.func,
+  page: PropTypes.string,
+
 };

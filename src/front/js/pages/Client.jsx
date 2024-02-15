@@ -48,7 +48,7 @@ export const Client = () => {
 
     return (
         <>
-            <Navbar />
+            <Navbar page ="Client" />
             <div className="row p-0">
                 <div className="col-3 border border-black p-0" style={{ height: "100vh", backgroundColor: "#b9cedff1" }}>
                     <div className="d-flex flex-column justify-content-center align-items-center h-25 border border-black">
