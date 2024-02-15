@@ -7,6 +7,11 @@ export const Notes = props => {
     const { store, actions } = useContext(Context);
     const [state, useState] = ('')
 
+    useEffect(() => {
+        actions.getNotes();
+      }, []);
+
+    
     return (
         <div className="container d-flex flex-column justify-content-center align-items-center m-4 row">
             <div className="col-12 d-flex justify-content-end align-items-end">
@@ -16,15 +21,15 @@ export const Notes = props => {
                 {store.notes.map((note, index) => {
                     return (
                         <li className="border border-dark p-2 my-2 d-flex row bg-light" key={index}>
-                            <span className="col-8">{note.text}</span>
+                            <span className="col-8">{note.note_content}</span>
                             <div className="row col-4">
                                 <div className="col-5 d-flex flex-column">
                                     <h6 className="fw-bold">User</h6>
-                                    <span>{note.addedByUser}</span>
+                                    <span>{note.user_id}</span>
                                 </div>
                                 <div className="col-5 d-flex flex-column">
                                     <h6 className="fw-bold" >Date Created</h6>
-                                    <span>{note.dateCreated}</span>
+                                    <span>{note.date_created}</span>
                                 </div>
                                 <div className="col-2 d-flex align-items-center">
                                     <i className="fa-solid fa-pen mx-1 cursor" onClick={() => props.onEditNote()}></i>

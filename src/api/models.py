@@ -5,7 +5,7 @@ db = SQLAlchemy()
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(250), unique=True, nullable=False)
-    user_name = db.Column(db.String(250), unique=False, nullable=False)
+    user_name = db.Column(db.String(250), unique=True, nullable=False)
     password = db.Column(db.String(80), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
     task = db.relationship('Task',back_populates= 'user')
@@ -44,7 +44,7 @@ class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     note_content = db.Column(db.String(250))
     date_created = db.Column(db.DateTime, nullable=False)  
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.String(200), db.ForeignKey('user.user_name'), nullable=False)
     user = db.relationship('User')
     client_id = db.Column(db.Integer, db.ForeignKey('client.id'), nullable=False)
     client = db.relationship('Client')
@@ -53,7 +53,7 @@ class Note(db.Model):
         return {
             "id": self.id,
             "note_content": self.note_content,
-            "date_created": self.date_created,
+            "date_created": self.date_created.strftime('%d-%m-%Y'),
             "client_id": self.client_id,
             "user_id": self.user_id,
         }
