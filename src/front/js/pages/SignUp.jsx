@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
-import { Link } from "react-router-dom";
 import Swal from 'sweetalert2'
 import background from "../../img/background.png"
 import "../../styles/signup.css"
@@ -20,6 +19,9 @@ export const SignUp = () => {
 
     return (
         <div className="container">
+        {store.loggedIn ? (
+        navigate("/home")
+      ) : (
             <div className="row">
                 <div className="col col-xs-1">
                     <div className="body" style={{ backgroundImage: `url(${background})` }}>
@@ -106,6 +108,7 @@ export const SignUp = () => {
                     </div>
                 </div>
             </div>
+            )}
         </div>
     )
 }
