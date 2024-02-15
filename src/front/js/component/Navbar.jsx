@@ -5,14 +5,20 @@ import "../../styles/navbar.css";
 import "../../styles/dropdown.css";
 import { Context } from "../store/appContext";
 
-export const Navbar = () => {
+export const Navbar = ({ onSearchChange }) => {
   const navigate = useNavigate();
   const { store, actions } = useContext(Context);
+  const [searchParams, setSearchParams] = useState('')
 
   function handleLogOut() {
     actions.tokenLogout();
     navigate("/");
   }
+
+  const handleSearchChange = (e) => {
+    setSearchParams(e.target.value);
+    onSearchChange(e.target.value); 
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light">
@@ -24,14 +30,15 @@ export const Navbar = () => {
           <input
             className="form-control me-2"
             type="search"
-            placeholder="Buscar"
-            aria-label="Search"
+            placeholder="Client's Name"
+            value={searchParams}
+            onChange={handleSearchChange}
           />
-          <button className="btn btn-outline-success" type="submit">Buscar</button>
+          {/* <button className="btn btn-outline-success" onClick={handleSearch}>Buscar</button> */}
         </form>
         <div className="navbar-nav ms-auto">
           <div className="navbar-nav ms-auto">
-            <Link className="nav-link" to={'/client'}>
+            <Link className="nav-link" to={'/home'}>
               Clients
             </Link>
             <a className="nav-link" href="/totaltasks">
