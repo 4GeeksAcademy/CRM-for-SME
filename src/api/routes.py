@@ -22,15 +22,6 @@ api = Blueprint('api', __name__)
 CORS(api)
 
 
-@api.route('/hello', methods=['POST', 'GET'])
-def handle_hello():
-
-    response_body = {
-        "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
-    }
-
-    return jsonify(response_body), 200
-
 @api.route('/payment-link', methods=['POST'])
 def payment_link():
     name = request.json.get('name')
@@ -175,3 +166,23 @@ def get_notes():
     for note in notes:
         results.append(note.serialize())
     return jsonify(results), 200
+
+@api.route('/edit_note/<int:note_id>', methods=['PUT'])
+@jwt_required()
+def edit_note(note_id):
+    current_user_identity = get_jwt_identity()
+    current_datetime = datetime.now()
+    note_content = request.json.get('note_content')
+    note = Note.query.filter_by(id=note_id).first()
+
+    if note:
+        if note.user_id != current_user_identity:
+            return jsonify({"message": "Unauthorized"}), 401
+        
+        note.note_content = note_content
+        note.date_modified = current_datetime
+
+        db.session.commit()
+        return jsonify({"message": "Note updated successfully"}), 200
+    else:
+        return jsonify({"message": "Note not found"}), 404

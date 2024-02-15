@@ -94,6 +94,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					getActions().tokenLogin(json.access_token);
 					setStore({ token: json.access_token});
+
 				} catch (error) {
 					console.log(error);
 				}
@@ -123,7 +124,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 						  });
 					}
 
-					console.log(json);
+					Swal.fire({
+						icon: "success",
+						title: "Success",
+						text: "User created, please log in",
+					});
 					
 				} catch (error) {
 					console.log(error);
@@ -152,6 +157,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const token = store.token || localStorage.getItem("token");
 			
 					if (!token) {
+						Swal.fire({
+							icon: "error",
+							title: "Error",
+							text: "Session expired, please log in again",
+							didClose: () => {
+								window.location.href = "/";
+							}
+						});
 						throw new Error("Token is missing");
 					}
 			
@@ -167,6 +180,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			
 					const json = await response.json();
 					setStore({ userInfo: json });
+
 				} catch (error) {
 					console.error("Error fetching user info:", error.message);
 				}
@@ -182,6 +196,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const token = store.token || localStorage.getItem("token");
 			
 					if (!token) {
+						Swal.fire({
+							icon: "error",
+							title: "Error",
+							text: "Session expired, please log in again",
+							didClose: () => {
+								window.location.href = "/";
+							}
+						});
 						throw new Error("Token is missing");
 					}
 					const response = await fetch(process.env.BACKEND_URL + '/api/change_password', {
@@ -204,19 +226,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 						}
 					}
 			
-					console.log(data);
-			
 					Swal.fire({
 						icon: "success",
 						title: "Success",
-						text: "Password changed successfully",
+						text: "Password changed, please log in again",
 					});
+
 				} catch (error) {
 					console.log("Error changing password:", error);
 					Swal.fire({
 						icon: "error",
 						title: "Error",
-						text: error,
+						text: (error.message + ", please log in and try again"),
 					});
 				}
 			},
@@ -250,17 +271,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (!response.ok) {
 						throw new Error('Failed to add client');
 					}
+
 					getActions().getClients();
+
 				} catch (error) {
 					console.error('Error adding client:', error);
 				}
 			},
 			getClients: async () => {
 				try {
-			
 				  const response = await fetch(process.env.BACKEND_URL + '/api/clients');
 				  const data = await response.json();
 				  setStore({ clients: data })
+
 				  } catch (error) {
 				  console.error('Error fetching clients:', error);
 				}
@@ -271,6 +294,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const token = store.token || localStorage.getItem("token"); 
 			
 					if (!token) {
+						Swal.fire({
+							icon: "error",
+							title: "Error",
+							text: "Session expired, please log in again",
+							didClose: () => {
+								window.location.href = "/";
+							}
+						});
 						throw new Error("Token is missing");
 					}
 			
@@ -284,29 +315,72 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 			
 					const data = await response.json();
-					console.log(data);
+				
 					if (!response.ok) {
 						throw new Error('Failed to add note');
 					}
+
 					setStore(prevStore => ({
 						...prevStore,
-						notes: [...prevStore.notes, data] // Assuming data contains the newly added note
+						notes: [...prevStore.notes, data] 
 					}));
-					const updatedStore = getStore(); // Fetch the updated store
-					console.log(updatedStore.notes);
-					getActions().getNotes()
+					getActions().getNotes();
+
 				} catch (error) {
 					console.error("Error creating note:", error);
 				}
 			},			
 			getNotes: async () => {
 				try {
-			
 				  const response = await fetch(process.env.BACKEND_URL + '/api/notes');
 				  const data = await response.json();
+				  
 				  setStore({ notes: data })
+
 				  } catch (error) {
 				  console.error('Error fetching clients:', error);
+				}
+			},
+			editNote: async (noteId, newContent) => {
+				try {
+					const store = getStore();
+					const token = store.token || localStorage.getItem("token"); 
+					
+					if (!token) {
+						Swal.fire({
+							icon: "error",
+							title: "Error",
+							text: "Session expired, please log in again",
+							didClose: () => {
+								window.location.href = "/";
+							}
+						});
+						throw new Error("Token is missing");
+					}
+			
+					const response = await fetch(process.env.BACKEND_URL + `/api/edit_note/${noteId}`, {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": "Bearer " + token
+						},
+						body: JSON.stringify({ note_content: newContent })
+					});
+			
+					const data = await response.json();
+			
+					if (!response.ok) {
+						throw new Error('Failed to edit note');
+					}
+			
+					setStore(prevStore => ({
+						...prevStore,
+						notes: prevStore.notes.map(note => note.id === noteId ? data : note)
+					}));
+					getActions().getNotes();
+
+				} catch (error) {
+					console.error("Error editing note:", error);
 				}
 			},
 		}

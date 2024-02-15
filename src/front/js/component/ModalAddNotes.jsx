@@ -4,7 +4,7 @@ import { Context } from "../store/appContext";
 
 export const ModalAddNotes = props => {
     const [inputNote, setInputNote] = useState("");
-    const { store, actions } = useContext(Context);
+    const { actions } = useContext(Context);
 
     function handleAddNote() {
         actions.addNote(inputNote, props.clientId);
@@ -36,6 +36,7 @@ export const ModalAddNotes = props => {
                             placeholder="Write Note"
                             onChange={e => setInputNote(e.target.value)}
                             value={inputNote}
+                            maxLength={245}
                         />
                     </div>
                     <div className="modal-footer">
@@ -58,7 +59,6 @@ export const ModalAddNotes = props => {
 ModalAddNotes.propTypes = {
     onClose: PropTypes.func,
     clientId: PropTypes.number.isRequired,
-
 };
 
 ModalAddNotes.defaultProps = {
