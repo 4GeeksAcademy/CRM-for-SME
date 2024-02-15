@@ -105,6 +105,7 @@ export const Client = () => {
                                     onDeleteTask={() => setShowModalDeleteTask(true)}
                                 /> : state == 'Notes' ?
                                     <Notes
+                                        clientId={correctClient[0].id}
                                         onAddNote={() => setShowModalAddNote(true)}
                                         onEditNote={() => setShowModalEditNote(true)}
                                         onDeleteNote={() => setShowModalDeleteNote(true)}
@@ -123,7 +124,7 @@ export const Client = () => {
             <ModalAddTask show={showModalAddTask} onClose={() => setShowModalAddTask(false)} />
             <ModalEditTask show={showModalEditTask} onClose={() => setShowModalEditTask(false)} />
             <ModalDeleteTask show={showModalDeleteTask} onClose={() => setShowModalDeleteTask(false)} />
-            <ModalAddNotes show={showModalAddNote} onClose={() => setShowModalAddNote(false)} />
+            <ModalAddNotes show={showModalAddNote} onClose={() => setShowModalAddNote(false)} clientId={correctClient.length > 0 ? correctClient[0].id : null} />
             <ModalEditNotes show={showModalEditNote} onClose={() => setShowModalEditNote(false)} />
             <ModalDeleteNote show={showModalDeleteNote} onClose={() => setShowModalDeleteNote(false)} />
             <ModalAddPayment show={showModalAddPayment} onClose={() => setShowModalAddPayment(false)} />

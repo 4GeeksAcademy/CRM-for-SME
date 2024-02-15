@@ -154,10 +154,12 @@ def create_note():
     current_user_identity = get_jwt_identity()
     current_datetime = datetime.now()
     note_content = request.json.get('note_content')
+    client_id = request.json.get('client_id')
 
     new_note = Note(
         note_content=note_content,
-        user_id=current_user_identity, 
+        user_id=current_user_identity,
+        client_id=client_id, 
         date_created=current_datetime
     )
 

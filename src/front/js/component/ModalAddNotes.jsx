@@ -7,7 +7,7 @@ export const ModalAddNotes = props => {
     const { store, actions } = useContext(Context);
 
     function handleAddNote() {
-        actions.addNote(inputNote);
+        actions.addNote(inputNote, props.clientId);
         props.onClose();
         setInputNote("");
     } 
@@ -22,7 +22,6 @@ export const ModalAddNotes = props => {
                             <button
                                 type="button"
                                 className="btn-close"
-                                data-bs-dismiss="modal"
                                 aria-label="Close"
                                 onClick={() => props.onClose()}
                             ></button>
@@ -43,7 +42,6 @@ export const ModalAddNotes = props => {
                         <button
                             type="button"
                             className="btn btn-primary"
-                            data-dismiss="modal"
                             onClick={() => handleAddNote()}>
                             Add Note
                         </button>
@@ -59,6 +57,7 @@ export const ModalAddNotes = props => {
 
 ModalAddNotes.propTypes = {
     onClose: PropTypes.func,
+    clientId: PropTypes.number.isRequired,
 
 };
 
