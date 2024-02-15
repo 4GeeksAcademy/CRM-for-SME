@@ -123,8 +123,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					getActions().tokenLogin(json.access_token);
 					setStore({ token: json.access_token});
-					const store = getStore()
-					console.log(store.token);
 				} catch (error) {
 					console.log(error);
 				}
@@ -150,7 +148,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return Swal.fire({
 							icon: "error",
 							title: "Error",
-							text: "User name or email already registered, please go back and try again",
+							text: "User name or email already registered, please try again",
 						  });
 					}
 
@@ -240,7 +238,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					Swal.fire({
 						icon: "success",
 						title: "Success",
-						text: data,
+						text: "Password changed successfully",
 					});
 				} catch (error) {
 					console.log("Error changing password:", error);
