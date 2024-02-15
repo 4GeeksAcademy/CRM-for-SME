@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
-
+import { Link, useParams } from "react-router-dom";
 import "../../styles/client.css";
 import { Context } from "../store/appContext";
 import Logo from "../../img/Logo.png"
@@ -45,7 +44,11 @@ export const Client = () => {
 
     }
 
-
+    const params = useParams();
+	const intParams =  parseInt(params.id)
+    console.log(store.clients)
+	const correctClient = store.clients.filter(client => client.id === intParams )
+    console.log(correctClient)
     return (
         <>
             <Navbar page ="Client" />
@@ -54,7 +57,7 @@ export const Client = () => {
                     <div className="d-flex flex-column justify-content-center align-items-center h-25 border border-black">
                         <div className="d-flex align-items-center">
                             <img src={Logo} style={{ width: '100px', height: '100px' }} alt="client Avatar" />
-                            <h4>Client's Name</h4>
+                            <h4>{correctClient[0].full_name}</h4>
                         </div>
                         <div className="d-flex justify-content-center">
                             <h6 className="p-1 fw-bold">Edit Client's information</h6>
@@ -62,22 +65,22 @@ export const Client = () => {
                         </div>
                     </div>
                     <div className="container h-50 my-4">
-                        <div className="container d-flex ween w-100">
+                        <div className="container d-flex align-items-center w-100">
                             <h6 className='m-1 fw-bold'>Email:</h6>
-                            <p className='m-1'>John@email.com</p>
+                            <p className='m-1'>{correctClient[0].email}</p>
                         </div>
 
-                        <div className="container d-flex w-100">
+                        <div className="container d-flex align-items-center w-100">
                             <h6 className='m-1 fw-bold'>Phone:</h6>
-                            <p className='m-1'>314567890</p>
+                            <p className='m-1'>{correctClient[0].phone}</p>
                         </div>
-                        <div className="container d-flex w-100">
+                        <div className="container d-flex align-items-center w-100">
                             <h6 className='m-1 fw-bold'>Company:</h6>
-                            <p className='m-1'>Google</p>
+                            <p className='m-1'>{correctClient[0].company? correctClient[0].company: "" }</p>
                         </div>
-                        <div className="container d-flex  w-100">
+                        <div className="container d-flex align-items-center w-100">
                             <h6 className='m-1 fw-bold'>Address: </h6>
-                            <p className='m-1' >John doe avenue John street Lorem ipsum dolor sit amet. </p>
+                            <p className='m-1' >{correctClient[0].address? correctClient[0].address: "" }</p>
                         </div>
                     </div>
 
