@@ -3,6 +3,7 @@ import { Context } from "../store/appContext";
 import { Navbar } from '../component/Navbar.jsx';
 import { Footer } from '../component/Footer.jsx';
 import { ModalAddClient } from '../component/ModalAddClient.jsx';
+import { Link } from "react-router-dom";
 import "../../styles/MainPage.css";
 
 
@@ -66,7 +67,7 @@ export const MainPage = () => {
               {filteredClients.length == 0 ? 
               store.clients.map((client) => (
                 <tr key={client.id}>
-                  <td>{client.full_name}</td>
+                  <td><Link to= {'/client/' + client.id} className='link'>{client.full_name}</Link></td>
                   <td>{client.email}</td>
                   <td>{client.phone}</td>
                   <td>{client.address}</td>
