@@ -120,7 +120,7 @@ def change_password():
     user.password = new_password
     db.session.commit()
 
-    return jsonify({"message": "Password changed successfully"}), 200
+    return jsonify({"message": git }), 200
 
 @api.route('/add_client', methods=['POST'])
 def create_client():

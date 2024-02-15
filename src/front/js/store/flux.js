@@ -148,7 +148,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return Swal.fire({
 							icon: "error",
 							title: "Error",
-							text: "User name or email already registered, please try again",
+							text: "User name or email already registered, please go back and try again",
 						  });
 					}
 
