@@ -240,7 +240,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					Swal.fire({
 						icon: "success",
 						title: "Success",
-						text: data,
+						text: "Password changed successfully",
 					});
 				} catch (error) {
 					console.log("Error changing password:", error);
