@@ -195,7 +195,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ userInfo: json });
 
 				} catch (error) {
-					console.error("Error fetching user info:", error.message);
 					Swal.fire({
 						icon: "error",
 						title: "Error",
@@ -463,7 +462,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 				}
 			},
-
 			getAllTasksForTotal: async () => {
 				try {
 					const response = await fetch(process.env.BACKEND_URL + '/api/totaltasks', {
@@ -482,7 +480,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.error('Error fetching all tasks for total:', error);
 				}
-			}
+			},
 		}
 	};
 };

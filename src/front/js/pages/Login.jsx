@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Swal from 'sweetalert2';
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
@@ -14,12 +14,15 @@ export const Login = () => {
   function save() {
     actions.postLogin(inputUser, inputPassword);
   }
+  useEffect(() => {
+    actions.isLogged();
+    if (store.loggedIn) {
+      navigate("/home");
+    }
+  }, [store.token]);
 
   return (
     <div className="container ">
-      {store.loggedIn ? (
-        navigate("/home")
-      ) : (
         <div className="row">
           <div className="col col-xs-1">
             <div className="body" style={{ backgroundImage: `url(${background})` }}>
@@ -77,7 +80,6 @@ export const Login = () => {
             </div>
           </div>
         </div>
-      )}
     </div>
   );
 };

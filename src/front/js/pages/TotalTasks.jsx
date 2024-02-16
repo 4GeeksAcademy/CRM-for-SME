@@ -3,14 +3,23 @@ import { Context } from "../store/appContext";
 import { Navbar } from '../component/Navbar.jsx';
 import { Footer } from '../component/Footer.jsx';
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
 export const TotalTasks = (props) => {
     const { store, actions } = useContext(Context);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        
-        actions.getAllTasksForTotal();
-    }, []);
+        actions.isLogged();
+        /* actions.getAllTasksForTotal(); */
+      }, []);
+    
+      useEffect(() => {
+        if (!store.loggedIn) {
+          navigate('/');
+        }
+      }, [store.loggedIn]);
+    
     return (
 
         <div>
