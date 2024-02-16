@@ -186,3 +186,19 @@ def edit_note(note_id):
         return jsonify({"message": "Note updated successfully"}), 200
     else:
         return jsonify({"message": "Note not found"}), 404
+
+@api.route('/delete_note/<int:note_id>', methods=['DELETE'])
+@jwt_required()
+def delete_note(note_id):
+    current_user_identity = get_jwt_identity()
+    note = Note.query.filter_by(id=note_id).first()
+
+    if note:
+        if note.user_id != current_user_identity:
+            return jsonify({"message": "Unauthorized"}), 401
+        
+        db.session.delete(note)
+        db.session.commit()
+        return jsonify({"message": "Note deleted successfully"}), 200
+    else:
+        return jsonify({"message": "Note not found"}), 404

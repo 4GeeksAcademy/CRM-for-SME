@@ -9,7 +9,7 @@ export const Notes = props => {
 
     useEffect(() => {
         actions.getNotes();
-      }, []);
+    }, []);
 
     return (
         <div className="container d-flex flex-column justify-content-center align-items-center m-4 row">
@@ -32,7 +32,7 @@ export const Notes = props => {
                                 </div>
                                 <div className="col-2 d-flex align-items-center">
                                     <i className="fa-solid fa-pen mx-1 cursor" onClick={() => props.onEditNote(note)}></i>
-                                    <i className="fa-solid fa-trash mx-1 cursor" onClick={() => props.onDeleteNote()}></i>
+                                    <i className="fa-solid fa-trash mx-1 cursor" onClick={() => props.onDeleteNote(note)}></i>
                                 </div>
                             </div>
                         </li>
@@ -44,13 +44,13 @@ export const Notes = props => {
 }
 
 Notes.propTypes = {
-	onAddNote: PropTypes.func,
-	onEditNote: PropTypes.func,
-	onDeleteNote: PropTypes.func,
+    onAddNote: PropTypes.func,
+    onEditNote: PropTypes.func,
+    onDeleteNote: PropTypes.func,
 };
 
 Notes.defaultProps = {
-	onAddNote: null,
-	onEditNote: null,
-	onDeleteNote: null,
+    onAddNote: null,
+    onEditNote: null,
+    onDeleteNote: null,
 };

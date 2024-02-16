@@ -39,11 +39,6 @@ export const Client = () => {
     const [showModalPaymentLink, setShowModalPaymentLink] = useState(false);
     const [selectedNote, setSelectedNote] = useState(null);
 
-    const handleEditNote = (note) => {
-        setSelectedNote(note);
-        setShowModalEditNote(true);
-    };
-
     const activeSection = (id) => {
         setState(id)
     }
@@ -105,8 +100,8 @@ export const Client = () => {
                                     <Notes
                                         clientId={correctClient[0].id}
                                         onAddNote={() => setShowModalAddNote(true)}
-                                        onEditNote={handleEditNote}
-                                        onDeleteNote={() => setShowModalDeleteNote(true)}
+                                        onEditNote={(note) => {setSelectedNote(note); setShowModalEditNote(true)}}
+                                        onDeleteNote={(note) => {setSelectedNote(note);setShowModalDeleteNote(true)}}
                                     /> :
                                     <Billing
                                         onAddInvoice={() => setShowModalAddInvoice(true)}
@@ -123,8 +118,8 @@ export const Client = () => {
             <ModalEditTask show={showModalEditTask} onClose={() => setShowModalEditTask(false)} />
             <ModalDeleteTask show={showModalDeleteTask} onClose={() => setShowModalDeleteTask(false)} />
             <ModalAddNotes show={showModalAddNote} onClose={() => setShowModalAddNote(false)} clientId={correctClient.length > 0 ? correctClient[0].id : null} />
-            <ModalEditNotes show={showModalEditNote} onClose={() => setShowModalEditNote(false)} note={selectedNote} />
-            <ModalDeleteNote show={showModalDeleteNote} onClose={() => setShowModalDeleteNote(false)} />
+            <ModalEditNotes show={showModalEditNote} onClose={() => {setShowModalEditNote(false); setSelectedNote(null)}} note={selectedNote} />
+            <ModalDeleteNote show={showModalDeleteNote} onClose={() => {setShowModalDeleteNote(false); setSelectedNote(null)}} note={selectedNote} />
             <ModalAddPayment show={showModalAddPayment} onClose={() => setShowModalAddPayment(false)} />
             <ModalEditPayment show={showModalEditPayment} onClose={() => setShowModalEditPayment(false)} />
             <ModalAddInvoice show={showModalAddInvoice} onClose={() => setShowModalAddInvoice(false)} />
