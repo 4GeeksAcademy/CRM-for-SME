@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Client, Note
+from api.models import db, User, Client, Note, Task
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 import stripe
@@ -20,7 +20,6 @@ api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
 CORS(api)
-
 
 @api.route('/payment-link', methods=['POST'])
 def payment_link():
@@ -202,3 +201,11 @@ def delete_note(note_id):
         return jsonify({"message": "Note deleted successfully"}), 200
     else:
         return jsonify({"message": "Note not found"}), 404
+
+@api.route('/totaltasks', methods=['GET'])
+def get_tasks():
+    tasks = Task.query.all()
+    results = []
+    for task in tasks:
+        results.append(task.serialize())
+    return jsonify(results), 200
