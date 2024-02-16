@@ -1,3 +1,6 @@
+* {
+    font-family: 'Open Sans', sans-serif;
+  }
 .body{
     height: 700px;
     background-size: contain;

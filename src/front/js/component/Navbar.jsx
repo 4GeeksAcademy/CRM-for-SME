@@ -52,7 +52,7 @@ export const Navbar = (props) => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <i className="fas fa-user" ></i>
+                <i className="fa-solid fa-user-large" ></i>
               </button>
               <ul className="dropdown-menu" aria-labelledby="userDropdown">
                 <li type="button" className="dropdown-item" onClick={handleLogOut}>Log Out</li>
