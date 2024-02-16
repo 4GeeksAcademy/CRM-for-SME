@@ -39,6 +39,7 @@ export const Client = () => {
     const [showModalEditClient, setShowModalEditClient] = useState(false);
     const [showModalPaymentLink, setShowModalPaymentLink] = useState(false);
     const [selectedNote, setSelectedNote] = useState(null);
+    const [selectedClient, setSelectedClient] = useState(null);
 
     useEffect(() => {
         actions.isLogged();
@@ -66,7 +67,7 @@ export const Client = () => {
                         </div>
                         <div className="d-flex justify-content-center">
                             <h6 className="p-1 fw-bold">Edit Client's information</h6>
-                            <i className=" p-1 fa-solid fa-pen cursor" onClick={() => setShowModalEditClient(true)}></i>
+                            <i className=" p-1 fa-solid fa-pen cursor" onClick={() => {setSelectedClient(correctClient[0]); setShowModalEditClient(true)}}></i>
                         </div>
                     </div>
                     <div className="container h-50 my-4">
@@ -132,7 +133,7 @@ export const Client = () => {
             <ModalEditPayment show={showModalEditPayment} onClose={() => setShowModalEditPayment(false)} />
             <ModalAddInvoice show={showModalAddInvoice} onClose={() => setShowModalAddInvoice(false)} />
             <ModalEditInvoice show={showModalEditInvoice} onClose={() => setShowModalEditInvoice(false)} />
-            <ModalEditClient show={showModalEditClient} onClose={() => setShowModalEditClient(false)} />
+            <ModalEditClient show={showModalEditClient} onClose={() => setShowModalEditClient(false)} client={selectedClient}/>
             <ModalPaymentLink show={showModalPaymentLink} onClose={() => setShowModalPaymentLink(false)} />
         </>
     );

@@ -130,6 +130,23 @@ def create_client():
     
     return jsonify({"msg": "Client created successfully"}), 200
 
+@api.route('/edit_client/<int:client_id>', methods=['PUT'])
+def edit_client(client_id):
+    client = Client.query.get(client_id)
+    if client is None:
+        return jsonify({"error": "Client not found"}), 404
+
+    client.full_name = request.json.get('full_name', client.full_name)
+    client.email = request.json.get('email', client.email)
+    client.phone = request.json.get('phone', client.phone)
+    client.address = request.json.get('address', client.address)
+    client.company = request.json.get('company', client.company)
+
+    db.session.commit()
+
+    return jsonify({"msg": "Client updated successfully"}), 200
+
+
 @api.route('/clients', methods=['GET'])
 def get_clients():
     clients = Client.query.all()

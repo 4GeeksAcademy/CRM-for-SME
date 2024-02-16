@@ -300,6 +300,44 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 				}
 			},
+			editClient: async (clientId, inputFullName, inputEmail, inputPhone, inputAddress, inputCompany) => {
+				const updatedClient = {
+					id: clientId,
+					full_name: inputFullName,
+					email: inputEmail,
+					phone: inputPhone,
+					address: inputAddress,
+					company: inputCompany
+				};
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/edit_client/${clientId}`, {
+						method: 'PUT',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(updatedClient)
+					});
+					const data = await response.json();
+			
+					if (!response.ok) {
+						throw new Error('Failed to edit client');
+					}
+					
+					setStore(prevStore => ({
+						...prevStore,
+						clients: prevStore.clients.map(client => client.id === clientId ? data : client)
+					}));
+					getActions().getClients();
+			
+				} catch (error) {
+					console.error('Error editing client:', error);
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to edit client. Please try again later."
+					});
+				}
+			},			
 			getClients: async () => {
 				try {
 					const response = await fetch(process.env.BACKEND_URL + '/api/clients');
