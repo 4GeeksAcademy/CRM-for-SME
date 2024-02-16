@@ -97,6 +97,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				} catch (error) {
 					console.log(error);
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to log in. Please try again later."
+					});
 				}
 			},
 			postSignUp: async (user, email, password) => {
@@ -132,6 +137,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 					
 				} catch (error) {
 					console.log(error);
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to create user. Please try again later."
+					});
 				}
 			},
 			tokenLogin: (token) =>{
@@ -183,6 +193,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				} catch (error) {
 					console.error("Error fetching user info:", error.message);
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to obtain user information. Please try again later."
+					});
 				}
 			},
 			changePassword: async (currentPassword, newPassword, confirmPassword) => {
@@ -276,6 +291,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				} catch (error) {
 					console.error('Error adding client:', error);
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to add client. Please try again later."
+					});
 				}
 			},
 			getClients: async () => {
@@ -328,6 +348,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				} catch (error) {
 					console.error("Error creating note:", error);
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to create note. Please try again later."
+					});
 				}
 			},			
 			getNotes: async () => {
@@ -381,6 +406,58 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				} catch (error) {
 					console.error("Error editing note:", error);
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to edit note. Please try again later."
+					});
+				}
+			},
+			deleteNote: async (noteId) => {
+				try {
+					const store = getStore();
+					const token = store.token || localStorage.getItem("token"); 
+					
+					if (!token) {
+						Swal.fire({
+							icon: "error",
+							title: "Error",
+							text: "Session expired, please log in again",
+							didClose: () => {
+								window.location.href = "/";
+							}
+						});
+						throw new Error("Token is missing");
+					}
+			
+					const response = await fetch(process.env.BACKEND_URL + `/api/delete_note/${noteId}`, {
+						method: "DELETE",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": "Bearer " + token
+						}
+					});
+
+					const data = await response.json();
+
+					if (!response.ok) {
+						throw new Error("Failed to delete note");
+					}
+			
+					setStore(prevStore => ({
+						...prevStore,
+						notes: prevStore.notes.filter(note => note.id !== noteId)
+					}));
+					getActions().getNotes();
+
+				} catch (error) {
+					console.error("Error deleting note:", error);
+					
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to delete note. Please try again later."
+					});
 				}
 			},
 		}
