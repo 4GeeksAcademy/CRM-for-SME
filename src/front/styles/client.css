@@ -1,12 +1,4 @@
- .btn-primary {
-    background-color: #db1010; /* Azul oscuro para el fondo del botón primario */
-    margin-bottom: 10px; /* Margen inferior para separar del contenido siguiente */
-  }
-  
-  .btn-primary:hover {
-    background-color: #b9cedff1; 
-  }
-  .active {
+.active {
     background-color: white;
     color: #182833!important;
   }

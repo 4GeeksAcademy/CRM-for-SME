@@ -7,12 +7,16 @@ import PropTypes from "prop-types";
 export const TotalTasks = (props) => {
     const { store, actions } = useContext(Context);
 
+    useEffect(() => {
+        
+        actions.getAllTasksForTotal();
+    }, []);
     return (
 
         <div>
             <Navbar page="Tasks" />
-            <div className="col-12 d-flex ">
-                <button type="button" className="btn btn-primary" onClick={() => props.onAddTask()}>Add Task</button>
+            <div className="text-center">
+                <h1>Total Tasks</h1>
             </div>
 
             <ul>
@@ -43,10 +47,7 @@ export const TotalTasks = (props) => {
                             <button type="button" className={task.complete == false ? 'btn btn-secondary' : 'btn btn-success'} onClick={() => actions.taskAsDone(task.idTask)}>{task.complete == false ? 'Pending' : 'Completed'}</button>
                         </div>
 
-                        <div className="col-1 d-flex align-items-center">
-                            <i className="fa-solid fa-pen mx-1 cursor" onClick={() => props.onEditTask()}></i>
-                            <i className="fa-solid fa-trash mx-1 cursor" onClick={() => props.onDeleteTask()}></i>
-                        </div>
+                        
                     </li>
                 ))}
             </ul>
