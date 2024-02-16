@@ -39,8 +39,8 @@ def payment_link():
             'quantity': 1,
         }],
         mode='payment',
-        success_url='https://silver-halibut-g4q4vxqwvg4xhvvqw-3000.app.github.dev/success',
-        cancel_url='https://silver-halibut-g4q4vxqwvg4xhvvqw-3000.app.github.dev/cancel',
+        success_url= os.getenv("FRONTEND_URL") + '/success',
+        cancel_url= os.getenv("FRONTEND_URL") + '/cancel',
     )
     payment_url = session.url
 

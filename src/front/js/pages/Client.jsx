@@ -1,5 +1,5 @@
-import React, { useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
+import { useParams, Navigate, useNavigate } from "react-router-dom";
 import "../../styles/client.css";
 import { Context } from "../store/appContext";
 import Logo from "../../img/Logo.png"
@@ -24,6 +24,7 @@ import { ModalPaymentLink } from "../component/ModalPaymentLink.jsx"
 
 export const Client = () => {
     const { store, actions } = useContext(Context);
+    const navigate = useNavigate();
     const [state, setState] = useState('Activity');
     const [showModalAddTask, setShowModalAddTask] = useState(false);
     const [showModalEditTask, setShowModalEditTask] = useState(false);
@@ -38,6 +39,13 @@ export const Client = () => {
     const [showModalEditClient, setShowModalEditClient] = useState(false);
     const [showModalPaymentLink, setShowModalPaymentLink] = useState(false);
     const [selectedNote, setSelectedNote] = useState(null);
+
+    useEffect(() => {
+        actions.isLogged();
+        if (!store.loggedIn) {
+            navigate("/");
+        }
+    }, [store.token]);
 
     const activeSection = (id) => {
         setState(id)
