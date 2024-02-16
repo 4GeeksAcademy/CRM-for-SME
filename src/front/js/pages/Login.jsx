@@ -50,7 +50,7 @@ export const Login = () => {
                     </div>
                     <div>
                       <button
-                        className="w-100 btn btn-sm btn-primary"
+                        className="w-100 btn btn-sm btn-primary mb-1"
                         type="button"
                         onClick={() => {
                           if (inputUser !== "" && inputPassword !== "") {
