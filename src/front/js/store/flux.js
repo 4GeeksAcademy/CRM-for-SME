@@ -297,6 +297,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 				  console.error('Error fetching clients:', error);
 				}
 			},
+
+		     getAllTasksForTotal: async () => {
+		 	    try {
+			      const response = await fetch('https://api.example.com/all-tasks-for-total');
+		 		  const data = await response.json();
+				setStore({ tasks: data });
+		        } catch (error) {
+		 		console.error('Error fetching all tasks for total:', error);
+			    }
+		},
 		}
 	};
 };

@@ -7,23 +7,16 @@ import PropTypes from "prop-types";
 export const TotalTasks = (props) => {
     const { store, actions } = useContext(Context);
 
-<<<<<<< HEAD
+    useEffect(() => {
+        
+        actions.getAllTasksForTotal();
+    }, []);
     return (
-=======
-    <div>
-         <Navbar />
-      <h1>Total Tasks</h1>
-      {<li className="border border-dark p-2 my-2 d-flex justify-content-between row bg-light">
-                            <div className="col-2 d-flex flex-column">
-                                <h5 className="fw-bold">User Asign</h5>
-                                {/* <span>{task.userAsing}</span> */}
-                            </div>
->>>>>>> ae14221355e2be8cb04102f476d8bece72efc2d9
 
         <div>
-            <Navbar />
-            <div className="col-12 d-flex ">
-                <button type="button" className="btn btn-primary" onClick={() => props.onAddTask()}>Add Task</button>
+            <Navbar page="Tasks" />
+            <div className="text-center">
+                <h1>Total Tasks</h1>
             </div>
 
             <ul>
@@ -54,10 +47,7 @@ export const TotalTasks = (props) => {
                             <button type="button" className={task.complete == false ? 'btn btn-secondary' : 'btn btn-success'} onClick={() => actions.taskAsDone(task.idTask)}>{task.complete == false ? 'Pending' : 'Completed'}</button>
                         </div>
 
-                        <div className="col-1 d-flex align-items-center">
-                            <i className="fa-solid fa-pen mx-1 cursor" onClick={() => props.onEditTask()}></i>
-                            <i className="fa-solid fa-trash mx-1 cursor" onClick={() => props.onDeleteTask()}></i>
-                        </div>
+                        
                     </li>
                 ))}
             </ul>
