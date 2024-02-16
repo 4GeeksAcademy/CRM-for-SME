@@ -3,21 +3,36 @@ import { Context } from "../store/appContext";
 import { Navbar } from '../component/Navbar.jsx';
 import { Footer } from '../component/Footer.jsx';
 import { ModalAddClient } from '../component/ModalAddClient.jsx';
+import { Link } from "react-router-dom";
 import "../../styles/MainPage.css";
 
 
 export const MainPage = () => {
   const { store, actions } = useContext(Context)
   const [showAddClientModal, setShowAddClientModal] = useState(false);
+  const [filteredClients, setFilteredClients] = useState([]);
+  
 
   useEffect(() => {
-    // Llama a la función de obtener clientes al cargar la página
+    
     actions.getClients();
+    
+    
   }, []);
+  
+  const handleSearchChange = (searchTerm) => {
+    // Filtrar la lista de clientes aquí y actualizar el estado
+   let filteredList = [];
+     searchTerm == ''? setFilteredClients(store.clients):
+      filteredList = store.clients.filter(client =>
+      client.full_name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredClients(filteredList)
+  };
 
   return (
     <div>
-      <Navbar />
+      <Navbar onSearchChange={handleSearchChange} />
       {/* Primera fila con el botón "Add Client" */}
 
       <div className="row m-3">
@@ -49,15 +64,25 @@ export const MainPage = () => {
               </tr>
             </thead>
             <tbody>
-              {store.clients.map((client) => (
+              {filteredClients.length == 0 ? 
+              store.clients.map((client) => (
+                <tr key={client.id}>
+                  <td><Link to= {'/client/' + client.id} className='link'>{client.full_name}</Link></td>
+                  <td>{client.email}</td>
+                  <td>{client.phone}</td>
+                  <td>{client.address}</td>
+                  <td>{client.company}</td>
+                </tr> 
+              ))
+                : filteredClients.map(((client) => (
                 <tr key={client.id}>
                   <td>{client.full_name}</td>
                   <td>{client.email}</td>
                   <td>{client.phone}</td>
                   <td>{client.address}</td>
                   <td>{client.company}</td>
-                </tr>
-              ))}
+                </tr>)))
+              }
             </tbody>
           </table>
         </div>

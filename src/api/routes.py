@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Client
+from api.models import db, User, Client, Note
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 import stripe
@@ -11,6 +11,9 @@ from flask_jwt_extended import JWTManager
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
+from datetime import datetime
+
+
 stripe.api_key = os.getenv("STRIPE_TOKEN")
 
 api = Blueprint('api', __name__)
@@ -18,15 +21,6 @@ api = Blueprint('api', __name__)
 # Allow CORS requests to this API
 CORS(api)
 
-
-@api.route('/hello', methods=['POST', 'GET'])
-def handle_hello():
-
-    response_body = {
-        "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
-    }
-
-    return jsonify(response_body), 200
 
 @api.route('/payment-link', methods=['POST'])
 def payment_link():
@@ -120,7 +114,7 @@ def change_password():
     user.password = new_password
     db.session.commit()
 
-    return jsonify({"message": "Password changed successfully"}), 200
+    return jsonify({"message": "Password changed successfully" }), 200
 
 @api.route('/add_client', methods=['POST'])
 def create_client():
@@ -144,3 +138,67 @@ def get_clients():
     for client in clients:
         results.append(client.serialize())
     return jsonify(results), 200
+
+@api.route('/add_note', methods=['POST'])
+@jwt_required()
+def create_note():
+    current_user_identity = get_jwt_identity()
+    current_datetime = datetime.now()
+    note_content = request.json.get('note_content')
+    client_id = request.json.get('client_id')
+
+    new_note = Note(
+        note_content=note_content,
+        user_id=current_user_identity,
+        client_id=client_id, 
+        date_created=current_datetime
+    )
+
+    db.session.add(new_note)
+    db.session.commit()
+
+    return jsonify({"message": "Note created successfully"}), 200
+
+@api.route('/notes', methods=['GET'])
+def get_notes():
+    notes = Note.query.all()
+    results = []
+    for note in notes:
+        results.append(note.serialize())
+    return jsonify(results), 200
+
+@api.route('/edit_note/<int:note_id>', methods=['PUT'])
+@jwt_required()
+def edit_note(note_id):
+    current_user_identity = get_jwt_identity()
+    current_datetime = datetime.now()
+    note_content = request.json.get('note_content')
+    note = Note.query.filter_by(id=note_id).first()
+
+    if note:
+        if note.user_id != current_user_identity:
+            return jsonify({"message": "Unauthorized"}), 401
+        
+        note.note_content = note_content
+        note.date_modified = current_datetime
+
+        db.session.commit()
+        return jsonify({"message": "Note updated successfully"}), 200
+    else:
+        return jsonify({"message": "Note not found"}), 404
+
+@api.route('/delete_note/<int:note_id>', methods=['DELETE'])
+@jwt_required()
+def delete_note(note_id):
+    current_user_identity = get_jwt_identity()
+    note = Note.query.filter_by(id=note_id).first()
+
+    if note:
+        if note.user_id != current_user_identity:
+            return jsonify({"message": "Unauthorized"}), 401
+        
+        db.session.delete(note)
+        db.session.commit()
+        return jsonify({"message": "Note deleted successfully"}), 200
+    else:
+        return jsonify({"message": "Note not found"}), 404

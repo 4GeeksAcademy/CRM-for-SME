@@ -13,7 +13,6 @@ export const Login = () => {
 
   function save() {
     actions.postLogin(inputUser, inputPassword);
-    navigate("/home");
   }
 
   return (

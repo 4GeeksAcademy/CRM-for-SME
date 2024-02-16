@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
-
+import React, { useState, useContext } from "react";
+import { useParams } from "react-router-dom";
 import "../../styles/client.css";
 import { Context } from "../store/appContext";
 import Logo from "../../img/Logo.png"
@@ -26,7 +25,6 @@ import { ModalPaymentLink } from "../component/ModalPaymentLink.jsx"
 export const Client = () => {
     const { store, actions } = useContext(Context);
     const [state, setState] = useState('Activity');
-    const [active, setActive] = useState(false)
     const [showModalAddTask, setShowModalAddTask] = useState(false);
     const [showModalEditTask, setShowModalEditTask] = useState(false);
     const [showModalDeleteTask, setShowModalDeleteTask] = useState(false);
@@ -39,22 +37,24 @@ export const Client = () => {
     const [showModalEditPayment, setShowModalEditPayment] = useState(false);
     const [showModalEditClient, setShowModalEditClient] = useState(false);
     const [showModalPaymentLink, setShowModalPaymentLink] = useState(false);
+    const [selectedNote, setSelectedNote] = useState(null);
 
     const activeSection = (id) => {
         setState(id)
-
     }
 
-
+    const params = useParams();
+	const intParams =  parseInt(params.id)
+	const correctClient = store.clients.filter(client => client.id === intParams )
     return (
         <>
-            <Navbar />
+            <Navbar page ="Client" />
             <div className="row p-0">
                 <div className="col-3 border border-black p-0" style={{ height: "100vh", backgroundColor: "#b9cedff1" }}>
                     <div className="d-flex flex-column justify-content-center align-items-center h-25 border border-black">
                         <div className="d-flex align-items-center">
                             <img src={Logo} style={{ width: '100px', height: '100px' }} alt="client Avatar" />
-                            <h4>Client's Name</h4>
+                            <h4>{correctClient[0].full_name}</h4>
                         </div>
                         <div className="d-flex justify-content-center">
                             <h6 className="p-1 fw-bold">Edit Client's information</h6>
@@ -62,35 +62,31 @@ export const Client = () => {
                         </div>
                     </div>
                     <div className="container h-50 my-4">
-                        <div className="container d-flex ween w-100">
+                        <div className="container d-flex align-items-center w-100">
                             <h6 className='m-1 fw-bold'>Email:</h6>
-                            <p className='m-1'>John@email.com</p>
+                            <p className='m-1'>{correctClient[0].email}</p>
                         </div>
 
-                        <div className="container d-flex w-100">
+                        <div className="container d-flex align-items-center w-100">
                             <h6 className='m-1 fw-bold'>Phone:</h6>
-                            <p className='m-1'>314567890</p>
+                            <p className='m-1'>{correctClient[0].phone}</p>
                         </div>
-                        <div className="container d-flex w-100">
+                        <div className="container d-flex align-items-center w-100">
                             <h6 className='m-1 fw-bold'>Company:</h6>
-                            <p className='m-1'>Google</p>
+                            <p className='m-1'>{correctClient[0].company? correctClient[0].company: "" }</p>
                         </div>
-                        <div className="container d-flex  w-100">
+                        <div className="container d-flex align-items-center w-100">
                             <h6 className='m-1 fw-bold'>Address: </h6>
-                            <p className='m-1' >John doe avenue John street Lorem ipsum dolor sit amet. </p>
+                            <p className='m-1' >{correctClient[0].address? correctClient[0].address: "" }</p>
                         </div>
                     </div>
-
-
                 </div>
                 <div className="col-9 p-0 h-100">
-
                     <div className="d-flex w-100 justify-content-center bg-dark pt-3">
-                        <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Activity' ? 'active' : ''}`} onClick={() => activeSection('Activity')}>Activity</h5>
-                        <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Tasks' ? 'active' : ''}`} onClick={() => activeSection('Tasks')} >Tasks</h5>
+                        <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Activity' ? 'active' : ''}`} onClick={() => activeSection('Activity')} >Activity</h5>
+                        <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Tasks' ? 'active' : ''}`} onClick={() => activeSection('Tasks')}>Tasks</h5>
                         <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Notes' ? 'active' : ''}`} onClick={() => activeSection('Notes')} >Notes</h5>
                         <h5 className={`text-light border border-light border-bottom-0 rounded p-1 mx-2 mt-1 cursor ${state === 'Billing' ? 'active' : ''}`} onClick={() => activeSection('Billing')}>Billing</h5>
-
                     </div>
                     <div className="container row mb-5">
                         {state == 'Activity' ?
@@ -102,9 +98,10 @@ export const Client = () => {
                                     onDeleteTask={() => setShowModalDeleteTask(true)}
                                 /> : state == 'Notes' ?
                                     <Notes
+                                        clientId={correctClient[0].id}
                                         onAddNote={() => setShowModalAddNote(true)}
-                                        onEditNote={() => setShowModalEditNote(true)}
-                                        onDeleteNote={() => setShowModalDeleteNote(true)}
+                                        onEditNote={(note) => {setSelectedNote(note); setShowModalEditNote(true)}}
+                                        onDeleteNote={(note) => {setSelectedNote(note);setShowModalDeleteNote(true)}}
                                     /> :
                                     <Billing
                                         onAddInvoice={() => setShowModalAddInvoice(true)}
@@ -120,9 +117,9 @@ export const Client = () => {
             <ModalAddTask show={showModalAddTask} onClose={() => setShowModalAddTask(false)} />
             <ModalEditTask show={showModalEditTask} onClose={() => setShowModalEditTask(false)} />
             <ModalDeleteTask show={showModalDeleteTask} onClose={() => setShowModalDeleteTask(false)} />
-            <ModalAddNotes show={showModalAddNote} onClose={() => setShowModalAddNote(false)} />
-            <ModalEditNotes show={showModalEditNote} onClose={() => setShowModalEditNote(false)} />
-            <ModalDeleteNote show={showModalDeleteNote} onClose={() => setShowModalDeleteNote(false)} />
+            <ModalAddNotes show={showModalAddNote} onClose={() => setShowModalAddNote(false)} clientId={correctClient.length > 0 ? correctClient[0].id : null} />
+            <ModalEditNotes show={showModalEditNote} onClose={() => {setShowModalEditNote(false); setSelectedNote(null)}} note={selectedNote} />
+            <ModalDeleteNote show={showModalDeleteNote} onClose={() => {setShowModalDeleteNote(false); setSelectedNote(null)}} note={selectedNote} />
             <ModalAddPayment show={showModalAddPayment} onClose={() => setShowModalAddPayment(false)} />
             <ModalEditPayment show={showModalEditPayment} onClose={() => setShowModalEditPayment(false)} />
             <ModalAddInvoice show={showModalAddInvoice} onClose={() => setShowModalAddInvoice(false)} />

@@ -5,7 +5,11 @@ import "../../styles/notes.css";
 
 export const Notes = props => {
     const { store, actions } = useContext(Context);
-    const [state, useState] = ('')
+    const filteredNotes = store.notes.filter(note => note.client_id === props.clientId);
+
+    useEffect(() => {
+        actions.getNotes();
+    }, []);
 
     return (
         <div className="container d-flex flex-column justify-content-center align-items-center m-4 row">
@@ -13,22 +17,22 @@ export const Notes = props => {
                 <button type="button" className="btn btn-primary" onClick={() => props.onAddNote()}>Add Note</button>
             </div>
             <ul>
-                {store.notes.map((note, index) => {
+                {filteredNotes.map((note, index) => {
                     return (
                         <li className="border border-dark p-2 my-2 d-flex row bg-light" key={index}>
-                            <span className="col-8">{note.text}</span>
+                            <span className="col-8">{note.note_content}</span>
                             <div className="row col-4">
                                 <div className="col-5 d-flex flex-column">
                                     <h6 className="fw-bold">User</h6>
-                                    <span>{note.addedByUser}</span>
+                                    <span>{note.user_id}</span>
                                 </div>
                                 <div className="col-5 d-flex flex-column">
                                     <h6 className="fw-bold" >Date Created</h6>
-                                    <span>{note.dateCreated}</span>
+                                    <span>{note.date_created}</span>
                                 </div>
                                 <div className="col-2 d-flex align-items-center">
-                                    <i className="fa-solid fa-pen mx-1 cursor" onClick={() => props.onEditNote()}></i>
-                                    <i className="fa-solid fa-trash mx-1 cursor" onClick={() => props.onDeleteNote()}></i>
+                                    <i className="fa-solid fa-pen mx-1 cursor" onClick={() => props.onEditNote(note)}></i>
+                                    <i className="fa-solid fa-trash mx-1 cursor" onClick={() => props.onDeleteNote(note)}></i>
                                 </div>
                             </div>
                         </li>
@@ -40,13 +44,13 @@ export const Notes = props => {
 }
 
 Notes.propTypes = {
-	onAddNote: PropTypes.func,
-	onEditNote: PropTypes.func,
-	onDeleteNote: PropTypes.func,
+    onAddNote: PropTypes.func,
+    onEditNote: PropTypes.func,
+    onDeleteNote: PropTypes.func,
 };
 
 Notes.defaultProps = {
-	onAddNote: null,
-	onEditNote: null,
-	onDeleteNote: null,
+    onAddNote: null,
+    onEditNote: null,
+    onDeleteNote: null,
 };

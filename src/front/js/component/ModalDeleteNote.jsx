@@ -1,11 +1,14 @@
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
 
 export const ModalDeleteNote = props => {
-    const [state, setState] = useState("");
-    const { store, actions } = useContext(Context);
+    const { actions } = useContext(Context);
+
+    const handleDeleteNote = async () => {
+        await actions.deleteNote(props.note.id);
+        props.onClose();
+    };
 
     return (
         <div className="modal bg-secondary py-5" tabIndex="-1" role="dialog" style={{ display: props.show ? "inline-block" : "none" }}>
@@ -17,7 +20,6 @@ export const ModalDeleteNote = props => {
                             <button
                                 type="button"
                                 className="btn-close"
-                                data-bs-dismiss="modal"
                                 aria-label="Close"
                                 onClick={() => props.onClose()}
                             ></button>
@@ -30,10 +32,7 @@ export const ModalDeleteNote = props => {
                         <button
                             type="button"
                             className="btn btn-primary"
-                            data-dismiss="modal"
-                            onClick={() => {
-                                props.onClose();
-                            }}>
+                            onClick={handleDeleteNote}>
                             Yes
                         </button>
                         <button type="button" className="btn btn-secondary" onClick={() => props.onClose()}>
@@ -49,9 +48,11 @@ export const ModalDeleteNote = props => {
 ModalDeleteNote.propTypes = {
     onClose: PropTypes.func,
     show: PropTypes.bool,
+    note: PropTypes.object
 };
 
 ModalDeleteNote.defaultProps = {
     show: false,
-    onClose: null
+    onClose: null,
+    note: null
 };

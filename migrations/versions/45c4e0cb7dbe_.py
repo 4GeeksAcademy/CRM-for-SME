@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: fbbf7a5512c5
+Revision ID: 45c4e0cb7dbe
 Revises: 
-Create Date: 2024-02-14 17:31:05.604256
+Create Date: 2024-02-15 08:23:21.773246
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'fbbf7a5512c5'
+revision = '45c4e0cb7dbe'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -34,7 +34,8 @@ def upgrade():
     sa.Column('password', sa.String(length=80), nullable=False),
     sa.Column('is_active', sa.Boolean(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('email')
+    sa.UniqueConstraint('email'),
+    sa.UniqueConstraint('user_name')
     )
     op.create_table('invoice',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -49,10 +50,10 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('note_content', sa.String(length=250), nullable=True),
     sa.Column('date_created', sa.DateTime(), nullable=False),
-    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.String(length=200), nullable=False),
     sa.Column('client_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['client_id'], ['client.id'], ),
-    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['user.user_name'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('payment',

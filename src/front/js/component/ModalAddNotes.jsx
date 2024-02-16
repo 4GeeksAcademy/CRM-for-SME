@@ -1,12 +1,16 @@
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
 
 export const ModalAddNotes = props => {
-    const [state, setState] = useState("");
-    const [inputTask, setInputTask] = useState("");
-    const { store, actions } = useContext(Context);
+    const [inputNote, setInputNote] = useState("");
+    const { actions } = useContext(Context);
+
+    function handleAddNote() {
+        actions.addNote(inputNote, props.clientId);
+        props.onClose();
+        setInputNote("");
+    } 
 
     return (
         <div className="modal bg-secondary py-5" tabIndex="-1" role="dialog" style={{ display: props.show ? "inline-block" : "none" }}>
@@ -18,7 +22,6 @@ export const ModalAddNotes = props => {
                             <button
                                 type="button"
                                 className="btn-close"
-                                data-bs-dismiss="modal"
                                 aria-label="Close"
                                 onClick={() => props.onClose()}
                             ></button>
@@ -31,18 +34,16 @@ export const ModalAddNotes = props => {
                             type="text"
                             className="form-control mb-1 border border-secondary"
                             placeholder="Write Note"
-                            onChange={e => setInputTask(e.target.value)}
-                            value={inputTask}
+                            onChange={e => setInputNote(e.target.value)}
+                            value={inputNote}
+                            maxLength={245}
                         />
                     </div>
                     <div className="modal-footer">
                         <button
                             type="button"
                             className="btn btn-primary"
-                            data-dismiss="modal"
-                            onClick={() => {
-                                props.onClose();
-                            }}>
+                            onClick={() => handleAddNote()}>
                             Add Note
                         </button>
                         <button type="button" className="btn btn-secondary" onClick={() => props.onClose()}>
@@ -57,7 +58,7 @@ export const ModalAddNotes = props => {
 
 ModalAddNotes.propTypes = {
     onClose: PropTypes.func,
-
+    clientId: PropTypes.number.isRequired,
 };
 
 ModalAddNotes.defaultProps = {

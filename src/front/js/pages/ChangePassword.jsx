@@ -1,15 +1,20 @@
 import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
+import { useNavigate } from "react-router-dom";
 
 export const ChangePassword = () => {
+    const navigate = useNavigate();
     const { store, actions } = useContext(Context);
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
 
-    function handleSubmit() {
+    function handleSubmit(e) {
+        e.preventDefault
         actions.changePassword(currentPassword,	newPassword, confirmPassword);
+        actions.tokenLogout();
+        navigate("/");
       }
 
     return (

@@ -64,36 +64,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			],
-			notes: [
-			{
-				client: 'Daniel test',
-				addedByUser: 'Daniel User',
-				dateCreated: '5/2/2024',
-				text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam quam libero, in, deserunt sed quasi autem, repellat placeat impedit nemo aperiam est quidem. Sint, sed?',
-				idNote:'12345635'
-			},
-			{
-				client: 'Daniel test',
-				addedByUser: 'Ricardo User',
-				dateCreated: '1/2/2024',
-				text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam quam libero, in, deserunt sed quasi autem, repellat placeat impedit nemo aperiam est quidem. Sint, sed? Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab, tenetur vitae modi accusantium autem, minus nesciunt numquam voluptatibus quaerat labore error qui ratione mollitia quibusdam.',
-				idNote:'12345689'
-			},
-			{
-				client: 'Daniel test',
-				addedByUser: 'Fabian User',
-				dateCreated: '7/2/2024',
-				text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam quam libero, in, deserunt sed quasi autem, repellat placeat impedit nemo aperiam est quidem. Sint, sed?',
-				idNote:'12345690'
-			},
-			{
-				client: 'Daniel test',
-				addedByUser: 'Daniel User',
-				dateCreated: '10/2/2024',
-				text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam quam libero, in, deserunt sed quasi autem, repellat placeat impedit nemo aperiam est quidem. Sint, sed?',
-				idNote:'12345667'
-			},
-			],
+			notes: [],
 			clients: []
 		},
 		actions: {
@@ -123,10 +94,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					getActions().tokenLogin(json.access_token);
 					setStore({ token: json.access_token});
-					const store = getStore()
-					console.log(store.token);
+
 				} catch (error) {
 					console.log(error);
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to log in. Please try again later."
+					});
 				}
 			},
 			postSignUp: async (user, email, password) => {
@@ -150,14 +125,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return Swal.fire({
 							icon: "error",
 							title: "Error",
-							text: "User name or email already registered, please go back and try again",
+							text: "User name or email already registered, please try again",
 						  });
 					}
 
-					console.log(json);
+					Swal.fire({
+						icon: "success",
+						title: "Success",
+						text: "User created, please log in",
+					});
 					
 				} catch (error) {
 					console.log(error);
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to create user. Please try again later."
+					});
 				}
 			},
 			tokenLogin: (token) =>{
@@ -183,6 +167,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const token = store.token || localStorage.getItem("token");
 			
 					if (!token) {
+						Swal.fire({
+							icon: "error",
+							title: "Error",
+							text: "Session expired, please log in again",
+							didClose: () => {
+								window.location.href = "/";
+							}
+						});
 						throw new Error("Token is missing");
 					}
 			
@@ -198,8 +190,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 			
 					const json = await response.json();
 					setStore({ userInfo: json });
+
 				} catch (error) {
 					console.error("Error fetching user info:", error.message);
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to obtain user information. Please try again later."
+					});
 				}
 			},
 			changePassword: async (currentPassword, newPassword, confirmPassword) => {
@@ -213,6 +211,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const token = store.token || localStorage.getItem("token");
 			
 					if (!token) {
+						Swal.fire({
+							icon: "error",
+							title: "Error",
+							text: "Session expired, please log in again",
+							didClose: () => {
+								window.location.href = "/";
+							}
+						});
 						throw new Error("Token is missing");
 					}
 					const response = await fetch(process.env.BACKEND_URL + '/api/change_password', {
@@ -235,19 +241,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 						}
 					}
 			
-					console.log(data);
-			
 					Swal.fire({
 						icon: "success",
 						title: "Success",
-						text: data,
+						text: "Password changed, please log in again",
 					});
+
 				} catch (error) {
 					console.log("Error changing password:", error);
 					Swal.fire({
 						icon: "error",
 						title: "Error",
-						text: error,
+						text: (error.message + ", please log in and try again"),
 					});
 				}
 			},
@@ -281,20 +286,178 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (!response.ok) {
 						throw new Error('Failed to add client');
 					}
+
 					getActions().getClients();
+
 				} catch (error) {
 					console.error('Error adding client:', error);
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to add client. Please try again later."
+					});
 				}
 			},
 			getClients: async () => {
 				try {
-			
 				  const response = await fetch(process.env.BACKEND_URL + '/api/clients');
 				  const data = await response.json();
 				  setStore({ clients: data })
-				  
-				} catch (error) {
+
+				  } catch (error) {
 				  console.error('Error fetching clients:', error);
+				}
+			},
+			addNote: async (noteContent, clientId) => {
+				try {
+					const store = getStore();
+					const token = store.token || localStorage.getItem("token"); 
+			
+					if (!token) {
+						Swal.fire({
+							icon: "error",
+							title: "Error",
+							text: "Session expired, please log in again",
+							didClose: () => {
+								window.location.href = "/";
+							}
+						});
+						throw new Error("Token is missing");
+					}
+			
+					const response = await fetch(process.env.BACKEND_URL + '/api/add_note', {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": "Bearer " + token
+						},
+						body: JSON.stringify({ note_content: noteContent, client_id: clientId })
+					});
+			
+					const data = await response.json();
+				
+					if (!response.ok) {
+						throw new Error('Failed to add note');
+					}
+
+					setStore(prevStore => ({
+						...prevStore,
+						notes: [...prevStore.notes, data] 
+					}));
+					getActions().getNotes();
+
+				} catch (error) {
+					console.error("Error creating note:", error);
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to create note. Please try again later."
+					});
+				}
+			},			
+			getNotes: async () => {
+				try {
+				  const response = await fetch(process.env.BACKEND_URL + '/api/notes');
+				  const data = await response.json();
+				  
+				  setStore({ notes: data })
+
+				  } catch (error) {
+				  console.error('Error fetching clients:', error);
+				}
+			},
+			editNote: async (noteId, newContent) => {
+				try {
+					const store = getStore();
+					const token = store.token || localStorage.getItem("token"); 
+					
+					if (!token) {
+						Swal.fire({
+							icon: "error",
+							title: "Error",
+							text: "Session expired, please log in again",
+							didClose: () => {
+								window.location.href = "/";
+							}
+						});
+						throw new Error("Token is missing");
+					}
+			
+					const response = await fetch(process.env.BACKEND_URL + `/api/edit_note/${noteId}`, {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": "Bearer " + token
+						},
+						body: JSON.stringify({ note_content: newContent })
+					});
+			
+					const data = await response.json();
+			
+					if (!response.ok) {
+						throw new Error('Failed to edit note');
+					}
+			
+					setStore(prevStore => ({
+						...prevStore,
+						notes: prevStore.notes.map(note => note.id === noteId ? data : note)
+					}));
+					getActions().getNotes();
+
+				} catch (error) {
+					console.error("Error editing note:", error);
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to edit note. Please try again later."
+					});
+				}
+			},
+			deleteNote: async (noteId) => {
+				try {
+					const store = getStore();
+					const token = store.token || localStorage.getItem("token"); 
+					
+					if (!token) {
+						Swal.fire({
+							icon: "error",
+							title: "Error",
+							text: "Session expired, please log in again",
+							didClose: () => {
+								window.location.href = "/";
+							}
+						});
+						throw new Error("Token is missing");
+					}
+			
+					const response = await fetch(process.env.BACKEND_URL + `/api/delete_note/${noteId}`, {
+						method: "DELETE",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": "Bearer " + token
+						}
+					});
+
+					const data = await response.json();
+
+					if (!response.ok) {
+						throw new Error("Failed to delete note");
+					}
+			
+					setStore(prevStore => ({
+						...prevStore,
+						notes: prevStore.notes.filter(note => note.id !== noteId)
+					}));
+					getActions().getNotes();
+
+				} catch (error) {
+					console.error("Error deleting note:", error);
+					
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to delete note. Please try again later."
+					});
 				}
 			},
 

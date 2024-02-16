@@ -1,12 +1,18 @@
-import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
 
 export const ModalEditNotes = props => {
-    const [state, setState] = useState("");
     const [inputEditNotes, setInputEditNotes] = useState("");
-    const { store, actions } = useContext(Context);
+    const { actions } = useContext(Context);
+    const handleEditNote = async () => {
+        await actions.editNote(props.note.id, inputEditNotes);
+        props.onClose();
+    };
+
+    useEffect(() => {
+        setInputEditNotes(props.note ? props.note.note_content : "");
+    }, [props.note]);
 
     return (
         <div className="modal bg-secondary py-5" tabIndex="-1" role="dialog" style={{ display: props.show ? "inline-block" : "none" }}>
@@ -18,7 +24,6 @@ export const ModalEditNotes = props => {
                             <button
                                 type="button"
                                 className="btn-close"
-                                data-bs-dismiss="modal"
                                 aria-label="Close"
                                 onClick={() => props.onClose()}
                             ></button>
@@ -33,17 +38,15 @@ export const ModalEditNotes = props => {
                             placeholder="Edit Note"
                             onChange={e => setInputEditNotes(e.target.value)}
                             value={inputEditNotes}
+                            maxLength={245}
                         />
                     </div>
                     <div className="modal-footer">
                         <button
                             type="button"
                             className="btn btn-primary"
-                            data-dismiss="modal"
-                            onClick={() => {
-                                props.onClose();
-                            }}>
-                            Add Note
+                            onClick={handleEditNote}>
+                            Save Changes
                         </button>
                         <button type="button" className="btn btn-secondary" onClick={() => props.onClose()}>
                             Cancel
@@ -57,10 +60,12 @@ export const ModalEditNotes = props => {
 
 ModalEditNotes.propTypes = {
     onClose: PropTypes.func,
-
+    show: PropTypes.bool,
+    note: PropTypes.object
 };
 
 ModalEditNotes.defaultProps = {
     show: false,
-    onClose: null
+    onClose: null,
+    note: null
 };
