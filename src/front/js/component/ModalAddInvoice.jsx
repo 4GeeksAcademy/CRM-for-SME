@@ -1,14 +1,18 @@
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
 
 export const ModalAddInvoice = props => {
-    const [state, setState] = useState("");
-    const [inputDetalles,setInputDetalles] = useState("");
-    const [inputTextAmount, setInputTextAmount] = useState("");
-    const [inputDate, setInputDate] = useState("");
+    const [inputDetail,setInputDetail] = useState("");
+    const [inputAmount, setInputAmount] = useState("");
     const { store, actions } = useContext(Context);
+
+    function handleAddInvoice() {
+        actions.addInvoice(inputAmount, inputDetail, props.clientId);
+        props.onClose();
+        setInputDetail("");
+        setInputAmount("");
+    } 
 
     return (
         <div className="modal bg-secondary py-5" tabIndex="-1" role="dialog" style={{ display: props.show ? "inline-block" : "none" }}>
@@ -20,7 +24,6 @@ export const ModalAddInvoice = props => {
                             <button
                                 type="button"
                                 className="btn-close"
-                                data-bs-dismiss="modal"
                                 aria-label="Close"
                                 onClick={() => props.onClose()}
                             ></button>
@@ -33,34 +36,23 @@ export const ModalAddInvoice = props => {
                             type="text"
                             className="form-control mb-1 border border-secondary"
                             placeholder="Detail"
-                            onChange={e => setInputDetalles(e.target.value)}
-                            value={inputDetalles}
+                            onChange={e => setInputDetail(e.target.value)}
+                            value={inputDetail}
                         />
-                        <label htmlFor="priority" className="form-label d-flex justify-content-start align-items-start">Amount</label>
+                        <label className="form-label d-flex justify-content-start align-items-start">Amount</label>
                         <input 
                                 type="number"
                                 className="form-control mb-1 border border-secondary" 
                                 placeholder="Amount"
-                                onChange={e => setInputTextAmount(e.target.value)}
-								value={inputTextAmount} 
+                                onChange={e => setInputAmount(e.target.value)}
+								value={inputAmount} 
                             />
-                        <label htmlFor="priority" className="form-label d-flex justify-content-start align-items-start">Date</label>
-                        <input
-                            type="date"
-                            className="form-control mb-1 border border-secondary"
-                            placeholder="Task date"
-                            onChange={e => setInputDate(e.target.value)}
-                            value={inputDate}
-                        />
                     </div>
                     <div className="modal-footer">
                         <button
                             type="button"
                             className="btn btn-primary"
-                            data-dismiss="modal"
-                            onClick={() => {
-                                props.onClose();
-                            }}>
+                            onClick={() => handleAddInvoice()}>
                            Add Invoice
                         </button>
                         <button type="button" className="btn btn-secondary" onClick={() => props.onClose()}>
