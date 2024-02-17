@@ -68,7 +68,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			],
 			notes: [],
-			clients: []
+			clients: [],
+			invoices: [],
+			payments: [],
 		},
 		actions: {
 			postLogin: async (user, password) => {
@@ -318,17 +320,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 						body: JSON.stringify(updatedClient)
 					});
 					const data = await response.json();
-			
+
 					if (!response.ok) {
 						throw new Error('Failed to edit client');
 					}
-					
+
 					setStore(prevStore => ({
 						...prevStore,
 						clients: prevStore.clients.map(client => client.id === clientId ? data : client)
 					}));
 					getActions().getClients();
-			
+
 				} catch (error) {
 					console.error('Error editing client:', error);
 					Swal.fire({
@@ -337,7 +339,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						text: "Failed to edit client. Please try again later."
 					});
 				}
-			},			
+			},
 			getClients: async () => {
 				try {
 					const response = await fetch(process.env.BACKEND_URL + '/api/clients');
@@ -503,24 +505,99 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getAllTasksForTotal: async () => {
 				try {
 					const response = await fetch(process.env.BACKEND_URL + '/api/totaltasks', {
-						headers: 
+						headers:
 						{
 							"Content-Type": "application/json"
 						}
 					});
-			
+
 					if (!response.ok) {
 						throw new Error(`Error fetching all tasks for total: ${response.statusText}`);
 					}
-			
+
 					const data = await response.json();
 					setStore({ tasks: data });
 				} catch (error) {
 					console.error('Error fetching all tasks for total:', error);
 				}
 			},
+			addInvoice: async (amount, detail, clientId) => {
+				const newInvoice = {
+					amount: amount,
+					detail: detail,
+					client_id: clientId
+				};
+				try {
+					const response = await fetch(process.env.BACKEND_URL + '/api/add_invoice', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(newInvoice)
+					});
+					const data = await response.json();
+
+					if (!response.ok) {
+						throw new Error('Failed to add invoice');
+					}
+
+					setStore(prevStore => ({
+						...prevStore,
+						invoices: [...prevStore.invoices, data]
+					}));
+					getActions().getInvoices();
+
+				} catch (error) {
+					console.error('Error adding invoice:', error);
+					throw new Error('Failed to add invoice. Please try again later.');
+				}
+			},
+			getInvoices: async () => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + '/api/invoices');
+					const data = await response.json();
+
+					setStore({ invoices: data })
+
+				} catch (error) {
+					console.error('Error fetching clients:', error);
+				}
+			},
+			editInvoice: async (invoiceId, inputAmount, inputDetail) => {
+				const updatedInvoice = {
+					amount: inputAmount,
+					detail: inputDetail
+				};
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/edit_invoice/${invoiceId}`, {
+						method: 'PUT',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(updatedInvoice)
+					});
+					const data = await response.json();
+			
+					if (!response.ok) {
+						throw new Error('Failed to edit invoice');
+					}
+			
+					setStore(prevStore => ({
+						...prevStore,
+						invoices: prevStore.invoices.map(invoice => invoice.id === invoiceId ? data : invoice)
+					}));
+					getActions().getInvoices();
+			
+				} catch (error) {
+					console.error('Error editing invoice:', error);
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to edit invoice. Please try again later."
+					});
+				}
+			},
 		}
 	};
 };
-43
 export default getState;
