@@ -319,7 +319,7 @@ def get_user():
         # Maneja cualquier error que pueda ocurrir
         return jsonify({"error": str(e)}), 500
 @api.route('/totaltasks', methods=['GET'])
-def get_tasks():
+def get_total_tasks():
     tasks = Task.query.all()
     results = []
     for task in tasks:
