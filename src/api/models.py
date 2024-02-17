@@ -78,7 +78,11 @@ class Task(db.Model):
             "id": self.id,
             "title": self.title,
             "description": self.description,
+<<<<<<< HEAD
             "due_date":self.date_created.strftime('%d-%m-%Y'),
+=======
+            "due_date":self.due_date.strftime('%d-%m-%Y'),
+>>>>>>> 5649b4baf99f5cb5c23f330a4c8c0ab2e747d3d0
             "status":self.status,
             "priority":self.priority,
             "client_id": self.client_id,
@@ -99,7 +103,7 @@ class Invoice(db.Model):
         return {
             "id": self.id,
             "amount": self.amount,
-            "date_created": self.date_created,
+            "date_created": self.date_created.strftime('%d-%m-%Y'),
             "detail":self.detail,
             "client_id": self.client_id,
            
@@ -118,7 +122,7 @@ class Payment(db.Model):
         return {
             "id": self.id,
             "amount": self.amount,
-            "payment_date": self.payment_date,
+            "payment_date": self.payment_date.strftime('%d-%m-%Y'),
             "detail":self.detail,
             "client_id": self.client_id,
            

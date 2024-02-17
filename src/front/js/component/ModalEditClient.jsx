@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Swal from 'sweetalert2'
 import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
@@ -11,7 +11,17 @@ export const ModalEditClient = props => {
     const [inputCompany, setInputCompany] = useState("");
     const { store, actions } = useContext(Context);
 
-    function handleEditClient() {
+    useEffect(() => {
+        if (props.client) {
+            setInputFullName(props.client.full_name || "");
+            setInputEmail(props.client.email || "");
+            setInputPhone(props.client.phone || "");
+            setInputAddress(props.client.address || "");
+            setInputCompany(props.client.company || "");
+        }
+    }, [props.client]);
+
+    const handleEditClient = () => {
         if (!inputFullName || !inputEmail || !inputPhone) {
             Swal.fire({
                 icon: "error",
@@ -20,14 +30,16 @@ export const ModalEditClient = props => {
             });
             return;
         }
-        actions.addClient(inputFullName, inputEmail, inputPhone, inputAddress, inputCompany);
+        actions.editClient(
+            props.client.id,
+            inputFullName,
+            inputEmail,
+            inputPhone,
+            inputAddress,
+            inputCompany
+        );
         props.onClose();
-        setInputFullName("");
-        setInputEmail("");
-        setInputPhone("");
-        setInputAddress("");
-        setInputCompany("");
-    }
+    };
 
     return (
         <div className="modal bg-secondary py-5" tabIndex="-1" role="dialog" style={{ display: props.show ? "inline-block" : "none" }}>
@@ -103,9 +115,11 @@ export const ModalEditClient = props => {
 ModalEditClient.propTypes = {
     onClose: PropTypes.func,
     show: PropTypes.bool,
+    client: PropTypes.object,
 };
 
 ModalEditClient.defaultProps = {
     show: false,
-    onClose: null
+    onClose: null,
+    client: null
 };

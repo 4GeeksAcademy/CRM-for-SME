@@ -3,14 +3,27 @@ import { Context } from "../store/appContext";
 import { Navbar } from '../component/Navbar.jsx';
 import { Footer } from '../component/Footer.jsx';
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
 export const TotalTasks = (props) => {
     const { store, actions } = useContext(Context);
+    const navigate = useNavigate();
 
-    useEffect(() => {
+    // useEffect(() => {
         
-        actions.getAllTasksForTotal();
-    }, []);
+    //     actions.getAllTasksForTotal();
+    // }, []);
+    useEffect(() => {
+        actions.isLogged();
+        /* actions.getAllTasksForTotal(); */
+      }, []);
+    
+      useEffect(() => {
+        if (!store.loggedIn) {
+          navigate('/');
+        }
+      }, [store.loggedIn]);
+    
     return (
 
         <div>
@@ -22,11 +35,6 @@ export const TotalTasks = (props) => {
             <ul>
                 {store.tasks.map((task, index) => (
                     <li className="border border-dark p-2 my-2 d-flex justify-content-between row bg-light" key={index}>
-                        <div className="col-2 d-flex flex-column">
-                            <h5 className="fw-bold">User Asign</h5>
-                            <span>{task.userAsing}</span>
-                        </div>
-
                         <div className="col-2 d-flex flex-column">
                             <h5 className="fw-bold" >Task title</h5>
                             <span>{task.title}</span>

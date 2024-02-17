@@ -5,8 +5,8 @@ import { Context } from "../store/appContext";
 
 export const ModalAddPayment = props => {
     const [state, setState] = useState("");
-    const [inputDetalles,setInputDetalles] = useState("");
-    const [inputTextAmount, setInputTextAmount] = useState("");
+    const [inputDetail,setInputDetail] = useState("");
+    const [inputAmount, setInputAmount] = useState("");
     const [inputDate, setInputDate] = useState("");
     const { store, actions } = useContext(Context);
 
@@ -20,7 +20,6 @@ export const ModalAddPayment = props => {
                             <button
                                 type="button"
                                 className="btn-close"
-                                data-bs-dismiss="modal"
                                 aria-label="Close"
                                 onClick={() => props.onClose()}
                             ></button>
@@ -33,16 +32,16 @@ export const ModalAddPayment = props => {
                             type="text"
                             className="form-control mb-1 border border-secondary"
                             placeholder="Detail"
-                            onChange={e => setInputDetalles(e.target.value)}
-                            value={inputDetalles}
+                            onChange={e => setInputDetail(e.target.value)}
+                            value={inputDetail}
                         />
                         <label htmlFor="priority" className="form-label d-flex justify-content-start align-items-start">Amount</label>
                         <input 
                                 type="number"
                                 className="form-control mb-1 border border-secondary" 
                                 placeholder="Amount"
-                                onChange={e => setInputTextAmount(e.target.value)}
-								value={inputTextAmount} 
+                                onChange={e => setInputAmount(e.target.value)}
+								value={inputAmount} 
                             />
                         <label htmlFor="priority" className="form-label d-flex justify-content-start align-items-start">Date</label>
                         <input
@@ -57,7 +56,6 @@ export const ModalAddPayment = props => {
                         <button
                             type="button"
                             className="btn btn-primary"
-                            data-dismiss="modal"
                             onClick={() => {
                                 props.onClose();
                             }}>
