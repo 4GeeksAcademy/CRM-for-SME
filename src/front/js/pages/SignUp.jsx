@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import Swal from 'sweetalert2'
 import background from "../../img/background.png"
@@ -17,11 +17,15 @@ export const SignUp = () => {
         navigate('/');
     }
 
+    useEffect(() => {
+        actions.isLogged();
+        if (store.loggedIn) {
+          navigate("/home");
+        }
+      }, [store.token]);
+
     return (
         <div className="container">
-            {store.loggedIn ? (
-                navigate("/home")
-            ) : (
                 <div className="row">
                     <div className="col col-xs-1">
                         <div className="body" style={{ backgroundImage: `url(${background})` }}>
@@ -108,7 +112,6 @@ export const SignUp = () => {
                         </div>
                     </div>
                 </div>
-            )}
         </div>
     )
 }
