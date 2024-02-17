@@ -78,11 +78,7 @@ class Task(db.Model):
             "id": self.id,
             "title": self.title,
             "description": self.description,
-<<<<<<< HEAD
-            "due_date":self.date_created.strftime('%d-%m-%Y'),
-=======
             "due_date":self.due_date.strftime('%d-%m-%Y'),
->>>>>>> 5649b4baf99f5cb5c23f330a4c8c0ab2e747d3d0
             "status":self.status,
             "priority":self.priority,
             "client_id": self.client_id,
