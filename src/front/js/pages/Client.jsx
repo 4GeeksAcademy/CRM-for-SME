@@ -38,6 +38,7 @@ export const Client = () => {
     const [showModalEditClient, setShowModalEditClient] = useState(false);
     const [showModalPaymentLink, setShowModalPaymentLink] = useState(false);
     const [selectedNote, setSelectedNote] = useState(null);
+    const [selectedTask, setSelectedTask] = useState(null);
 
     const activeSection = (id) => {
         setState(id)
@@ -93,9 +94,10 @@ export const Client = () => {
                             <Activity
                             /> : state == 'Tasks' ?
                                 <Tasks
+                                    clientId={correctClient[0].id}
                                     onAddTask={() => setShowModalAddTask(true)}
-                                    onEditTask={() => setShowModalEditTask(true)}
-                                    onDeleteTask={() => setShowModalDeleteTask(true)}
+                                    onEditTask={(task) => {setSelectedTask(task); setShowModalEditTask(true)}}
+                                    onDeleteTask={(task) => {setSelectedTask(task); setShowModalDeleteTask(true)}}
                                 /> : state == 'Notes' ?
                                     <Notes
                                         clientId={correctClient[0].id}
@@ -114,9 +116,9 @@ export const Client = () => {
                 </div>
             </div>
             <Footer />
-            <ModalAddTask show={showModalAddTask} onClose={() => setShowModalAddTask(false)} />
-            <ModalEditTask show={showModalEditTask} onClose={() => setShowModalEditTask(false)} />
-            <ModalDeleteTask show={showModalDeleteTask} onClose={() => setShowModalDeleteTask(false)} />
+            <ModalAddTask show={showModalAddTask} onClose={() => setShowModalAddTask(false)} clientId={correctClient.length > 0 ? correctClient[0].id : null} />
+            <ModalEditTask show={showModalEditTask} onClose={() => {setShowModalEditTask(false); setSelectedTask(null)}} task={selectedTask} />
+            <ModalDeleteTask show={showModalDeleteTask} onClose={() => {setShowModalDeleteTask(false);  setSelectedTask(null)}} task={selectedTask}/>
             <ModalAddNotes show={showModalAddNote} onClose={() => setShowModalAddNote(false)} clientId={correctClient.length > 0 ? correctClient[0].id : null} />
             <ModalEditNotes show={showModalEditNote} onClose={() => {setShowModalEditNote(false); setSelectedNote(null)}} note={selectedNote} />
             <ModalDeleteNote show={showModalDeleteNote} onClose={() => {setShowModalDeleteNote(false); setSelectedNote(null)}} note={selectedNote} />

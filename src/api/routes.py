@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Client, Note
+from api.models import db, User, Client, Note, Task
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 import stripe
@@ -202,3 +202,103 @@ def delete_note(note_id):
         return jsonify({"message": "Note deleted successfully"}), 200
     else:
         return jsonify({"message": "Note not found"}), 404
+    
+@api.route('/add_task', methods=['POST'])
+@jwt_required()
+def create_task():
+    current_user_identity = get_jwt_identity()
+    due_date = request.json.get('due_date')
+    task_title = request.json.get('task_title')
+    description = request.json.get('description')
+    status = request.json.get('status')
+    priority = request.json.get('priority')
+    current_datetime = datetime.now()
+    client_id = request.json.get('client_id')
+    user_name = request.json.get('user_name')
+    
+    new_task = Task(
+        title = task_title,
+        description = description,
+        due_date = due_date,
+        status = status,
+        priority = priority,
+        client_id = client_id,
+        user_id=current_user_identity,
+        user_name = user_name,       
+        date_created = current_datetime,
+    )
+
+    db.session.add(new_task)
+    db.session.commit()
+
+    return jsonify({"message": "Task created successfully"}), 200
+
+@api.route('/tasks', methods=['GET'])
+def get_tasks():
+    tasks = Task.query.all()
+    results = []
+    for task in tasks:
+        results.append(task.serialize())
+    return jsonify(results), 200
+
+@api.route('/edit_task/<int:task_id>', methods=['PUT'])
+@jwt_required()
+def edit_task(task_id):
+    current_user_identity = get_jwt_identity()
+    due_date = request.json.get('due_date')
+    task_title = request.json.get('task_title')
+    description = request.json.get('description')
+    status = request.json.get('status')
+    priority = request.json.get('priority')
+    current_datetime = datetime.now()
+    client_id = request.json.get('client_id')
+    user_name = request.json.get('user_name')
+    task = Task.query.filter_by(id=task_id).first()
+
+    if task:
+        if task.user_id != current_user_identity:
+            return jsonify({"message": "Unauthorized"}), 401
+        
+        task.title = task_title
+        task.description = description
+        task.due_date = due_date
+        task.date_created = current_datetime
+        task.status = status
+        task.priority = priority
+        task.user_name = user_name,
+
+        db.session.commit()
+        return jsonify({"message": "Task updated successfully"}), 200
+    else:
+        return jsonify({"message": "Task not found"}), 404
+
+@api.route('/delete_task/<int:task_id>', methods=['DELETE'])
+@jwt_required()
+def delete_task(task_id):
+    current_user_identity = get_jwt_identity()
+    task = Task.query.filter_by(id=task_id).first()
+
+    if task:
+        if task.user_id != current_user_identity:
+            return jsonify({"message": "Unauthorized"}), 401
+        
+        db.session.delete(task)
+        db.session.commit()
+        return jsonify({"message": "Task deleted successfully"}), 200
+    else:
+        return jsonify({"message": "Task not found"}), 404
+    
+@api.route('/user', methods=['GET'])
+def get_user():
+   try:
+        # Consulta la base de datos para obtener solo los nombres de usuario
+        user_names = User.query.with_entities(User.user_name).all()
+
+        # Convierte el resultado en una lista de nombres de usuario
+        user_names_list = [name[0] for name in user_names]
+
+        # Devuelve la lista como una respuesta JSON
+        return jsonify(user_names_list), 200
+   except Exception as e:
+        # Maneja cualquier error que pueda ocurrir
+        return jsonify({"error": str(e)}), 500

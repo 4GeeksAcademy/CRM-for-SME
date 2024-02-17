@@ -16,7 +16,7 @@ export const MainPage = () => {
   useEffect(() => {
     
     actions.getClients();
-    
+    actions.getUser();
     
   }, []);
   
@@ -76,7 +76,7 @@ export const MainPage = () => {
               ))
                 : filteredClients.map(((client) => (
                 <tr key={client.id}>
-                  <td>{client.full_name}</td>
+                  <td><Link to= {'/client/' + client.id} className='link'>{client.full_name}</Link></td>
                   <td>{client.email}</td>
                   <td>{client.phone}</td>
                   <td>{client.address}</td>
