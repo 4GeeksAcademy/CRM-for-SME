@@ -467,16 +467,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getAllTasksForTotal: async () => {
 				try {
 					const response = await fetch(process.env.BACKEND_URL + '/api/totaltasks', {
-						headers: 
+						headers:
 						{
 							"Content-Type": "application/json"
 						}
 					});
-			
+
 					if (!response.ok) {
 						throw new Error(`Error fetching all tasks for total: ${response.statusText}`);
 					}
-			
+
 					const data = await response.json();
 					setStore({ tasks: data });
 				} catch (error) {
@@ -486,5 +486,5 @@ const getState = ({ getStore, getActions, setStore }) => {
 		}
 	};
 };
-43
+
 export default getState;

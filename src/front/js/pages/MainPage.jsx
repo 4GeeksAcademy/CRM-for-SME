@@ -35,7 +35,7 @@ export const MainPage = () => {
       <Navbar onSearchChange={handleSearchChange} />
       {/* Primera fila con el botón "Add Client" */}
 
-      <div className="row m-3">
+      <div className="row m-4">
         <div className="col">
           <button
             className="btn btn-primary"
@@ -63,27 +63,34 @@ export const MainPage = () => {
                 <th scope="col">Client's Company</th>
               </tr>
             </thead>
-            <tbody>
-              {filteredClients.length == 0 ? 
-              store.clients.map((client) => (
-                <tr key={client.id}>
-                  <td><Link to= {'/client/' + client.id} className='link'>{client.full_name}</Link></td>
-                  <td>{client.email}</td>
-                  <td>{client.phone}</td>
-                  <td>{client.address}</td>
-                  <td>{client.company}</td>
-                </tr> 
-              ))
-                : filteredClients.map(((client) => (
-                <tr key={client.id}>
-                  <td>{client.full_name}</td>
-                  <td>{client.email}</td>
-                  <td>{client.phone}</td>
-                  <td>{client.address}</td>
-                  <td>{client.company}</td>
-                </tr>)))
-              }
-            </tbody>
+            
+              <tbody id = "tab">
+  {filteredClients.length === 0
+    ? store.clients.map((client) => (
+        <tr key={client.id}>
+          <td>
+            <Link to={'/client/' + client.id} className='link'>
+              {client.full_name}
+            </Link>
+          </td>
+          <td>{client.email}</td>
+          <td>{client.phone}</td>
+          <td>{client.address}</td>
+          <td>{client.company}</td>
+        </tr>
+      ))
+    : filteredClients.map((client) => (
+        <tr key={client.id}>
+          <td>{client.full_name}</td>
+          <td>{client.email}</td>
+          <td>{client.phone}</td>
+          <td>{client.address}</td>
+          <td>{client.company}</td>
+        </tr>
+      ))}
+</tbody>
+
+           
           </table>
         </div>
       </div>
