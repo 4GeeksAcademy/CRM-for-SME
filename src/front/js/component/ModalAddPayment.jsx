@@ -1,14 +1,20 @@
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
 
 export const ModalAddPayment = props => {
-    const [state, setState] = useState("");
     const [inputDetail,setInputDetail] = useState("");
     const [inputAmount, setInputAmount] = useState("");
     const [inputDate, setInputDate] = useState("");
     const { store, actions } = useContext(Context);
+
+    function handleAddPayment() {
+        actions.addPayment(inputAmount, inputDate, inputDetail, props.clientId);
+        props.onClose();
+        setInputDetail("");
+        setInputAmount("");
+        setInputDate("");
+    } 
 
     return (
         <div className="modal bg-secondary py-5" tabIndex="-1" role="dialog" style={{ display: props.show ? "inline-block" : "none" }}>
@@ -56,9 +62,7 @@ export const ModalAddPayment = props => {
                         <button
                             type="button"
                             className="btn btn-primary"
-                            onClick={() => {
-                                props.onClose();
-                            }}>
+                            onClick={() => handleAddPayment()}>
                             Add Payment
                         </button>
                         <button type="button" className="btn btn-secondary" onClick={() => props.onClose()}>

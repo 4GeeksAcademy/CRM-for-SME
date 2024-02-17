@@ -1,14 +1,23 @@
-import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
 
 export const ModalEditPayment = props => {
-    const [state, setState] = useState("");
     const [inputDetail,setInputDetail] = useState("");
     const [inputAmount, setInputAmount] = useState("");
     const [inputDate, setInputDate] = useState("");
     const { store, actions } = useContext(Context);
+
+    useEffect(() => {
+        setInputDetail(props.payment ? props.payment.detail : "");
+        setInputAmount(props.payment ? props.payment.amount : "");
+        setInputDate(props.payment ? props.payment.paymentDate : "");
+    }, [props.payment]);
+
+    const handleEditPayment = async () => {
+        await actions.editPayment(props.payment.id, inputAmount, inputDetail, inputDate);
+        props.onClose();
+    };
 
     return (
         <div className="modal bg-secondary py-5" tabIndex="-1" role="dialog" style={{ display: props.show ? "inline-block" : "none" }}>
@@ -56,9 +65,7 @@ export const ModalEditPayment = props => {
                         <button
                             type="button"
                             className="btn btn-primary"
-                            onClick={() => {
-                                props.onClose();
-                            }}>
+                            onClick={handleEditPayment}>
                            Save Changes
                         </button>
                         <button type="button" className="btn btn-secondary" onClick={() => props.onClose()}>
@@ -74,9 +81,11 @@ export const ModalEditPayment = props => {
 ModalEditPayment.propTypes = {
     onClose: PropTypes.func,
     show: PropTypes.bool,
+    payment: PropTypes.object
 };
 
 ModalEditPayment.defaultProps = {
     show: false,
-    onClose: null
+    onClose: null,
+    payment: null
 };

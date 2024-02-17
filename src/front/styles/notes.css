@@ -1,3 +1,9 @@
 .cursor {
     cursor: pointer
 }
+
+#noteScroll {
+    overflow-y: auto;
+    max-height: 460px;
+    position: relative;
+}

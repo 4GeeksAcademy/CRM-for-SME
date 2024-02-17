@@ -41,6 +41,7 @@ export const Client = () => {
     const [selectedNote, setSelectedNote] = useState(null);
     const [selectedClient, setSelectedClient] = useState(null);
     const [selectedInvoice, setSelectedInvoice] = useState(null);
+    const [selectedPayment, setSelectedPayment] = useState(null);
 
     useEffect(() => {
         actions.isLogged();
@@ -48,6 +49,7 @@ export const Client = () => {
             navigate("/");
         }
     }, [store.token]);
+    
     const [selectedTask, setSelectedTask] = useState(null);
 
     const activeSection = (id) => {
@@ -119,7 +121,7 @@ export const Client = () => {
                                         onAddInvoice={() => setShowModalAddInvoice(true)}
                                         onEditInvoice={(invoice) => {setSelectedInvoice(invoice); setShowModalEditInvoice(true)}}
                                         onAddPayment={() => setShowModalAddPayment(true)}
-                                        onEditPayment={() => setShowModalEditPayment(true)}
+                                        onEditPayment={(payment) => {setSelectedPayment(payment); setShowModalEditPayment(true)}}
                                         onAddPaymentLink={() => setShowModalPaymentLink(true)}
                                         clientId={correctClient[0].id}
                                     />}
@@ -133,8 +135,8 @@ export const Client = () => {
             <ModalAddNotes show={showModalAddNote} onClose={() => setShowModalAddNote(false)} clientId={correctClient.length > 0 ? correctClient[0].id : null} />
             <ModalEditNotes show={showModalEditNote} onClose={() => { setShowModalEditNote(false); setSelectedNote(null) }} note={selectedNote} />
             <ModalDeleteNote show={showModalDeleteNote} onClose={() => { setShowModalDeleteNote(false); setSelectedNote(null) }} note={selectedNote} />
-            <ModalAddPayment show={showModalAddPayment} onClose={() => setShowModalAddPayment(false)} />
-            <ModalEditPayment show={showModalEditPayment} onClose={() => setShowModalEditPayment(false)} />
+            <ModalAddPayment show={showModalAddPayment} onClose={() => setShowModalAddPayment(false)} clientId={correctClient.length > 0 ? correctClient[0].id : null} />
+            <ModalEditPayment show={showModalEditPayment} onClose={() => {setShowModalEditPayment(false); setSelectedPayment(null) }} payment={selectedPayment} />
             <ModalAddInvoice show={showModalAddInvoice} onClose={() => setShowModalAddInvoice(false)} clientId={correctClient.length > 0 ? correctClient[0].id : null} />
             <ModalEditInvoice show={showModalEditInvoice} onClose={() => {setShowModalEditInvoice(false); setSelectedInvoice(null) }} invoice={selectedInvoice} />
             <ModalEditClient show={showModalEditClient} onClose={() => setShowModalEditClient(false)} client={selectedClient} />

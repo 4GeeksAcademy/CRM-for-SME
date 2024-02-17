@@ -22,7 +22,7 @@ export const Tasks = props => {
                 <button type="button" className="btn btn-primary" onClick={() => props.onAddTask()}>Add Task</button>
             </div>
 
-            <ul>
+            <ul className="mt-1" id="taskScroll">
                 {store.tasks.map((task, index) => {
                     return (
                         <li className="border border-dark p-2 my-2 d-flex justify-content-between row bg-light" key={index}>
