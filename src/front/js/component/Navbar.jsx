@@ -40,9 +40,9 @@ export const Navbar = (props) => {
             <Link className="nav-link" to={'/home'}>
               Clients
             </Link>
-            <a className="nav-link" href="/totaltasks">
+            <Link className="nav-link" to={'/totaltasks'}>
               Tasks
-            </a>
+            </Link>
 
             <div className="dropdown">
               <button

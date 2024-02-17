@@ -1,12 +1,28 @@
 .box {
-    box-shadow: 2px 3px 5px 0px rgba(0,0,0,0.75);
-   
+    box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.75);
+
 }
+
 .mainBox {
-    box-shadow: 2px 3px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.75);
     background-color: white;
 }
 
 .cursor {
     cursor: pointer
+}
+
+#billScroll {
+    overflow-y: auto;
+    max-height: 300px;
+    position: relative;
+}
+
+.sticky-header {
+    position: sticky;
+    top: 0;
+    background-color: #ffffff;
+    z-index: 1;
+    padding: 5px 150px 5px 150px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

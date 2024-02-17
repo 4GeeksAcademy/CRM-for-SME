@@ -4,21 +4,18 @@ import { Navbar } from '../component/Navbar.jsx';
 import { Footer } from '../component/Footer.jsx';
 import { ModalAddClient } from '../component/ModalAddClient.jsx';
 import { Link, useNavigate } from "react-router-dom";
-import "../../styles/MainPage.css";
+import "../../styles/mainpage.css";
 
 export const MainPage = () => {
     const { store, actions } = useContext(Context)
     const navigate = useNavigate();
     const [showAddClientModal, setShowAddClientModal] = useState(false);
     const [filteredClients, setFilteredClients] = useState([]);
-    
-    useEffect(() => {
-        actions.isLogged();
-        actions.getClients();
-        actions.getUser();
-    }, []);
 
     useEffect(() => {
+        actions.getClients();
+        actions.getUser();
+        actions.isLogged();
         if (!store.loggedIn) {
             navigate('/');
         }

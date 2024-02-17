@@ -19,6 +19,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 					activity: 'created pago',
 					date: '1/12/24'
 				},
+				{
+					activity: 'created task',
+					date: '1/1/24'
+				},
+				{
+					activity: 'created note',
+					date: '1/10/24'
+				},
+				{
+					activity: 'created pago',
+					date: '1/12/24'
+				},
 			],
 			tasks: [],
 			notes: [],
@@ -55,7 +67,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ token: json.access_token });
 
 				} catch (error) {
-					console.log(error);
+					console.log('Error login in', error);
 					Swal.fire({
 						icon: "error",
 						title: "Error",
@@ -95,7 +107,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 
 				} catch (error) {
-					console.log(error);
+					console.log('Error creating user:', error);
 					Swal.fire({
 						icon: "error",
 						title: "Error",
@@ -151,6 +163,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ userInfo: json });
 
 				} catch (error) {
+					console.log('Error getting user information:',error);
 					Swal.fire({
 						icon: "error",
 						title: "Error",
@@ -223,13 +236,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 
 			},
-			addClient: async (inputFullName, inputEmail, inputPhone, inputAddress, inputCompany) => {
+			addClient: async (fullName, email, phone, address, company) => {
 				const newClient = {
-					full_name: inputFullName,
-					email: inputEmail,
-					phone: inputPhone,
-					address: inputAddress,
-					company: inputCompany
+					full_name: fullName,
+					email: email,
+					phone: phone,
+					address: address,
+					company: company
 				};
 				try {
 					const response = await fetch(process.env.BACKEND_URL + '/api/add_client', {
@@ -256,14 +269,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 				}
 			},
-			editClient: async (clientId, inputFullName, inputEmail, inputPhone, inputAddress, inputCompany) => {
+			editClient: async (clientId, fullName, email, phone, address, company) => {
 				const updatedClient = {
 					id: clientId,
-					full_name: inputFullName,
-					email: inputEmail,
-					phone: inputPhone,
-					address: inputAddress,
-					company: inputCompany
+					full_name: fullName,
+					email: email,
+					phone: phone,
+					address: address,
+					company: company
 				};
 				try {
 					const response = await fetch(process.env.BACKEND_URL + `/api/edit_client/${clientId}`, {
@@ -302,6 +315,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				} catch (error) {
 					console.error('Error fetching clients:', error);
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to get clients. Please try again later."
+					});
 				}
 			},
 			addNote: async (noteContent, clientId) => {
@@ -359,7 +377,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ notes: data })
 
 				} catch (error) {
-					console.error('Error fetching clients:', error);
+					console.error('Error fetching notes:', error);
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to get notes. Please try again later."
+					});
 				}
 			},
 			editNote: async (noteId, newContent) => {
@@ -448,7 +471,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				} catch (error) {
 					console.error("Error deleting note:", error);
-
 					Swal.fire({
 						icon: "error",
 						title: "Error",
@@ -472,7 +494,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await response.json();
 					setStore({ tasks: data });
 				} catch (error) {
-					console.error('Error fetching all tasks for total:', error);
+					console.error('Error fetching all tasks:', error);
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to get all tasks. Please try again later."
+					});
 				}
 			},
 			addInvoice: async (amount, detail, clientId) => {
@@ -503,7 +530,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				} catch (error) {
 					console.error('Error adding invoice:', error);
-					throw new Error('Failed to add invoice. Please try again later.');
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to create invoice. Please try again later."
+					});
 				}
 			},
 			getInvoices: async () => {
@@ -514,13 +545,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ invoices: data })
 
 				} catch (error) {
-					console.error('Error fetching clients:', error);
+					console.error('Error fetching invoices:', error);
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to get invoices. Please try again later."
+					});
 				}
 			},
-			editInvoice: async (invoiceId, inputAmount, inputDetail) => {
+			editInvoice: async (invoiceId, amount, detail) => {
 				const updatedInvoice = {
-					amount: inputAmount,
-					detail: inputDetail
+					amount: amount,
+					detail: detail
 				};
 				try {
 					const response = await fetch(process.env.BACKEND_URL + `/api/edit_invoice/${invoiceId}`, {
@@ -551,6 +587,93 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 				}
 			},
+			addPayment: async (amount, paymentDate, detail, clientId) => {
+				const newPayment = {
+					amount: amount,
+					payment_date: paymentDate,
+					detail: detail,
+					client_id: clientId
+				};
+				try {
+					const response = await fetch(process.env.BACKEND_URL + '/api/add_payment', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(newPayment)
+					});
+					const data = await response.json();
+
+					if (!response.ok) {
+						throw new Error('Failed to add payment');
+					}
+
+					setStore(prevStore => ({
+						...prevStore,
+						payments: [...prevStore.payments, data]
+					}));
+					getActions().getPayments();
+
+				} catch (error) {
+					console.error('Error adding payment:', error);
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to create payment. Please try again later."
+					});
+				}
+			},
+			getPayments: async () => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + '/api/payments');
+					const data = await response.json();
+
+					setStore({ payments: data })
+
+				} catch (error) {
+					console.error('Error fetching payments:', error);
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to get payments. Please try again later."
+					});
+				}
+			},
+			editPayment: async (paymentId, amount, detail, paymentDate) => {
+				const updatedPayment = {
+					amount: amount,
+					payment_date: paymentDate,
+					detail: detail
+				};
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/edit_payment/${paymentId}`, {
+						method: 'PUT',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(updatedPayment)
+					});
+					const data = await response.json();
+			
+					if (!response.ok) {
+						throw new Error('Failed to edit payment');
+					}
+			
+					setStore(prevStore => ({
+						...prevStore,
+						payments: prevStore.payments.map(payment => payment.id === paymentId ? data : payment)
+					}));
+					getActions().getPayments();
+			
+				} catch (error) {
+					console.error('Error editing payment:', error);
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to edit payment. Please try again later."
+					});
+				}
+			},
 			getTasks: async () => {
 				try {
 				  const response = await fetch(process.env.BACKEND_URL + '/api/tasks');
@@ -558,8 +681,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				  
 				  setStore({ tasks: data })
 	
-				  } catch (error) {
-				  console.error('Error fetching tasks:', error);
+				} catch (error) {
+						console.error('Error fetching tasks:', error);
+						Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to get tasks. Please try again later."
+					});
 				}
 			},
 			editTask: async (taskId, newContent) => {
@@ -648,7 +776,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 	
 				} catch (error) {
 					console.error("Error deleting task:", error);
-					
 					Swal.fire({
 						icon: "error",
 						title: "Error",
@@ -656,7 +783,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 				}
 			},
-			addTask: async (title,due_date, status, priority, user_name, client_id) => {
+			addTask: async (title, due_date, status, priority, user_name, client_id) => {
 				const task = {
 					task_title:title,
 					due_date:due_date,
@@ -714,12 +841,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 				  
 				  setStore({ userNames: data })
 	
-				  } catch (error) {
+				} catch (error) {
 				  console.error('Error fetching user:', error);
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to get Users. Please try again later."
+					});
 				}
 			},		
 		}
 	};
 };
-43
 export default getState;
