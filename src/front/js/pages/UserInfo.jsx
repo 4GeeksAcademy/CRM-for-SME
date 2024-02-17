@@ -3,11 +3,17 @@ import { Context } from "../store/appContext";
 import { Link, useNavigate } from "react-router-dom";
 
 export const UserInfo = () => {
+    const navigate = useNavigate();
     const { store, actions } = useContext(Context);
 
     useEffect(() => {
         actions.getInfo();
+        actions.isLogged();
+        if (!store.loggedIn) {
+            navigate("/");
+        }
     }, [store.token]);
+
 
     return (
         <div className="container-fluid">

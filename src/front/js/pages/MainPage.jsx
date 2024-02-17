@@ -3,99 +3,91 @@ import { Context } from "../store/appContext";
 import { Navbar } from '../component/Navbar.jsx';
 import { Footer } from '../component/Footer.jsx';
 import { ModalAddClient } from '../component/ModalAddClient.jsx';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../styles/MainPage.css";
 
-
 export const MainPage = () => {
-  const { store, actions } = useContext(Context)
-  const [showAddClientModal, setShowAddClientModal] = useState(false);
-  const [filteredClients, setFilteredClients] = useState([]);
-  
-
-  useEffect(() => {
+    const { store, actions } = useContext(Context)
+    const navigate = useNavigate();
+    const [showAddClientModal, setShowAddClientModal] = useState(false);
+    const [filteredClients, setFilteredClients] = useState([]);
     
-    actions.getClients();
+    useEffect(() => {
+        actions.isLogged();
+        actions.getClients();
+    }, []);
+
+    useEffect(() => {
+        if (!store.loggedIn) {
+            navigate('/');
+        }
+    }, [store.loggedIn]);
     
-    
-  }, []);
-  
-  const handleSearchChange = (searchTerm) => {
-    // Filtrar la lista de clientes aquí y actualizar el estado
-   let filteredList = [];
-     searchTerm == ''? setFilteredClients(store.clients):
-      filteredList = store.clients.filter(client =>
-      client.full_name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredClients(filteredList)
-  };
+    const handleSearchChange = (searchTerm) => {
+        let filteredList = [];
+        searchTerm === '' ? setFilteredClients(store.clients) :
+            filteredList = store.clients.filter(client =>
+                client.full_name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        setFilteredClients(filteredList);
+    };
 
-  return (
-    <div>
-      <Navbar onSearchChange={handleSearchChange} />
-      {/* Primera fila con el botón "Add Client" */}
-
-      <div className="row m-4">
-        <div className="col">
-          <button
-            className="btn btn-primary"
-            onClick={() => setShowAddClientModal(true)} >
-            Add Client
-          </button>
-        </div>
-      </div>
-
-      {/* Espacio */}
-      <div className="row mb-3">
-        <div className="col"></div>
-      </div>
-
-      {/* Tabla d los clientes */}
-      <div className="row text-center">
-        <div className="col">
-          <table className="table">
-            <thead>
-              <tr>
-                <th scope="col ">Client's Name</th>
-                <th scope="col">Client's Email</th>
-                <th scope="col">Client's Phone Number</th>
-                <th scope="col">Client's Address</th>
-                <th scope="col">Client's Company</th>
-              </tr>
-            </thead>
-            
-              <tbody id = "tab">
-  {filteredClients.length === 0
-    ? store.clients.map((client) => (
-        <tr key={client.id}>
-          <td>
-            <Link to={'/client/' + client.id} className='link'>
-              {client.full_name}
-            </Link>
-          </td>
-          <td>{client.email}</td>
-          <td>{client.phone}</td>
-          <td>{client.address}</td>
-          <td>{client.company}</td>
-        </tr>
-      ))
-    : filteredClients.map((client) => (
-        <tr key={client.id}>
-          <td>{client.full_name}</td>
-          <td>{client.email}</td>
-          <td>{client.phone}</td>
-          <td>{client.address}</td>
-          <td>{client.company}</td>
-        </tr>
-      ))}
-</tbody>
-
+    return (
+        <div>
+            <Navbar onSearchChange={handleSearchChange} />
+            {/* First row with the "Add Client" button */}
+            <div className="row m-3">
+                <div className="col">
+                    <button
+                        className="btn btn-primary"
+                        onClick={() => setShowAddClientModal(true)} >
+                        Add Client
+                    </button>
+                </div>
+            </div>
            
-          </table>
+            <div className="row text-center">
+                <div className="col">
+                    <div className="table-container">
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Client's Name</th>
+                                    <th scope="col">Client's Email</th>
+                                    <th scope="col">Client's Phone Number</th>
+                                    <th scope="col">Client's Address</th>
+                                    <th scope="col">Client's Company</th>
+                                </tr>
+                            </thead>
+                            <tbody className="overflow-auto">
+                                {filteredClients.length === 0 ?
+                                    store.clients.map((client) => (
+                                        <tr key={client.id}>
+                                            <td><Link to={'/client/' + client.id} className='link'>{client.full_name}</Link></td>
+                                            <td>{client.email}</td>
+                                            <td>{client.phone}</td>
+                                            <td>{client.address}</td>
+                                            <td>{client.company}</td>
+                                        </tr>
+                                    )) :
+                                    filteredClients.map(((client) => (
+                                        <tr key={client.id}>
+                                            <td>{client.full_name}</td>
+                                            <td>{client.email}</td>
+                                            <td>{client.phone}</td>
+                                            <td>{client.address}</td>
+                                            <td>{client.company}</td>
+                                        </tr>
+                                    )))
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <Footer />
+            <ModalAddClient show={showAddClientModal} onClose={() => setShowAddClientModal(false)} />
         </div>
-      </div>
-      <Footer />
-      <ModalAddClient show={showAddClientModal} onClose={() => setShowAddClientModal(false)} />
-    </div>
-  );
+    );
 };
+

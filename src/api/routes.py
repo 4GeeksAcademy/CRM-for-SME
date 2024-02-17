@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Client, Note, Task
+from api.models import db, User, Client, Note, Task, Invoice, Payment
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 import stripe
@@ -39,8 +39,8 @@ def payment_link():
             'quantity': 1,
         }],
         mode='payment',
-        success_url='https://silver-halibut-g4q4vxqwvg4xhvvqw-3000.app.github.dev/success',
-        cancel_url='https://silver-halibut-g4q4vxqwvg4xhvvqw-3000.app.github.dev/cancel',
+        success_url= os.getenv("FRONTEND_URL") + '/success',
+        cancel_url= os.getenv("FRONTEND_URL") + '/cancel',
     )
     payment_url = session.url
 
@@ -130,6 +130,23 @@ def create_client():
     
     return jsonify({"msg": "Client created successfully"}), 200
 
+@api.route('/edit_client/<int:client_id>', methods=['PUT'])
+def edit_client(client_id):
+    client = Client.query.get(client_id)
+    if client is None:
+        return jsonify({"error": "Client not found"}), 404
+
+    client.full_name = request.json.get('full_name', client.full_name)
+    client.email = request.json.get('email', client.email)
+    client.phone = request.json.get('phone', client.phone)
+    client.address = request.json.get('address', client.address)
+    client.company = request.json.get('company', client.company)
+
+    db.session.commit()
+
+    return jsonify({"msg": "Client updated successfully"}), 200
+
+
 @api.route('/clients', methods=['GET'])
 def get_clients():
     clients = Client.query.all()
@@ -179,7 +196,7 @@ def edit_note(note_id):
             return jsonify({"message": "Unauthorized"}), 401
         
         note.note_content = note_content
-        note.date_modified = current_datetime
+        note.date_created = current_datetime
 
         db.session.commit()
         return jsonify({"message": "Note updated successfully"}), 200
@@ -209,3 +226,47 @@ def get_tasks():
     for task in tasks:
         results.append(task.serialize())
     return jsonify(results), 200
+
+@api.route('/add_invoice', methods=['POST'])
+def add_invoice():
+    amount = request.json.get('amount')
+    date_created = datetime.now()
+    detail = request.json.get('detail')
+    client_id = request.json.get('client_id')
+
+    new_invoice = Invoice(
+        amount=amount,
+        date_created=date_created,
+        detail=detail,
+        client_id=client_id
+    )
+
+    db.session.add(new_invoice)
+    db.session.commit()
+
+    return jsonify({"message": "Invoice created successfully"}), 200
+
+@api.route('/invoices', methods=['GET'])
+def get_invoices():
+    invoices = Invoice.query.all()
+    results = []
+    for invoice in invoices:
+        results.append(invoice.serialize())
+    return jsonify(results), 200
+
+@api.route('/edit_invoice/<int:invoice_id>', methods=['PUT'])
+def edit_invoice(invoice_id):
+    detail = request.json.get('detail')
+    amount = request.json.get('amount')
+    invoice = Invoice.query.filter_by(id=invoice_id).first()
+
+    if invoice:
+        invoice.detail = detail
+        invoice.amount = amount
+        invoice.date_created = datetime.now()
+
+        db.session.commit()
+
+        return jsonify({"message": "Invoice updated successfully"}), 200
+    else:
+        return jsonify({"message": "Invoice not found"}), 404
