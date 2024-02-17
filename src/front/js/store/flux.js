@@ -20,53 +20,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					date: '1/12/24'
 				},
 			],
-			tasks: [
-				{
-					client: 'Daniel test',
-					idTask: 1234567,
-					title: 'Test task 1',
-					description: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste nihil tenetur suscipit expedita voluptatibus impedit!',
-					dueDate: "2/10/2024",
-					priority: 'Medium',
-					userAsing: 'Daniel User',
-					complete: false
-
-				},
-				{
-					client: 'Daniel test',
-					idTask: 1234578,
-					title: 'Test task 2',
-					description: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste nihil tenetur suscipit expedita voluptatibus impedit!',
-					dueDate: "2/10/2024",
-					priority: 'Low',
-					userAsing: 'Fabian User',
-					complete: false
-
-				},
-				{
-					client: 'Daniel test',
-					idTask: 1234590,
-					title: 'Test task 3',
-					description: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste nihil tenetur suscipit expedita voluptatibus impedit!',
-					dueDate: "2/10/2024",
-					priority: 'High',
-					userAsing: 'Ricardo User',
-					complete: false
-
-				},
-				{
-					client: 'Daniel test',
-					idTask: 1234521,
-					title: 'Test task 4',
-					description: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste nihil tenetur suscipit expedita voluptatibus impedit!',
-					dueDate: "2/10/2024",
-					priority: 'Medium',
-					userAsing: 'Daniel Abarca User',
-					complete: false
-
-				},
-
-			],
+			tasks: [],
 			notes: [],
 			clients: [],
 			invoices: [],
@@ -597,6 +551,173 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 				}
 			},
+			getTasks: async () => {
+				try {
+				  const response = await fetch(process.env.BACKEND_URL + '/api/tasks');
+				  const data = await response.json();
+				  
+				  setStore({ tasks: data })
+	
+				  } catch (error) {
+				  console.error('Error fetching tasks:', error);
+				}
+			},
+			editTask: async (taskId, newContent) => {
+				try {
+					const store = getStore();
+					const token = store.token || localStorage.getItem("token"); 
+					
+					if (!token) {
+						Swal.fire({
+							icon: "error",
+							title: "Error",
+							text: "Session expired, please log in again",
+							didClose: () => {
+								window.location.href = "/";
+							}
+						});
+						throw new Error("Token is missing");
+					}
+			
+					const response = await fetch(process.env.BACKEND_URL + `/api/edit_task/${taskId}`, {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": "Bearer " + token
+						},
+						body: JSON.stringify({ task_title: newContent })
+					});
+			
+					const data = await response.json();
+			
+					if (!response.ok) {
+						throw new Error('Failed to edit task');
+					}
+			
+					setStore(prevStore => ({
+						...prevStore,
+						tasks: prevStore.taskss.map(task => task.id === taskId ? data : task)
+					}));
+					getActions().getTasks();
+	
+				} catch (error) {
+					console.error("Error editing task:", error);
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to edit task. Please try again later."
+					});
+				}
+			},
+			deleteTask: async (taskId) => {
+				try {
+					const store = getStore();
+					const token = store.token || localStorage.getItem("token"); 
+					
+					if (!token) {
+						Swal.fire({
+							icon: "error",
+							title: "Error",
+							text: "Session expired, please log in again",
+							didClose: () => {
+								window.location.href = "/";
+							}
+						});
+						throw new Error("Token is missing");
+					}
+			
+					const response = await fetch(process.env.BACKEND_URL + `/api/delete_task/${taskId}`, {
+						method: "DELETE",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": "Bearer " + token
+						}
+					});
+	
+					const data = await response.json();
+	
+					if (!response.ok) {
+						throw new Error("Failed to delete task");
+					}
+			
+					setStore(prevStore => ({
+						...prevStore,
+						tasks: prevStore.tasks.filter(task => task.id !== taskId)
+					}));
+					getActions().getTasks();
+	
+				} catch (error) {
+					console.error("Error deleting task:", error);
+					
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to delete task. Please try again later."
+					});
+				}
+			},
+			addTask: async (title,due_date, status, priority, user_name, client_id) => {
+				const task = {
+					task_title:title,
+					due_date:due_date,
+					status:status,
+					priority:priority,
+					user_name:user_name,
+					client_id:client_id
+				}
+				try {
+					const store = getStore();
+					const token = store.token || localStorage.getItem("token"); 
+			
+					if (!token) {
+						Swal.fire({
+							icon: "error",
+							title: "Error",
+							text: "Session expired, please log in again",
+							didClose: () => {
+								window.location.href = "/";
+							}
+						});
+						throw new Error("Token is missing");
+					}
+			
+					const response = await fetch(process.env.BACKEND_URL + '/api/add_task', {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": "Bearer " + token
+						},
+						body: JSON.stringify(task)
+					});
+			
+					const data = await response.json();			
+				
+					setStore(prevStore => ({
+						...prevStore,
+						tasks: [...prevStore.tasks, data] 
+					}));
+					getActions().getTasks();
+	
+				} catch (error) {
+					console.error("Error creating task:", error);
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to create task. Please try again later."
+					});
+				}
+			},
+			getUser: async () => {
+				try {
+				  const response = await fetch(process.env.BACKEND_URL + '/api/user');
+				  const data = await response.json();
+				  
+				  setStore({ userNames: data })
+	
+				  } catch (error) {
+				  console.error('Error fetching user:', error);
+				}
+			},		
 		}
 	};
 };
