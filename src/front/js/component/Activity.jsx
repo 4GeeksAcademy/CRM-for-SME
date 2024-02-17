@@ -2,10 +2,12 @@ import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
 import Logo from "../../img/Logo.png"
 
-export const Activity = () => {
+export const Activity = (props) => {
 	const { store, actions } = useContext(Context);
     const [state, setState] = useState([]);
-   
+    // const filteredNotes = store.notes.filter(note => note.client_id === props.clientId);
+    // const filteredTasks = store.tasks.filter(note => note.client_id === props.clientId);
+    // const filteredPayments = store.payments.filter(note => note.client_id === props.clientId);
     
 
 

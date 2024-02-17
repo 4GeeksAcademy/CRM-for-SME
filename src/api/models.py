@@ -63,10 +63,12 @@ class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(250), nullable=False)
     description = db.Column(db.Text)
-    due_date = db.Column(db.DateTime, nullable=False) 
+    due_date = db.Column(db.DateTime, nullable=False)
+    date_created = db.Column(db.DateTime, nullable=False)  
     status = db.Column(db.String(250), nullable=False)
     priority = db.Column(db.String(250), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_name = db.Column(db.String(250), nullable=False)
+    user_id = db.Column(db.String(200), db.ForeignKey('user.user_name'), nullable=False)
     user = db.relationship('User')
     client_id = db.Column(db.Integer, db.ForeignKey('client.id'), nullable=False)
     client = db.relationship('Client')
@@ -76,11 +78,17 @@ class Task(db.Model):
             "id": self.id,
             "title": self.title,
             "description": self.description,
+<<<<<<< HEAD
+            "due_date":self.date_created.strftime('%d-%m-%Y'),
+=======
             "due_date":self.due_date.strftime('%d-%m-%Y'),
+>>>>>>> 5649b4baf99f5cb5c23f330a4c8c0ab2e747d3d0
             "status":self.status,
             "priority":self.priority,
             "client_id": self.client_id,
-            "user_id": self.user_id,           
+            "user_id": self.user_id,
+            "user_name":self.user_name,
+            "date_created": self.date_created.strftime('%d-%m-%Y')           
         }
 
 class Invoice(db.Model):

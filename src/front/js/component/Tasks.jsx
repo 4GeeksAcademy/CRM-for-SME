@@ -6,6 +6,15 @@ import "../../styles/tasks.css";
 export const Tasks = props => {
     const { store, actions } = useContext(Context);
     const [state, useState] = ('')
+
+    useEffect(() => {
+        actions.getTasks();
+        
+    }, []);
+   
+   
+    
+
     return (
         <div className="container d-flex flex-column justify-content-center align-items-center m-4 row">
 
@@ -19,7 +28,7 @@ export const Tasks = props => {
                         <li className="border border-dark p-2 my-2 d-flex justify-content-between row bg-light" key={index}>
                             <div className="col-2 d-flex flex-column">
                                 <h5 className="fw-bold">User Asign</h5>
-                                <span>{task.userAsing}</span>
+                                <span>{task.user_name}</span>
                             </div>
 
                             <div className="col-2 d-flex flex-column">
@@ -29,7 +38,7 @@ export const Tasks = props => {
 
                             <div className="col-2 d-flex flex-column">
                                 <h5 className="fw-bold" >Due Date</h5>
-                                <span>{task.dueDate}</span>
+                                <span>{task.due_date}</span>
                             </div>
 
                             <div className="col-2 d-flex flex-column">
@@ -39,7 +48,7 @@ export const Tasks = props => {
 
                             <div className="col-2 d-flex flex-column justify-content-center align-items-center">
                                 <h5 className="fw-bold">Status</h5>
-                                <button type="button" className={task.complete == false ? 'btn btn-secondary' : 'btn btn-success'} onClick={() => actions.taskAsDone(task.idTask)}>{task.complete == false ? 'Pending' : 'Completed'}</button>
+                                <button type="button" className={task.status == false ? 'btn btn-secondary' : 'btn btn-success'} onClick={() => actions.taskAsDone(task.id)}>{task.status == false ? 'Pending' : 'Completed'}</button>
                             </div>
 
                             <div className="col-1 d-flex align-items-center">
