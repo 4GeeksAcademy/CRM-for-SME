@@ -1,3 +1,5 @@
+
+
 body {
   background-color: #c2e2fd8e;
 }
@@ -12,7 +14,9 @@ body {
 
 .table th,
 .table td {
-  color: #182833; 
+  max-width: 300px ;
+  overflow-x: auto !important;
+  color: #000000;
 }
 
 .link {
@@ -35,4 +39,19 @@ body {
   max-height: 400px; 
   overflow-y: auto; 
   display: block; 
+}
+
+.link {
+  outline: none;
+  text-decoration: none;
+  color: #182833;
+}
+
+.link:focus {
+  background: #45deef;
+}
+
+.link:hover {
+  border-bottom: 1px solid;
+  color: #276595;
 }

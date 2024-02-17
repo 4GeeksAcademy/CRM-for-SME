@@ -9,6 +9,10 @@ export const TotalTasks = (props) => {
     const { store, actions } = useContext(Context);
     const navigate = useNavigate();
 
+    // useEffect(() => {
+        
+    //     actions.getAllTasksForTotal();
+    // }, []);
     useEffect(() => {
         actions.isLogged();
         /* actions.getAllTasksForTotal(); */
@@ -31,11 +35,6 @@ export const TotalTasks = (props) => {
             <ul>
                 {store.tasks.map((task, index) => (
                     <li className="border border-dark p-2 my-2 d-flex justify-content-between row bg-light" key={index}>
-                        <div className="col-2 d-flex flex-column">
-                            <h5 className="fw-bold">User Asign</h5>
-                            <span>{task.userAsing}</span>
-                        </div>
-
                         <div className="col-2 d-flex flex-column">
                             <h5 className="fw-bold" >Task title</h5>
                             <span>{task.title}</span>
