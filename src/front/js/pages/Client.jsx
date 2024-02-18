@@ -102,17 +102,23 @@ export const Client = () => {
                         {state == 'Activity' ?
                             <Activity
                             /> : state == 'Tasks' ?
+                               <div className="table-container col overflow-auto">
+                                 <div style={{ maxHeight: '600px', overflowX: 'hidden' }}>
                                 <Tasks
                                     onAddTask={() => setShowModalAddTask(true)}
                                     onEditTask={() => setShowModalEditTask(true)}
                                     onDeleteTask={() => setShowModalDeleteTask(true)}
-                                /> : state == 'Notes' ?
+                                />
+                                </div>
+                                </div>  : state == 'Notes' ?
+                               
                                     <Notes
                                         clientId={correctClient[0].id}
                                         onAddNote={() => setShowModalAddNote(true)}
                                         onEditNote={(note) => { setSelectedNote(note); setShowModalEditNote(true) }}
                                         onDeleteNote={(note) => { setSelectedNote(note); setShowModalDeleteNote(true) }}
-                                    /> :
+                                    />  
+                                   :
                                     <Billing
                                         onAddInvoice={() => setShowModalAddInvoice(true)}
                                         onEditInvoice={(invoice) => {setSelectedInvoice(invoice); setShowModalEditInvoice(true)}}

@@ -16,29 +16,32 @@ export const Notes = props => {
             <div className="col-12 d-flex justify-content-end align-items-end">
                 <button type="button" className="btn btn-primary" onClick={() => props.onAddNote()}>Add Note</button>
             </div>
-            <ul>
-                {filteredNotes.map((note, index) => {
-                    return (
-                        <li className="border border-dark p-2 my-2 d-flex row bg-light" key={index}>
-                            <span className="col-8">{note.note_content}</span>
-                            <div className="row col-4">
-                                <div className="col-5 d-flex flex-column">
-                                    <h6 className="fw-bold">User</h6>
-                                    <span>{note.user_id}</span>
+            <div className="table-container col overflow-auto">
+                <ul>
+                    {filteredNotes.map((note, index) => {
+                        return (
+                            <li className="border border-dark p-2 my-2 d-flex row bg-light" key={index}>
+                                <span className="col-8">{note.note_content}</span>
+                                <div className="row col-4">
+                                    <div className="col-5 d-flex flex-column">
+                                        <h6 className="fw-bold">User</h6>
+                                        <span>{note.user_id}</span>
+                                    </div>
+                                    <div className="col-5 d-flex flex-column">
+                                        <h6 className="fw-bold" >Date Created</h6>
+                                        <span>{note.date_created}</span>
+                                    </div>
+                                    <div className="col-2 d-flex align-items-center">
+                                        <i className="fa-solid fa-pen mx-1 cursor" onClick={() => props.onEditNote(note)}></i>
+                                        <i className="fa-solid fa-trash mx-1 cursor" onClick={() => props.onDeleteNote(note)}></i>
+                                    </div>
                                 </div>
-                                <div className="col-5 d-flex flex-column">
-                                    <h6 className="fw-bold" >Date Created</h6>
-                                    <span>{note.date_created}</span>
-                                </div>
-                                <div className="col-2 d-flex align-items-center">
-                                    <i className="fa-solid fa-pen mx-1 cursor" onClick={() => props.onEditNote(note)}></i>
-                                    <i className="fa-solid fa-trash mx-1 cursor" onClick={() => props.onDeleteNote(note)}></i>
-                                </div>
-                            </div>
-                        </li>
-                    );
-                })}
-            </ul>
+                            </li>
+                        );
+                    })}
+                </ul>
+            </div>
+
         </div>
     );
 }
