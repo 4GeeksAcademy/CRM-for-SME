@@ -2,9 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/billing.css";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 export const Billing = props => {
 	const { actions, store } = useContext(Context);
+	const navigate = useNavigate();
 	const filteredInvoices = store.invoices.filter(invoice => invoice.client_id === props.clientId);
 	const filteredCollected = store.payments.filter(payment => payment.client_id === props.clientId);
     const [totalInvoiceAmount, setTotalInvoiceAmount] = useState(0);
@@ -12,9 +15,19 @@ export const Billing = props => {
     const [balance, setBalance] = useState(0);
 
     useEffect(() => {
-        actions.getInvoices();
+		actions.getInvoices();
 		actions.getPayments();
-    }, []);
+        actions.isLogged();
+        if (!store.loggedIn) {
+            navigate('/');
+			Swal.fire({
+                icon: "info",
+                title: "Alert",
+                text: "Your session has expired. Please log in"
+            });
+        }
+      }, [store.token]);
+	
 
     useEffect(() => {
         const invoiceAmountSum = filteredInvoices.reduce((total, invoice) => total + invoice.amount, 0);
@@ -64,7 +77,7 @@ export const Billing = props => {
 									<span>{invoice.amount}</span>
 								</div>
 								<div className="col-3 d-flex flex-column">
-									<h5>Date Created</h5>
+									<h5>Invoice Date</h5>
 									<span>{invoice.date_created}</span>
 								</div>
 								<div className="col-1 d-flex flex-column align-items-center justify-content-center cursor">
@@ -86,7 +99,7 @@ export const Billing = props => {
 									<span>{payment.amount}</span>
 								</div>
 								<div className="col-3 d-flex flex-column">
-									<h5>Date Created</h5>
+									<h5>Payment Date</h5>
 									<span>{payment.payment_date}</span>
 								</div>
 								<div className="col-1 d-flex flex-column align-items-center justify-content-center cursor">

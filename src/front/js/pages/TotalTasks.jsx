@@ -5,6 +5,7 @@ import { Footer } from '../component/Footer.jsx';
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import "../../styles/totaltasks.css";
+import Swal from 'sweetalert2'
 
 export const TotalTasks = (props) => {
     const { store, actions } = useContext(Context);
@@ -12,16 +13,17 @@ export const TotalTasks = (props) => {
 
     useEffect(() => {
         actions.isLogged();
-        actions.getTasks(); 
-      }, []);
-    
-      useEffect(() => {
-        actions.isLogged();
+        actions.getTasks();
         if (!store.loggedIn) {
-          navigate('/');
+            navigate('/');
+            Swal.fire({
+                icon: "info",
+                title: "Alert",
+                text: "Your session has expired. Please log in"
+            });
         }
-      }, [store.loggedIn]);
-    
+    }, [store.loggedIn]);
+
     return (
 
         <div>
@@ -38,9 +40,9 @@ export const TotalTasks = (props) => {
                             <span>{task.title}</span>
                         </div>
                         <div className="col-2 d-flex flex-column">
-                                <h5 className="fw-bold">User Asign</h5>
-                                <span>{task.user_name}</span>
-                            </div>
+                            <h5 className="fw-bold">User Asign</h5>
+                            <span>{task.user_name}</span>
+                        </div>
                         <div className="col-2 d-flex flex-column">
                             <h5 className="fw-bold" >Due Date</h5>
                             <span>{task.due_date}</span>
@@ -56,7 +58,7 @@ export const TotalTasks = (props) => {
                             <button type="button" className={task.status == 'Incomplete' ? 'btn btn-secondary' : 'btn btn-success'}>{task.status}</button>
                         </div>
 
-                        
+
                     </li>
                 ))}
             </ul>

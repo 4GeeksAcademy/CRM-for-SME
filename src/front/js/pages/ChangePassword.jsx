@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 export const ChangePassword = () => {
     const navigate = useNavigate();
@@ -13,6 +14,11 @@ export const ChangePassword = () => {
         actions.isLogged();
         if (!store.loggedIn) {
             navigate("/");
+            Swal.fire({
+                icon: "info",
+                title: "Alert",
+                text: "Your session has expired. Please log in"
+            });
         }
     }, [store.token]);
 

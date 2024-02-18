@@ -12,6 +12,7 @@ export const SignUp = () => {
     const [inputEmail, setInputEmail] = useState("");
     const [inputPassword, setInputPassword] = useState("");
     const [inputConfirmPassword, setInputConfirmPassword] = useState("");
+    
     function save() {
         actions.postSignUp(inputUser, inputEmail, inputPassword);
         navigate('/');

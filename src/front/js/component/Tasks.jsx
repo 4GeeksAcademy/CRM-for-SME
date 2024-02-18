@@ -2,14 +2,26 @@ import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
 import "../../styles/tasks.css";
+import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 export const Tasks = props => {
+    const navigate = useNavigate();
     const { store, actions } = useContext(Context);
     const filteredTask = store.tasks.filter(task => task.client_id === props.clientId);
+    
     useEffect(() => {
         actions.getTasks();
-        
-    }, []);
+        actions.isLogged();
+        if (!store.loggedIn) {
+            navigate('/');
+            Swal.fire({
+                icon: "info",
+                title: "Alert",
+                text: "Your session has expired. Please log in"
+            });
+        }
+    }, [store.loggedIn]);
    
    
     
@@ -21,7 +33,7 @@ export const Tasks = props => {
                 <button type="button" className="btn btn-primary" onClick={() => props.onAddTask()}>Add Task</button>
             </div>
 
-            <ul>
+            <ul id="taskScroll">
                 {filteredTask.map((task, index) => {
                     return (
                         <li className="border border-dark p-2 my-2 d-flex justify-content-between row bg-light" key={index}>

@@ -38,7 +38,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 						});
 					}
 
-					getActions().tokenLogin(json.access_token);
+					const expirationTime = new Date().getTime() + 20 * 60 * 1000;
+					getActions().tokenLogin(json.access_token, expirationTime);
 					setStore({ token: json.access_token });
 
 				} catch (error) {
@@ -90,21 +91,32 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 				}
 			},
-			tokenLogin: (token) => {
+			tokenLogin: (token, expirationTime) => {
 				setStore({ loggedIn: true });
 				localStorage.setItem("token", token);
+				localStorage.setItem("expirationTime", expirationTime);
 			},
 			tokenLogout: () => {
 				setStore({ loggedIn: false });
 				localStorage.removeItem("token");
+				localStorage.removeItem("expirationTime");
 				setStore({ token: null });
 			},
 			isLogged: () => {
-				if (localStorage.getItem("token")) {
-					setStore({ loggedIn: true })
-				}
-				else {
-					setStore({ loggedIn: false })
+				const token = localStorage.getItem("token");
+				const expirationTime = localStorage.getItem("expirationTime");
+			
+				if (token && expirationTime) {
+
+					if (new Date().getTime() < parseInt(expirationTime)) {
+						setStore({ loggedIn: true });
+					} else {
+						localStorage.removeItem("token");
+						localStorage.removeItem("expirationTime");
+						setStore({ loggedIn: false });
+					}
+				} else {
+					setStore({ loggedIn: false });
 				}
 			},
 			getInfo: async () => {
@@ -138,7 +150,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ userInfo: json });
 
 				} catch (error) {
-					console.log('Error getting user information:',error);
+					console.log('Error getting user information:', error);
 					Swal.fire({
 						icon: "error",
 						title: "Error",
@@ -231,20 +243,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Content-Type": "application/json",
 							"Authorization": "Bearer " + token
 						},
-						body: JSON.stringify({ status: status})
+						body: JSON.stringify({ status: status })
 					});
 
 					if (!response.ok) {
 						throw new Error('Failed to edit status');
 					}
-					} catch (error) {
-						console.error('Error editing task:', error);
-						Swal.fire({
-							icon: "error",
-							title: "Error",
-							text: "Failed to edit task. Please try again later."
-						});
-					}
+				} catch (error) {
+					console.error('Error editing task:', error);
+					Swal.fire({
+						icon: "error",
+						title: "Error",
+						text: "Failed to edit task. Please try again later."
+					});
+				}
 
 			},
 			addClient: async (fullName, email, phone, address, company) => {
@@ -489,30 +501,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 				}
 			},
-			getAllTasksForTotal: async () => {
-				try {
-					const response = await fetch(process.env.BACKEND_URL + '/api/totaltasks', {
-						headers:
-						{
-							"Content-Type": "application/json"
-						}
-					});
-
-					if (!response.ok) {
-						throw new Error(`Error fetching all tasks for total: ${response.statusText}`);
-					}
-
-					const data = await response.json();
-					setStore({ tasks: data });
-				} catch (error) {
-					console.error('Error fetching all tasks:', error);
-					Swal.fire({
-						icon: "error",
-						title: "Error",
-						text: "Failed to get all tasks. Please try again later."
-					});
-				}
-			},
 			addInvoice: async (amount, detail, clientId) => {
 				const newInvoice = {
 					amount: amount,
@@ -578,17 +566,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 						body: JSON.stringify(updatedInvoice)
 					});
 					const data = await response.json();
-			
+
 					if (!response.ok) {
 						throw new Error('Failed to edit invoice');
 					}
-			
+
 					setStore(prevStore => ({
 						...prevStore,
 						invoices: prevStore.invoices.map(invoice => invoice.id === invoiceId ? data : invoice)
 					}));
 					getActions().getInvoices();
-			
+
 				} catch (error) {
 					console.error('Error editing invoice:', error);
 					Swal.fire({
@@ -640,6 +628,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await response.json();
 
 					setStore({ payments: data })
+					
 
 				} catch (error) {
 					console.error('Error fetching payments:', error);
@@ -665,17 +654,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 						body: JSON.stringify(updatedPayment)
 					});
 					const data = await response.json();
-			
+
 					if (!response.ok) {
 						throw new Error('Failed to edit payment');
 					}
-			
+
 					setStore(prevStore => ({
 						...prevStore,
 						payments: prevStore.payments.map(payment => payment.id === paymentId ? data : payment)
 					}));
 					getActions().getPayments();
-			
+
 				} catch (error) {
 					console.error('Error editing payment:', error);
 					Swal.fire({
@@ -687,33 +676,32 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			getTasks: async () => {
 				try {
-				  const response = await fetch(process.env.BACKEND_URL + '/api/tasks');
-				  const data = await response.json();
-				  
-				  setStore({ tasks: data })
-	
+					const response = await fetch(process.env.BACKEND_URL + '/api/tasks');
+					const data = await response.json();
+
+					setStore({ tasks: data })
+
 				} catch (error) {
-						console.error('Error fetching tasks:', error);
-						Swal.fire({
+					console.error('Error fetching tasks:', error);
+					Swal.fire({
 						icon: "error",
 						title: "Error",
 						text: "Failed to get tasks. Please try again later."
 					});
 				}
 			},
-			editTask: async (taskId, title,due_date, status, priority, user_name,) => {
+			editTask: async (taskId, title, due_date, status, priority, user_name,) => {
 				const editedTask = {
-					due_date:due_date,
-					task_title:title,
-					status:status,
-					priority:priority,
-					user_name:user_name,
+					due_date: due_date,
+					task_title: title,
+					status: status,
+					priority: priority,
+					user_name: user_name,
 				}
-				console.log(editedTask)
 				try {
 					const store = getStore();
-					const token = store.token || localStorage.getItem("token"); 
-					
+					const token = store.token || localStorage.getItem("token");
+
 					if (!token) {
 						Swal.fire({
 							icon: "error",
@@ -725,7 +713,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						});
 						throw new Error("Token is missing");
 					}
-			
+
 					const response = await fetch(process.env.BACKEND_URL + `/api/edit_task/${taskId}`, {
 						method: "PUT",
 						headers: {
@@ -734,19 +722,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify(editedTask)
 					});
-			
+
 					const data = await response.json();
-			
+
 					if (!response.ok) {
 						throw new Error('Failed to edit task');
 					}
-			
+
 					setStore(prevStore => ({
 						...prevStore,
 						tasks: prevStore.tasks.map(task => task.id === taskId ? data : task)
 					}));
 					getActions().getTasks();
-	
+
 				} catch (error) {
 					console.error("Error editing task:", error);
 					Swal.fire({
@@ -759,8 +747,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			deleteTask: async (taskId) => {
 				try {
 					const store = getStore();
-					const token = store.token || localStorage.getItem("token"); 
-					
+					const token = store.token || localStorage.getItem("token");
+
 					if (!token) {
 						Swal.fire({
 							icon: "error",
@@ -772,7 +760,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						});
 						throw new Error("Token is missing");
 					}
-			
+
 					const response = await fetch(process.env.BACKEND_URL + `/api/delete_task/${taskId}`, {
 						method: "DELETE",
 						headers: {
@@ -780,19 +768,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Authorization": "Bearer " + token
 						}
 					});
-	
+
 					const data = await response.json();
-	
+
 					if (!response.ok) {
 						throw new Error("Failed to delete task");
 					}
-			
+
 					setStore(prevStore => ({
 						...prevStore,
 						tasks: prevStore.tasks.filter(task => task.id !== taskId)
 					}));
 					getActions().getTasks();
-	
+
 				} catch (error) {
 					console.error("Error deleting task:", error);
 					Swal.fire({
@@ -804,17 +792,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			addTask: async (title, due_date, status, priority, user_name, client_id) => {
 				const task = {
-					task_title:title,
-					due_date:due_date,
-					status:status,
-					priority:priority,
-					user_name:user_name,
-					client_id:client_id
+					task_title: title,
+					due_date: due_date,
+					status: status,
+					priority: priority,
+					user_name: user_name,
+					client_id: client_id
 				}
 				try {
 					const store = getStore();
-					const token = store.token || localStorage.getItem("token"); 
-			
+					const token = store.token || localStorage.getItem("token");
+
 					if (!token) {
 						Swal.fire({
 							icon: "error",
@@ -826,7 +814,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						});
 						throw new Error("Token is missing");
 					}
-			
+
 					const response = await fetch(process.env.BACKEND_URL + '/api/add_task', {
 						method: "POST",
 						headers: {
@@ -835,15 +823,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify(task)
 					});
-			
-					const data = await response.json();			
-				
+
+					const data = await response.json();
+
 					setStore(prevStore => ({
 						...prevStore,
-						tasks: [...prevStore.tasks, data] 
+						tasks: [...prevStore.tasks, data]
 					}));
 					getActions().getTasks();
-	
+
 				} catch (error) {
 					console.error("Error creating task:", error);
 					Swal.fire({
@@ -855,20 +843,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			getUser: async () => {
 				try {
-				  const response = await fetch(process.env.BACKEND_URL + '/api/user');
-				  const data = await response.json();
-				  
-				  setStore({ userNames: data })
-	
+					const response = await fetch(process.env.BACKEND_URL + '/api/user');
+					const data = await response.json();
+
+					setStore({ userNames: data })
+
 				} catch (error) {
-				  console.error('Error fetching user:', error);
+					console.error('Error fetching user:', error);
 					Swal.fire({
 						icon: "error",
 						title: "Error",
 						text: "Failed to get Users. Please try again later."
 					});
 				}
-			},		
+			},
 		}
 	};
 };
