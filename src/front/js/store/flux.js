@@ -38,7 +38,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						});
 					}
 
-					const expirationTime = new Date().getTime() + 20 * 60 * 1000;
+					const expirationTime = new Date().getTime() + 30 * 60 * 1000;
 					getActions().tokenLogin(json.access_token, expirationTime);
 					setStore({ token: json.access_token });
 
