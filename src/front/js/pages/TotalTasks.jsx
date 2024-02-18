@@ -1,10 +1,9 @@
 import React, { useContext, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { Navbar } from '../component/Navbar.jsx';
 import { Footer } from '../component/Footer.jsx';
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
-import "../../styles/totaltasks.css";
 import Swal from 'sweetalert2'
 
 export const TotalTasks = (props) => {
@@ -37,7 +36,7 @@ export const TotalTasks = (props) => {
                     <li className="border border-dark p-2 my-2 d-flex justify-content-between row bg-light" key={index}>
                         <div className="col-2 d-flex flex-column">
                             <h5 className="fw-bold" >Task title</h5>
-                            <span>{task.title}</span>
+                            <span><Link to={'/client/' + task.client_id} className='link'>{task.title}</Link></span>
                         </div>
                         <div className="col-2 d-flex flex-column">
                             <h5 className="fw-bold">User Asign</h5>
@@ -55,7 +54,7 @@ export const TotalTasks = (props) => {
 
                         <div className="col-2 d-flex flex-column justify-content-center align-items-center">
                             <h5 className="fw-bold">Status</h5>
-                            <button type="button" className={task.status == 'Incomplete' ? 'btn btn-secondary' : 'btn btn-success'}>{task.status}</button>
+                            <span className={task.status == 'Pending' ? 'text-secondary' : 'text-success'}>{task.status}</span>
                         </div>
 
 
