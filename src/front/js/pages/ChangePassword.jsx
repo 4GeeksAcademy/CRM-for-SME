@@ -33,7 +33,7 @@ export const ChangePassword = () => {
         <div className="container mt-5">
             <h2 className="mb-4">Change Password</h2>
             <form onSubmit={handleSubmit}>
-                <div className="mb-3">
+                <div className="mb-3 col-3">
                     <label htmlFor="currentPassword" className="form-label">Current Password</label>
                     <input
                         type="password"
@@ -45,7 +45,7 @@ export const ChangePassword = () => {
                         required
                     />
                 </div>
-                <div className="mb-3">
+                <div className="mb-3 col-3">
                     <label htmlFor="newPassword" className="form-label">New Password</label>
                     <input
                         type="password"
@@ -57,7 +57,7 @@ export const ChangePassword = () => {
                         required
                     />
                 </div>
-                <div className="mb-3">
+                <div className="mb-3 col-3">
                     <label htmlFor="confirmPassword" className="form-label">Confirm New Password</label>
                     <input
                         type="password"
