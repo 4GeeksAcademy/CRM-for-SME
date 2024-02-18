@@ -258,30 +258,22 @@ def get_tasks():
     return jsonify(results), 200
 
 @api.route('/edit_task/<int:task_id>', methods=['PUT'])
-@jwt_required()
 def edit_task(task_id):
-    current_user_identity = get_jwt_identity()
     due_date = request.json.get('due_date')
     task_title = request.json.get('task_title')
-    description = request.json.get('description')
     status = request.json.get('status')
     priority = request.json.get('priority')
     current_datetime = datetime.now()
-    client_id = request.json.get('client_id')
     user_name = request.json.get('user_name')
     task = Task.query.filter_by(id=task_id).first()
 
-    if task:
-        if task.user_id != current_user_identity:
-            return jsonify({"message": "Unauthorized"}), 401
-        
+    if task:       
         task.title = task_title
-        task.description = description
         task.due_date = due_date
         task.date_created = current_datetime
         task.status = status
         task.priority = priority
-        task.user_name = user_name,
+        task.user_name = user_name
 
         db.session.commit()
         return jsonify({"message": "Task updated successfully"}), 200
@@ -369,3 +361,17 @@ def edit_invoice(invoice_id):
         return jsonify({"message": "Invoice updated successfully"}), 200
     else:
         return jsonify({"message": "Invoice not found"}), 404
+    
+@api.route('/task_status/<int:task_id>', methods=['PUT'])
+def task_status(task_id):
+    status = request.json.get('status')
+    task = Task.query.filter_by(id=task_id).first()
+
+    if task:
+        task.status = status       
+
+        db.session.commit()
+
+        return jsonify({"message": "Status updated successfully"}), 200
+    else:
+        return jsonify({"message": "Task not found"}), 404

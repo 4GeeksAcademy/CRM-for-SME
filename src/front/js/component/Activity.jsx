@@ -5,23 +5,35 @@ import Logo from "../../img/Logo.png"
 export const Activity = (props) => {
 	const { store, actions } = useContext(Context);
     const [state, setState] = useState([]);
-    // const filteredNotes = store.notes.filter(note => note.client_id === props.clientId);
-    // const filteredTasks = store.tasks.filter(note => note.client_id === props.clientId);
-    // const filteredPayments = store.payments.filter(note => note.client_id === props.clientId);
     
+    useEffect(() => {
+        actions.getNotes();
+        actions.getTasks();
+        // actions.getPayments();
+        actions.getInvoices();
+    }, []);
+    
+    const filteredNotes = store.notes.filter(note => note.client_id === props.clientId).map(note => [note.date_created,note.type = 'Note']);
+    const filteredTasks = store.tasks.filter(task => task.client_id === props.clientId).map(task => [task.date_created, task.type = "Task"] );
+    const filteredPayments = store.payments.filter(payment => payment.client_id === props.clientId).map(payment => [payment.date_created,payment.type = 'Payment']);;
+    const filteredInvoices= store.invoices.filter(invoice => invoice.client_id === props.clientId).map(invoice => [invoice.date_created,invoice.type = 'Invoice']);;
 
+    const completeActivity = [...filteredNotes, ...filteredTasks,...filteredPayments, ...filteredInvoices ]
+
+
+    console.log(completeActivity)
 
 	return (
 
         <>
         
-        <div className="container d-flex flex-column justify-content-center align-items-center m-4 w-100">
-            <ul>
-            {store.activity.map((activity, index) => {
+        <div className="container">
+            <ul className="row d-flex flex-column justify-content-center align-items-center my-2">
+            {completeActivity.map((activity, index) => {
 							return (
-								<li className="border border-dark p-5 my-2 d-flex justify-content-end row bg-light" style={{width:'30rem'}}key={index}>
-                                    <span className="col-6">{activity.activity}</span> 
-                                    <span className="col-6">Date created: {activity.date}</span> 
+								<li className="border border-dark p-3 my-1 d-flex w-50 row bg-light" key={index}>
+                                    <span className="col-6">{activity[1]} created</span> 
+                                    <span className="col-6">Date created: {activity[0]}</span> 
                                  </li>
 							);
 						})}                              

@@ -1,15 +1,27 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext,useEffect } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
 
 export const ModalEditTask = props => {
-    const [state, setState] = useState("");
     const [inputEditarTask, setInputEditarTask] = useState("");
-    const [inputAssignTask, setInputAssignTask] = useState("");
+    const [inputUserAssignTask, setInputUserAssignTask] = useState("");
     const [inputDateTask, setInputDateTask] = useState("");
     const [inputTaskPriority, setInputTaskPriority] = useState("");
     const { store, actions } = useContext(Context);
+    const handleEditTask = async () => {
+        await actions.editTask(props.task.id, inputEditarTask,inputDateTask, props.task.status, inputTaskPriority, inputUserAssignTask);
+        props.onClose();
+    };
+
+    useEffect(() => {
+        setInputEditarTask(props.task ? props.task.title : "");
+        setInputUserAssignTask(props.task ? props.task.user_name : "");
+        setInputDateTask(props.task ? props.task.due_date : "");
+        setInputTaskPriority(props.task ? props.task.priority : "");
+    }, [props.task]);
+
+
 
     return (
         <div className="modal bg-secondary py-5" tabIndex="-1" role="dialog" style={{ display: props.show ? "inline-block" : "none" }}>
@@ -40,14 +52,11 @@ export const ModalEditTask = props => {
                         <label htmlFor="priority" className="form-label d-flex justify-content-start align-items-start">Assign Task</label>
                         <select
                             className="form-control mb-1 border border-secondary"
-                            onChange={e => setInputAssignTask(e.target.value)}
-                            value={inputAssignTask}
+                            onChange={e => setInputUserAssignTask(e.target.value)}
+                            value={inputUserAssignTask}
                             placeholder="Assign Edit Task">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                            <option></option>
+                            {store.userNames.map((user,key) =><option key={key}>{user}</option>)}
                         </select>
                         <label htmlFor="priority" className="form-label d-flex justify-content-start align-items-start">Date</label>
                         <input
@@ -64,6 +73,7 @@ export const ModalEditTask = props => {
                             onChange={e => setInputTaskPriority(e.target.value)}
                             value={inputTaskPriority}
                             placeholder="Task Edit Priority">
+                            <option></option> 
                             <option>Low</option>
                             <option>Medium</option>
                             <option>High</option>
@@ -74,10 +84,8 @@ export const ModalEditTask = props => {
                             type="button"
                             className="btn btn-primary"
                             data-dismiss="modal"
-                            onClick={() => {
-                                props.onClose();
-                            }}>
-                            Add Task
+                            onClick={handleEditTask}>
+                            Save Changes
                         </button>
                         <button type="button" className="btn btn-secondary" onClick={() => props.onClose()}>
                             Cancel

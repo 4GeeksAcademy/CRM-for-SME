@@ -102,6 +102,7 @@ export const Client = () => {
                     <div className="container row mb-5">
                         {state == 'Activity' ?
                             <Activity
+                            clientId={correctClient[0].id}
                             /> : state == 'Tasks' ?
                                 <Tasks
                                     clientId={correctClient[0].id}
