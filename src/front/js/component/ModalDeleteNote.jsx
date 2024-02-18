@@ -1,12 +1,13 @@
 import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
+import Swal from 'sweetalert2'
 
 export const ModalDeleteNote = props => {
     const { actions } = useContext(Context);
 
-    const handleDeleteNote = async () => {
-        await actions.deleteNote(props.note.id);
+    function handleDeleteNote() {
+        actions.deleteNote(props.note.id);
         props.onClose();
     };
 

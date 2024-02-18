@@ -1,12 +1,21 @@
 import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
+import Swal from 'sweetalert2'
 
 export const ModalAddNotes = props => {
     const [inputNote, setInputNote] = useState("");
     const { actions } = useContext(Context);
 
     function handleAddNote() {
+        if (!inputNote) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Please write a note",
+            });
+            return;
+        }
         actions.addNote(inputNote, props.clientId);
         props.onClose();
         setInputNote("");

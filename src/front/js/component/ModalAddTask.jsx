@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import Swal from 'sweetalert2'
 import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
 
@@ -14,6 +14,14 @@ export const ModalAddTask = props => {
    
 
     function handleAddTask() {
+        if (!inputTitleTask || !inputDateTask || !inputTaskPriority || !inputUserAssignTask ) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Please fill out all input fields",
+            });
+            return;
+        }
         actions.addTask(inputTitleTask,inputDateTask,inputStatus,inputTaskPriority, inputUserAssignTask, props.clientId);
         props.onClose();
         setInputTitleTask('')
@@ -48,6 +56,8 @@ export const ModalAddTask = props => {
                             placeholder="Title Task"
                             onChange={e => setInputTitleTask(e.target.value)}
                             value={inputTitleTask}
+                            maxLength={100}
+                            rows={1}
                         />
                         <label className="form-label d-flex justify-content-start align-items-start">Assign Task</label>
                         <select

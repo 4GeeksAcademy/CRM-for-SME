@@ -1,13 +1,13 @@
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import Swal from 'sweetalert2'
 import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
 
 export const ModalDeleteTask = props => {
     const {actions } = useContext(Context);
     
-    const handleDeleteTask = async () => {
-        await actions.deleteTask(props.task.id);
+    function handleDeleteTask() {
+        actions.deleteTask(props.task.id);
         props.onClose();
     };
     return (

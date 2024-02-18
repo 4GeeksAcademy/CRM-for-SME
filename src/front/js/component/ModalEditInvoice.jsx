@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
+import Swal from 'sweetalert2'
 
 export const ModalEditInvoice = props => {
     const [inputDetail, setInputDetail] = useState("");
@@ -12,8 +13,16 @@ export const ModalEditInvoice = props => {
         setInputAmount(props.invoice ? props.invoice.amount : "");
     }, [props.invoice]);
 
-    const handleEditInvoice = async () => {
-        await actions.editInvoice(props.invoice.id, inputAmount, inputDetail);
+    function handleEditInvoice() {
+        if (!inputAmount || !inputDetail) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Please fill out all input fields",
+            });
+            return;
+        }
+        actions.editInvoice(props.invoice.id, inputAmount, inputDetail);
         props.onClose();
     };
 
@@ -41,6 +50,8 @@ export const ModalEditInvoice = props => {
                             placeholder="Detail"
                             onChange={e => setInputDetail(e.target.value)}
                             value={inputDetail}
+                            maxLength={27}
+                            rows={1}
                         />
                         <input 
                             type="number"

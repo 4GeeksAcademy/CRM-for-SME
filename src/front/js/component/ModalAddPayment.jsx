@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
+import Swal from 'sweetalert2'
 
 export const ModalAddPayment = props => {
     const [inputDetail,setInputDetail] = useState("");
@@ -9,6 +10,14 @@ export const ModalAddPayment = props => {
     const { store, actions } = useContext(Context);
 
     function handleAddPayment() {
+        if (!inputAmount || !inputDetail || !inputDate) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Please fill out all input fields",
+            });
+            return;
+        }
         actions.addPayment(inputAmount, inputDate, inputDetail, props.clientId);
         props.onClose();
         setInputDetail("");
@@ -40,8 +49,10 @@ export const ModalAddPayment = props => {
                             placeholder="Detail"
                             onChange={e => setInputDetail(e.target.value)}
                             value={inputDetail}
+                            maxLength={27}
+                            rows={1}
                         />
-                        <label htmlFor="priority" className="form-label d-flex justify-content-start align-items-start">Amount</label>
+                        <label className="form-label d-flex justify-content-start align-items-start">Amount</label>
                         <input 
                                 type="number"
                                 className="form-control mb-1 border border-secondary" 
@@ -49,7 +60,7 @@ export const ModalAddPayment = props => {
                                 onChange={e => setInputAmount(e.target.value)}
 								value={inputAmount} 
                             />
-                        <label htmlFor="priority" className="form-label d-flex justify-content-start align-items-start">Date</label>
+                        <label className="form-label d-flex justify-content-start align-items-start">Date</label>
                         <input
                             type="date"
                             className="form-control mb-1 border border-secondary"
