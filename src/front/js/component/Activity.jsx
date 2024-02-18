@@ -13,7 +13,7 @@ export const Activity = () => {
 
         <>
         
-        <div className="container d-flex flex-column justify-content-center align-items-center m-4 w-100">
+        <div className="table-container container d-flex flex-column justify-content-center align-items-center m-4 w-100">
             <ul>
             {store.activity.map((activity, index) => {
 							return (

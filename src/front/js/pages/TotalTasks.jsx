@@ -31,8 +31,9 @@ export const TotalTasks = (props) => {
             <div className="text-center">
                 <h1>Total Tasks</h1>
             </div>
-
-            <ul>
+            <div className="table-container">
+                
+    <ul>
                 {store.tasks.map((task, index) => (
                     <li className="border border-dark p-2 my-2 d-flex justify-content-between row bg-light" key={index}>
                         <div className="col-2 d-flex flex-column">
@@ -59,6 +60,8 @@ export const TotalTasks = (props) => {
                     </li>
                 ))}
             </ul>
+            </div>
+            
             <Footer />
         </div>
     );

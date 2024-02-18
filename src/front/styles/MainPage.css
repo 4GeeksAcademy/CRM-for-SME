@@ -3,7 +3,6 @@
 body {
   background-color: #c2e2fd8e;
 }
-
 .btn-primary {
   background-color: #42637D; 
 }
@@ -14,6 +13,7 @@ body {
 
 .table th,
 .table td {
+  background: #c5e1f8ad;
   max-width: 300px ;
   overflow-x: auto !important;
   color: #000000;
