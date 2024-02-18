@@ -110,6 +110,7 @@ class Payment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     amount = db.Column(db.Float, nullable=False)
     payment_date = db.Column(db.DateTime, nullable=False) 
+    date_created = db.Column(db.DateTime, nullable=False)
     detail = db.Column(db.String(250), nullable=False) 
     client_id = db.Column(db.Integer, db.ForeignKey('client.id'), nullable=False)
     client = db.relationship('Client')
@@ -119,6 +120,7 @@ class Payment(db.Model):
             "id": self.id,
             "amount": self.amount,
             "payment_date": self.payment_date.strftime('%d-%m-%Y'),
+            "date_created": self.date_created.strftime('%d-%m-%Y'),
             "detail":self.detail,
             "client_id": self.client_id,
            

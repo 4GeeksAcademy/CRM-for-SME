@@ -1,5 +1,18 @@
-#activityScroll {
+#activityContainer {
+    height: 500px;
+    /* Adjust the height as needed */
     overflow-y: auto;
-    max-height: 500px;
-    position: relative;
+    /* Enable vertical scrolling */
+}
+
+ul#activityScroll {
+    list-style-type: none;
+    padding: 0;
+    width: 100%;
+    /* Ensure the list takes the full width */
+}
+
+ul#activityScroll li {
+    width: 100%;
+    /* Ensure each list item takes the full width */
 }

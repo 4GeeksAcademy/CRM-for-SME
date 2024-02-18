@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
 
 export const ModalEditPayment = props => {
-    const [inputDetail,setInputDetail] = useState("");
+    const [inputDetail, setInputDetail] = useState("");
     const [inputAmount, setInputAmount] = useState("");
     const [inputDate, setInputDate] = useState("");
     const { store, actions } = useContext(Context);
@@ -11,7 +11,12 @@ export const ModalEditPayment = props => {
     useEffect(() => {
         setInputDetail(props.payment ? props.payment.detail : "");
         setInputAmount(props.payment ? props.payment.amount : "");
-        setInputDate(props.payment ? props.payment.paymentDate : "");
+        if (props.payment && props.payment.payment_date) {
+            const [day, month, year] = props.payment.payment_date.split("-");
+            setInputDate(`${year}-${month}-${day}`);
+        } else {
+            setInputDate("");
+        }
     }, [props.payment]);
 
     const handleEditPayment = async () => {
@@ -45,13 +50,13 @@ export const ModalEditPayment = props => {
                             value={inputDetail}
                         />
                         <label htmlFor="priority" className="form-label d-flex justify-content-start align-items-start">Amount</label>
-                        <input 
-                                type="number"
-                                className="form-control mb-1 border border-secondary" 
-                                placeholder="Amount"
-                                onChange={e => setInputAmount(e.target.value)}
-								value={inputAmount} 
-                            />
+                        <input
+                            type="number"
+                            className="form-control mb-1 border border-secondary"
+                            placeholder="Amount"
+                            onChange={e => setInputAmount(e.target.value)}
+                            value={inputAmount}
+                        />
                         <label htmlFor="priority" className="form-label d-flex justify-content-start align-items-start">Date</label>
                         <input
                             type="date"
@@ -66,7 +71,7 @@ export const ModalEditPayment = props => {
                             type="button"
                             className="btn btn-primary"
                             onClick={handleEditPayment}>
-                           Save Changes
+                            Save Changes
                         </button>
                         <button type="button" className="btn btn-secondary" onClick={() => props.onClose()}>
                             Cancel

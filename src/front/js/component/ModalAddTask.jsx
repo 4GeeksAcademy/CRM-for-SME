@@ -49,7 +49,7 @@ export const ModalAddTask = props => {
                             onChange={e => setInputTitleTask(e.target.value)}
                             value={inputTitleTask}
                         />
-                        <label htmlFor="priority" className="form-label d-flex justify-content-start align-items-start">Assign Task</label>
+                        <label className="form-label d-flex justify-content-start align-items-start">Assign Task</label>
                         <select
                             className="form-control mb-1 border border-secondary"
                             onChange={e => setInputUserAssignTask(e.target.value)}
@@ -60,7 +60,7 @@ export const ModalAddTask = props => {
                                         
                             
                         </select>
-                        <label htmlFor="priority" className="form-label d-flex justify-content-start align-items-start">Date</label>
+                        <label className="form-label d-flex justify-content-start align-items-start">Date</label>
                         <input
                             type="date"
                             className="form-control mb-1 border border-secondary"

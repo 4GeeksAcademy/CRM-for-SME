@@ -1,4 +1,4 @@
-import React, { useState, useContext,useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
@@ -10,15 +10,20 @@ export const ModalEditTask = props => {
     const [inputTaskPriority, setInputTaskPriority] = useState("");
     const { store, actions } = useContext(Context);
     const handleEditTask = async () => {
-        await actions.editTask(props.task.id, inputEditarTask,inputDateTask, props.task.status, inputTaskPriority, inputUserAssignTask);
+        await actions.editTask(props.task.id, inputEditarTask, inputDateTask, props.task.status, inputTaskPriority, inputUserAssignTask);
         props.onClose();
     };
 
     useEffect(() => {
         setInputEditarTask(props.task ? props.task.title : "");
         setInputUserAssignTask(props.task ? props.task.user_name : "");
-        setInputDateTask(props.task ? props.task.due_date : "");
         setInputTaskPriority(props.task ? props.task.priority : "");
+        if (props.task && props.task.due_date) {
+            const [day, month, year] = props.task.due_date.split("-");
+            setInputDateTask(`${year}-${month}-${day}`);
+        } else {
+            setInputDateTask("");
+        }
     }, [props.task]);
 
 
@@ -56,7 +61,7 @@ export const ModalEditTask = props => {
                             value={inputUserAssignTask}
                             placeholder="Assign Edit Task">
                             <option></option>
-                            {store.userNames.map((user,key) =><option key={key}>{user}</option>)}
+                            {store.userNames.map((user, key) => <option key={key}>{user}</option>)}
                         </select>
                         <label htmlFor="priority" className="form-label d-flex justify-content-start align-items-start">Date</label>
                         <input
@@ -73,7 +78,7 @@ export const ModalEditTask = props => {
                             onChange={e => setInputTaskPriority(e.target.value)}
                             value={inputTaskPriority}
                             placeholder="Task Edit Priority">
-                            <option></option> 
+                            <option></option>
                             <option>Low</option>
                             <option>Medium</option>
                             <option>High</option>

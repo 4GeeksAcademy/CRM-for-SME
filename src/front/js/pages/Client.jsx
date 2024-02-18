@@ -3,6 +3,7 @@ import { useParams, Navigate, useNavigate } from "react-router-dom";
 import "../../styles/client.css";
 import { Context } from "../store/appContext";
 import Logo from "../../img/Logo.png"
+import Swal from 'sweetalert2'
 import { Activity } from "../component/Activity.jsx";
 import { Billing } from "../component/Billing.jsx";
 import { Tasks } from "../component/Tasks.jsx";
@@ -47,6 +48,11 @@ export const Client = () => {
         actions.isLogged();
         if (!store.loggedIn) {
             navigate("/");
+            Swal.fire({
+                icon: "info",
+                title: "Alert",
+                text: "Your session has expired. Please log in"
+            });
         }
     }, [store.token]);
     

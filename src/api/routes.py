@@ -146,7 +146,6 @@ def edit_client(client_id):
 
     return jsonify({"msg": "Client updated successfully"}), 200
 
-
 @api.route('/clients', methods=['GET'])
 def get_clients():
     clients = Client.query.all()
@@ -310,6 +309,7 @@ def get_user():
    except Exception as e:
         # Maneja cualquier error que pueda ocurrir
         return jsonify({"error": str(e)}), 500
+   
 @api.route('/totaltasks', methods=['GET'])
 def get_total_tasks():
     tasks = Task.query.all()
@@ -375,10 +375,12 @@ def task_status(task_id):
         return jsonify({"message": "Status updated successfully"}), 200
     else:
         return jsonify({"message": "Task not found"}), 404
+    
 @api.route('/add_payment', methods=['POST'])
 def add_payment():
     amount = request.json.get('amount')
     payment_date = request.json.get('payment_date')
+    current_datetime = datetime.now()
     detail = request.json.get('detail')
     client_id = request.json.get('client_id')
 
@@ -386,7 +388,8 @@ def add_payment():
         amount=amount,
         payment_date=payment_date,
         detail=detail,
-        client_id=client_id
+        client_id=client_id,
+        date_created=current_datetime
     )
 
     db.session.add(new_payment)
@@ -407,12 +410,14 @@ def edit_payment(payment_id):
     detail = request.json.get('detail')
     amount = request.json.get('amount')
     payment_date = request.json.get('payment_date')
+    current_datetime = datetime.now()
     payment = Payment.query.filter_by(id=payment_id).first()
 
     if payment:
         payment.detail = detail
         payment.amount = amount
         payment.payment_date = payment_date
+        payment.date_created = current_datetime
 
         db.session.commit()
 

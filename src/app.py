@@ -32,6 +32,7 @@ MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)
 
 app.config['JWT_SECRET_KEY'] = 'CRM'
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 1800
 
 jwt = JWTManager(app)
 

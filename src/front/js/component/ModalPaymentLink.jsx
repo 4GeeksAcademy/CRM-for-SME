@@ -67,7 +67,7 @@ export const ModalPaymentLink = props => {
                             onChange={e => setProductName(e.target.value)}
                             value={productName}
                         />
-                        <label htmlFor="Unit Amount" className="form-label d-flex justify-content-start align-items-start">Unit Amount in cents</label>
+                        <label htmlFor="Unit Amount" className="form-label d-flex justify-content-start align-items-start">Unit Amount in cents (minimun 100)</label>
                         <input
                             id='Unit Amount'
                             type="number"
@@ -79,26 +79,26 @@ export const ModalPaymentLink = props => {
                     </div>
                     <div className="modal-footer">
                         <div>
-                        <button
-                            type="button"
-                            className="btn btn-primary m-1"
-                            data-dismiss="modal"
-                            onClick={() => {
-                                if (productName != "" && unitAmount != "" ) {
-                                    handleSubmit();
-                                } else {
-                                    Swal.fire({
-                                      icon: "error",
-                                      title: "Error",
-                                      text: "Please fill out all input fields",
-                                    });
-                                  }
-                            }}>
-                            Generate Payment Link
-                        </button>
-                        <button type="button" className="btn btn-secondary m-1" onClick={() => props.onClose()}>
-                            Cancel
-                        </button>   
+                            <button
+                                type="button"
+                                className="btn btn-primary m-1"
+                                data-dismiss="modal"
+                                onClick={() => {
+                                    if (productName != "" && unitAmount != "") {
+                                        handleSubmit();
+                                    } else {
+                                        Swal.fire({
+                                            icon: "error",
+                                            title: "Error",
+                                            text: "Please fill out all input fields",
+                                        });
+                                    }
+                                }}>
+                                Generate Payment Link
+                            </button>
+                            <button type="button" className="btn btn-secondary m-1" onClick={() => props.onClose()}>
+                                Cancel
+                            </button>
                         </div>
                         <div>
                             {paymentUrl && (
@@ -106,7 +106,7 @@ export const ModalPaymentLink = props => {
                             )}
                             {paymentUrl && (
                                 <button type="button" className="btn btn-outline-success m-1" onClick={handleCopyUrl}>Copy URL</button>
-                            )}     
+                            )}
                         </div>
                     </div>
                 </div>

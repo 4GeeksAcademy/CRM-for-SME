@@ -2,14 +2,26 @@ import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
 import "../../styles/notes.css";
+import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 export const Notes = props => {
+    const navigate = useNavigate();
     const { store, actions } = useContext(Context);
     const filteredNotes = store.notes.filter(note => note.client_id === props.clientId);
 
     useEffect(() => {
         actions.getNotes();
-    }, []);
+        actions.isLogged();
+        if (!store.loggedIn) {
+            navigate('/');
+            Swal.fire({
+                icon: "info",
+                title: "Alert",
+                text: "Your session has expired. Please log in"
+            });
+        }
+      }, [store.token]);
 
     return (
         <div className="container d-flex flex-column justify-content-center align-items-center m-4 row">

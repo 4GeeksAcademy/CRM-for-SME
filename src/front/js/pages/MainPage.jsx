@@ -5,6 +5,7 @@ import { Footer } from '../component/Footer.jsx';
 import { ModalAddClient } from '../component/ModalAddClient.jsx';
 import { Link, useNavigate } from "react-router-dom";
 import "../../styles/mainpage.css";
+import Swal from 'sweetalert2'
 
 export const MainPage = () => {
     const { store, actions } = useContext(Context)
@@ -18,6 +19,11 @@ export const MainPage = () => {
         actions.isLogged();
         if (!store.loggedIn) {
             navigate('/');
+            Swal.fire({
+                icon: "info",
+                title: "Alert",
+                text: "Your session has expired. Please log in"
+            });
         }
     }, [store.loggedIn]);
     
