@@ -1,21 +1,30 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
+import Swal from 'sweetalert2'
 import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
 
 export const ModalEditTask = props => {
-    const [inputEditarTask, setInputEditarTask] = useState("");
+    const [inputTitleTask, setInputTitleTask] = useState("");
     const [inputUserAssignTask, setInputUserAssignTask] = useState("");
     const [inputDateTask, setInputDateTask] = useState("");
     const [inputTaskPriority, setInputTaskPriority] = useState("");
     const { store, actions } = useContext(Context);
-    const handleEditTask = async () => {
-        await actions.editTask(props.task.id, inputEditarTask, inputDateTask, props.task.status, inputTaskPriority, inputUserAssignTask);
+    
+    function handleEditTask() {
+        if (!inputTitleTask || !inputDateTask|| !inputTaskPriority || !inputUserAssignTask ) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Please fill out all input fields",
+            });
+            return;
+        }
+        actions.editTask(props.task.id, inputTitleTask, inputDateTask, props.task.status, inputTaskPriority, inputUserAssignTask);
         props.onClose();
     };
 
     useEffect(() => {
-        setInputEditarTask(props.task ? props.task.title : "");
+        setInputTitleTask(props.task ? props.task.title : "");
         setInputUserAssignTask(props.task ? props.task.user_name : "");
         setInputTaskPriority(props.task ? props.task.priority : "");
         if (props.task && props.task.due_date) {
@@ -50,11 +59,13 @@ export const ModalEditTask = props => {
                         <textarea
                             type="text"
                             className="form-control mb-1 border border-secondary"
-                            placeholder="Editar Task"
-                            onChange={e => setInputEditarTask(e.target.value)}
-                            value={inputEditarTask}
+                            placeholder="Task title"
+                            onChange={e => setInputTitleTask(e.target.value)}
+                            value={inputTitleTask}
+                            maxLength={100}
+                            rows={1}
                         />
-                        <label htmlFor="priority" className="form-label d-flex justify-content-start align-items-start">Assign Task</label>
+                        <label className="form-label d-flex justify-content-start align-items-start">Assign Task</label>
                         <select
                             className="form-control mb-1 border border-secondary"
                             onChange={e => setInputUserAssignTask(e.target.value)}
@@ -63,7 +74,7 @@ export const ModalEditTask = props => {
                             <option></option>
                             {store.userNames.map((user, key) => <option key={key}>{user}</option>)}
                         </select>
-                        <label htmlFor="priority" className="form-label d-flex justify-content-start align-items-start">Date</label>
+                        <label className="form-label d-flex justify-content-start align-items-start">Date</label>
                         <input
                             type="date"
                             className="form-control mb-1 border border-secondary"

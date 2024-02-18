@@ -1,12 +1,22 @@
 import React, { useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
+import Swal from 'sweetalert2'
 
 export const ModalEditNotes = props => {
     const [inputEditNotes, setInputEditNotes] = useState("");
     const { actions } = useContext(Context);
-    const handleEditNote = async () => {
-        await actions.editNote(props.note.id, inputEditNotes);
+
+    function handleEditNote() {
+        if (!inputEditNotes) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Please write a note",
+            });
+            return;
+        }
+        actions.editNote(props.note.id, inputEditNotes);
         props.onClose();
     };
 

@@ -23,7 +23,6 @@ export const ModalPaymentLink = props => {
             .then(response => response.json())
             .then(data => {
                 setPaymentUrl(data.payment_url);
-                console.log(data.payment_url);
 
             })
             .catch(error => console.error('Error generating payment link:', error));
@@ -37,6 +36,19 @@ export const ModalPaymentLink = props => {
             .catch(error => {
                 console.error('Error copying payment URL to clipboard:', error);
             });
+    };
+
+    const handleUnitAmountChange = (e) => {
+        const value = e.target.value;
+        if (/^\d*$/.test(value)) {
+            setUnitAmount(value);
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid Input',
+                text: 'Please enter a valid number',
+            });
+        }
     };
 
     return (
@@ -66,14 +78,14 @@ export const ModalPaymentLink = props => {
                             placeholder="Product Name"
                             onChange={e => setProductName(e.target.value)}
                             value={productName}
+                            maxLength={27}
                         />
                         <label htmlFor="Unit Amount" className="form-label d-flex justify-content-start align-items-start">Unit Amount in cents (minimun 100)</label>
                         <input
                             id='Unit Amount'
-                            type="number"
+                            type="text"
                             className="form-control mb-1 border border-secondary"
-                            placeholder="Unit Amount"
-                            onChange={e => setUnitAmount(e.target.value)}
+                            onChange={handleUnitAmountChange}
                             value={unitAmount}
                         />
                     </div>
@@ -84,7 +96,14 @@ export const ModalPaymentLink = props => {
                                 className="btn btn-primary m-1"
                                 data-dismiss="modal"
                                 onClick={() => {
-                                    if (productName != "" && unitAmount != "") {
+                                    if (unitAmount < 100) {
+                                        Swal.fire({
+                                            icon: "error",
+                                            title: "Error",
+                                            text: "The minimum amount is 100",
+                                        });
+                                    }
+                                    else if (productName != "" && unitAmount != "") {
                                         handleSubmit();
                                     } else {
                                         Swal.fire({

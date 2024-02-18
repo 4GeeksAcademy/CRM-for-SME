@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
+import Swal from 'sweetalert2'
 
 export const ModalEditPayment = props => {
     const [inputDetail, setInputDetail] = useState("");
@@ -19,8 +20,16 @@ export const ModalEditPayment = props => {
         }
     }, [props.payment]);
 
-    const handleEditPayment = async () => {
-        await actions.editPayment(props.payment.id, inputAmount, inputDetail, inputDate);
+    function handleEditPayment() {
+        if (!inputAmount || !inputDetail || !inputDate) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Please fill out all input fields",
+            });
+            return;
+        }
+        actions.editPayment(props.payment.id, inputAmount, inputDetail, inputDate);
         props.onClose();
     };
 
@@ -48,8 +57,10 @@ export const ModalEditPayment = props => {
                             placeholder="Detail"
                             onChange={e => setInputDetail(e.target.value)}
                             value={inputDetail}
+                            maxLength={27}
+                            rows={1}
                         />
-                        <label htmlFor="priority" className="form-label d-flex justify-content-start align-items-start">Amount</label>
+                        <label className="form-label d-flex justify-content-start align-items-start">Amount</label>
                         <input
                             type="number"
                             className="form-control mb-1 border border-secondary"
@@ -57,7 +68,7 @@ export const ModalEditPayment = props => {
                             onChange={e => setInputAmount(e.target.value)}
                             value={inputAmount}
                         />
-                        <label htmlFor="priority" className="form-label d-flex justify-content-start align-items-start">Date</label>
+                        <label className="form-label d-flex justify-content-start align-items-start">Date</label>
                         <input
                             type="date"
                             className="form-control mb-1 border border-secondary"

@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
+import Swal from 'sweetalert2'
 
 export const ModalAddInvoice = props => {
     const [inputDetail,setInputDetail] = useState("");
@@ -8,6 +9,14 @@ export const ModalAddInvoice = props => {
     const { store, actions } = useContext(Context);
 
     function handleAddInvoice() {
+        if (!inputAmount || !inputDetail) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Please fill out all input fields",
+            });
+            return;
+        }
         actions.addInvoice(inputAmount, inputDetail, props.clientId);
         props.onClose();
         setInputDetail("");
@@ -38,6 +47,8 @@ export const ModalAddInvoice = props => {
                             placeholder="Detail"
                             onChange={e => setInputDetail(e.target.value)}
                             value={inputDetail}
+                            maxLength={27}
+                            rows={1}
                         />
                         <label className="form-label d-flex justify-content-start align-items-start">Amount</label>
                         <input 
