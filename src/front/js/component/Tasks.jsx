@@ -5,8 +5,7 @@ import "../../styles/tasks.css";
 
 export const Tasks = props => {
     const { store, actions } = useContext(Context);
-    const [state, useState] = ('')
-
+    const filteredTask = store.tasks.filter(task => task.client_id === props.clientId);
     useEffect(() => {
         actions.getTasks();
         
@@ -22,8 +21,8 @@ export const Tasks = props => {
                 <button type="button" className="btn btn-primary" onClick={() => props.onAddTask()}>Add Task</button>
             </div>
 
-            <ul className="mt-1" id="taskScroll">
-                {store.tasks.map((task, index) => {
+            <ul>
+                {filteredTask.map((task, index) => {
                     return (
                         <li className="border border-dark p-2 my-2 d-flex justify-content-between row bg-light" key={index}>
                             <div className="col-2 d-flex flex-column">
@@ -48,12 +47,12 @@ export const Tasks = props => {
 
                             <div className="col-2 d-flex flex-column justify-content-center align-items-center">
                                 <h5 className="fw-bold">Status</h5>
-                                <button type="button" className={task.status == false ? 'btn btn-secondary' : 'btn btn-success'} onClick={() => actions.taskAsDone(task.id)}>{task.status == false ? 'Pending' : 'Completed'}</button>
+                                <button type="button" className={task.status == 'Incomplete' ? 'btn btn-secondary' : 'btn btn-success'} onClick={() => actions.taskAsDone(task.id,task.status)}>{task.status == 'Incomplete' ? 'Pending' : 'Completed'}</button>
                             </div>
 
                             <div className="col-1 d-flex align-items-center">
-                                <i className="fa-solid fa-pen mx-1 cursor" onClick={() => props.onEditTask()}></i>
-                                <i className="fa-solid fa-trash mx-1 cursor" onClick={() => props.onDeleteTask()}></i>
+                                <i className="fa-solid fa-pen mx-1 cursor" onClick={() => props.onEditTask(task)}></i>
+                                <i className="fa-solid fa-trash mx-1 cursor" onClick={() => props.onDeleteTask(task)}></i>
                             </div>
                         </li>
                     );

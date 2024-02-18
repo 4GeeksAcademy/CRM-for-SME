@@ -4,9 +4,12 @@ import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
 
 export const ModalDeleteTask = props => {
-    const [state, setState] = useState("");
-    const { store, actions } = useContext(Context);
-
+    const {actions } = useContext(Context);
+    
+    const handleDeleteTask = async () => {
+        await actions.deleteTask(props.task.id);
+        props.onClose();
+    };
     return (
         <div className="modal bg-secondary py-5" tabIndex="-1" role="dialog" style={{ display: props.show ? "inline-block" : "none" }}>
             <div className="modal-dialog" role="document">
@@ -31,9 +34,7 @@ export const ModalDeleteTask = props => {
                             type="button"
                             className="btn btn-primary"
                             data-dismiss="modal"
-                            onClick={() => {
-                                props.onClose();
-                            }}>
+                            onClick={handleDeleteTask}>
                             Yes
                         </button>
                         <button type="button" className="btn btn-secondary" onClick={() => props.onClose()}>

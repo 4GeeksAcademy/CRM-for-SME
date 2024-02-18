@@ -11,12 +11,10 @@ export const ModalAddTask = props => {
     const [inputTaskPriority, setInputTaskPriority] = useState("");
     const [inputStatus, setinputStatus] = useState("Incomplete");
     const { store, actions } = useContext(Context);
-
-    console.log(props)
+   
 
     function handleAddTask() {
         actions.addTask(inputTitleTask,inputDateTask,inputStatus,inputTaskPriority, inputUserAssignTask, props.clientId);
-        console.log(inputTitleTask,inputDateTask,inputStatus,inputTaskPriority, inputUserAssignTask, props.clientId)
         props.onClose();
         setInputTitleTask('')
         setInputUserAssignTask('')
@@ -57,7 +55,7 @@ export const ModalAddTask = props => {
                             onChange={e => setInputUserAssignTask(e.target.value)}
                             value={inputUserAssignTask}
                             placeholder="Assign Task">
-                            <option selected>Select User</option>
+                            <option></option>
                             {store.userNames.map((user,key) =><option key={key}>{user}</option>)}
                                         
                             
@@ -76,8 +74,9 @@ export const ModalAddTask = props => {
                             className="form-control mb-1 border border-secondary"
                             onChange={e => setInputTaskPriority(e.target.value)}
                             value={inputTaskPriority}
-                            placeholder="Task Priority">
-                            <option selected>Select priority</option>  
+                            placeholder="Task Priority"                           
+                            > 
+                            <option></option>                           
                             <option>Low</option>
                             <option>Medium</option>
                             <option>High</option>

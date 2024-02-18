@@ -6,32 +6,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userInfo: "",
 			loggedIn: false,
 			token: null,
-			activity: [
-				{
-					activity: 'created task',
-					date: '1/1/24'
-				},
-				{
-					activity: 'created note',
-					date: '1/10/24'
-				},
-				{
-					activity: 'created pago',
-					date: '1/12/24'
-				},
-				{
-					activity: 'created task',
-					date: '1/1/24'
-				},
-				{
-					activity: 'created note',
-					date: '1/10/24'
-				},
-				{
-					activity: 'created pago',
-					date: '1/12/24'
-				},
-			],
+			activity: [],
 			tasks: [],
 			notes: [],
 			clients: [],
@@ -227,13 +202,49 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 				}
 			},
-			taskAsDone: (id) => {
+			taskAsDone: async (id, status) => {
 				const store = getStore()
 				const storedTasks = store.tasks
-				const correctTask = storedTasks.findIndex(task => task.idTask === id)
-				storedTasks[correctTask].complete == false ? storedTasks[correctTask].complete = true : storedTasks[correctTask].complete = false
+				const correctTask = storedTasks.findIndex(task => task.id === id)
+				storedTasks[correctTask].status == 'Incomplete' ? storedTasks[correctTask].status = 'Complete' : storedTasks[correctTask].status = 'Incomplete'
 				setStore({ tasks: storedTasks })
+				console.log(id, status)
+				try {
+					const store = getStore();
+					const token = store.token || localStorage.getItem("token");
 
+					if (!token) {
+						Swal.fire({
+							icon: "error",
+							title: "Error",
+							text: "Session expired, please log in again",
+							didClose: () => {
+								window.location.href = "/";
+							}
+						});
+						throw new Error("Token is missing");
+					}
+
+					const response = await fetch(process.env.BACKEND_URL + `/api/task_status/${id}`, {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": "Bearer " + token
+						},
+						body: JSON.stringify({ status: status})
+					});
+
+					if (!response.ok) {
+						throw new Error('Failed to edit status');
+					}
+					} catch (error) {
+						console.error('Error editing task:', error);
+						Swal.fire({
+							icon: "error",
+							title: "Error",
+							text: "Failed to edit task. Please try again later."
+						});
+					}
 
 			},
 			addClient: async (fullName, email, phone, address, company) => {
@@ -690,7 +701,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 				}
 			},
-			editTask: async (taskId, newContent) => {
+			editTask: async (taskId, title,due_date, status, priority, user_name,) => {
+				const editedTask = {
+					due_date:due_date,
+					task_title:title,
+					status:status,
+					priority:priority,
+					user_name:user_name,
+				}
+				console.log(editedTask)
 				try {
 					const store = getStore();
 					const token = store.token || localStorage.getItem("token"); 
@@ -713,7 +732,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Content-Type": "application/json",
 							"Authorization": "Bearer " + token
 						},
-						body: JSON.stringify({ task_title: newContent })
+						body: JSON.stringify(editedTask)
 					});
 			
 					const data = await response.json();
@@ -724,7 +743,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			
 					setStore(prevStore => ({
 						...prevStore,
-						tasks: prevStore.taskss.map(task => task.id === taskId ? data : task)
+						tasks: prevStore.tasks.map(task => task.id === taskId ? data : task)
 					}));
 					getActions().getTasks();
 	
