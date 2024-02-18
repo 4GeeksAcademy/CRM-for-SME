@@ -6,28 +6,25 @@ import PropTypes from "prop-types";
 export const Billing = props => {
 	const { actions, store } = useContext(Context);
 	const filteredInvoices = store.invoices.filter(invoice => invoice.client_id === props.clientId);
-	const filteredCollected = store.payments.filter(collected => collected.client_id === props.clientId);
+	const filteredCollected = store.payments.filter(payment => payment.client_id === props.clientId);
     const [totalInvoiceAmount, setTotalInvoiceAmount] = useState(0);
     const [totalCollectedAmount, setTotalCollectedAmount] = useState(0);
     const [balance, setBalance] = useState(0);
 
     useEffect(() => {
         actions.getInvoices();
+		actions.getPayments();
     }, []);
 
     useEffect(() => {
         const invoiceAmountSum = filteredInvoices.reduce((total, invoice) => total + invoice.amount, 0);
         setTotalInvoiceAmount(invoiceAmountSum);
 
-        const collectedAmountSum = filteredCollected.reduce((total, collected) => total + collected.amount, 0);
+        const collectedAmountSum = filteredCollected.reduce((total, payment) => total + payment.amount, 0);
         setTotalCollectedAmount(collectedAmountSum);
 
         setBalance(invoiceAmountSum - collectedAmountSum);
     }, [filteredInvoices, filteredCollected]);
-
-    useEffect(() => {
-        actions.getInvoices();
-    }, []);
 
 	return (
 		<>
@@ -51,9 +48,10 @@ export const Billing = props => {
 					<button type="button" className="btn btn-primary" onClick={() => props.onAddPayment()}>Add payment</button>
 					<button type="button" className="btn btn-warning" onClick={() => props.onAddPaymentLink()}>Create Payment Link</button>
 				</div>
-				<div className="container row d-flex justify-content-between my-2">
+				<div id="billScroll">
+				<div className="container row d-flex justify-content-between mb-2">
 					<div className="col-6 d-flex flex-column align-items-center border border-dark bg-light rounded box">
-						<h4>Invoice</h4>
+						<h4 className="sticky-header">Invoice</h4>
 						{filteredInvoices.map((invoice, index) => (
 							<li className="border border-dark p-1 my-1 d-flex justify-content-between row bg-white rounded mx-1" key={index}>
 								<div className="col-4 d-flex flex-column">
@@ -76,27 +74,29 @@ export const Billing = props => {
 						))}
 					</div>
 					<div className="col-6 d-flex flex-column align-items-center border border-dark bg-light rounded box">
-						<h4>Collected</h4>
-						{filteredCollected.map((collected, index) => (
+						<h4 className="sticky-header">Collected</h4>
+						{filteredCollected.map((payment, index) => (
 							<li className="border border-dark p-1 my-1 d-flex justify-content-between row bg-white rounded mx-1" key={index}>
 								<div className="col-4 d-flex flex-column">
 									<h5>Detail</h5>
-									<span>{collected.detail}</span>
+									<span>{payment.detail}</span>
 								</div>
 								<div className="col-3 d-flex flex-column">
 									<h5>Amount</h5>
-									<span>{collected.amount}</span>
+									<span>{payment.amount}</span>
 								</div>
 								<div className="col-3 d-flex flex-column">
 									<h5>Date Created</h5>
-									<span>{collected.date_created}</span>
+									<span>{payment.payment_date}</span>
 								</div>
 								<div className="col-1 d-flex flex-column align-items-center justify-content-center cursor">
-									<i className="fa-solid fa-pen mx-1" onClick={() => props.onEditPayment()}></i>
+									<i className="fa-solid fa-pen mx-1" onClick={() => props.onEditPayment(payment)}></i>
 								</div>
 							</li>
 						))}
 					</div>
+				</div>
+				
 				</div>
 			</div>
 		</>

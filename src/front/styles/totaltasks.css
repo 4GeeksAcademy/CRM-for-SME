@@ -1,0 +1,12 @@
+#tasksHead{
+    position: sticky;
+    top: 0;
+    background-color: #ffffff;
+    z-index: 1;
+}
+
+#taskscontent{
+    max-height: 450px; 
+    overflow-y: auto; 
+    display: block; 
+  }

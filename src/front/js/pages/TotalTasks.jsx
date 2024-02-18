@@ -4,6 +4,7 @@ import { Navbar } from '../component/Navbar.jsx';
 import { Footer } from '../component/Footer.jsx';
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+import "../../styles/totaltasks.css";
 
 export const TotalTasks = (props) => {
     const { store, actions } = useContext(Context);
@@ -15,6 +16,7 @@ export const TotalTasks = (props) => {
       }, []);
     
       useEffect(() => {
+        actions.isLogged();
         if (!store.loggedIn) {
           navigate('/');
         }
@@ -24,11 +26,11 @@ export const TotalTasks = (props) => {
 
         <div>
             <Navbar page="Tasks" />
-            <div className="text-center">
+            <div id="tasksHead" className="text-center">
                 <h1>Total Tasks</h1>
             </div>
 
-            <ul>
+            <ul id="taskscontent">
                 {store.tasks.map((task, index) => (
                     <li className="border border-dark p-2 my-2 d-flex justify-content-between row bg-light" key={index}>
                         <div className="col-2 d-flex flex-column">

@@ -375,3 +375,47 @@ def task_status(task_id):
         return jsonify({"message": "Status updated successfully"}), 200
     else:
         return jsonify({"message": "Task not found"}), 404
+@api.route('/add_payment', methods=['POST'])
+def add_payment():
+    amount = request.json.get('amount')
+    payment_date = request.json.get('payment_date')
+    detail = request.json.get('detail')
+    client_id = request.json.get('client_id')
+
+    new_payment = Payment(
+        amount=amount,
+        payment_date=payment_date,
+        detail=detail,
+        client_id=client_id
+    )
+
+    db.session.add(new_payment)
+    db.session.commit()
+
+    return jsonify({"message": "Payment created successfully"}), 200
+
+@api.route('/payments', methods=['GET'])
+def get_payments():
+    payments = Payment.query.all()
+    results = []
+    for payment in payments:
+        results.append(payment.serialize())
+    return jsonify(results), 200
+
+@api.route('/edit_payment/<int:payment_id>', methods=['PUT'])
+def edit_payment(payment_id):
+    detail = request.json.get('detail')
+    amount = request.json.get('amount')
+    payment_date = request.json.get('payment_date')
+    payment = Payment.query.filter_by(id=payment_id).first()
+
+    if payment:
+        payment.detail = detail
+        payment.amount = amount
+        payment.payment_date = payment_date
+
+        db.session.commit()
+
+        return jsonify({"message": "Payment updated successfully"}), 200
+    else:
+        return jsonify({"message": "Payment not found"}), 404

@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
 import Logo from "../../img/Logo.png"
+import "../../styles/activity.css";
 
 export const Activity = (props) => {
-	const { store, actions } = useContext(Context);
+    const { store, actions } = useContext(Context);
     const [state, setState] = useState([]);
     
     useEffect(() => {
@@ -23,7 +24,8 @@ export const Activity = (props) => {
 
     console.log(completeActivity)
 
-	return (
+
+    return (
 
         <>
         
@@ -42,6 +44,6 @@ export const Activity = (props) => {
         
         </div>
         </>
-        
-    ) 
+
+    )
 }

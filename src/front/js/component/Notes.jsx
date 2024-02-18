@@ -16,7 +16,7 @@ export const Notes = props => {
             <div className="col-12 d-flex justify-content-end align-items-end">
                 <button type="button" className="btn btn-primary" onClick={() => props.onAddNote()}>Add Note</button>
             </div>
-            <ul>
+            <ul className="mt-1" id="noteScroll">
                 {filteredNotes.map((note, index) => {
                     return (
                         <li className="border border-dark p-2 my-2 d-flex row bg-light" key={index}>
