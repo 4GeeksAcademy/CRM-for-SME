@@ -9,6 +9,8 @@ export const Tasks = props => {
     const navigate = useNavigate();
     const { store, actions } = useContext(Context);
     const filteredTask = store.tasks.filter(task => task.client_id === props.clientId);
+    const [status, setStatus] = useState('')
+    const [taskId, setTaskId] = useState('')
     
     useEffect(() => {
         actions.getTasks();
@@ -21,10 +23,17 @@ export const Tasks = props => {
                 text: "Your session has expired. Please log in"
             });
         }
+        
     }, [store.loggedIn]);
    
-   
+   const handleStatus = (id) =>{        
+    const updatedTask = filteredTask.find(task => task.id === id);
+    const updatedStatus = updatedTask.status === 'Pending' ? 'Done' : 'Pending';
+    actions.taskAsDone(id, updatedStatus)
     
+   }
+
+   
 
     return (
         <div className="container d-flex flex-column justify-content-center align-items-center m-4 row">
@@ -59,7 +68,7 @@ export const Tasks = props => {
 
                             <div className="col-2 d-flex flex-column justify-content-center align-items-center">
                                 <h5 className="fw-bold">Status</h5>
-                                <button type="button" className={task.status == 'Incomplete' ? 'btn btn-secondary' : 'btn btn-success'} onClick={() => actions.taskAsDone(task.id,task.status)}>{task.status == 'Incomplete' ? 'Pending' : 'Completed'}</button>
+                                <button type="button" className={task.status == 'Pending' ? 'btn btn-secondary' : 'btn btn-success'} onClick={() => handleStatus(task.id) }>{task.status == 'Pending' ? 'Pending' : 'Done'}</button>
                             </div>
 
                             <div className="col-1 d-flex align-items-center">

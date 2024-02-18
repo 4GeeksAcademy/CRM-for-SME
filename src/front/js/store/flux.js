@@ -215,12 +215,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			taskAsDone: async (id, status) => {
-				const store = getStore()
-				const storedTasks = store.tasks
-				const correctTask = storedTasks.findIndex(task => task.id === id)
-				storedTasks[correctTask].status == 'Incomplete' ? storedTasks[correctTask].status = 'Complete' : storedTasks[correctTask].status = 'Incomplete'
-				setStore({ tasks: storedTasks })
-				console.log(id, status)
 				try {
 					const store = getStore();
 					const token = store.token || localStorage.getItem("token");
@@ -245,10 +239,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify({ status: status })
 					});
+					const data = await response.json();
 
 					if (!response.ok) {
 						throw new Error('Failed to edit status');
 					}
+
+					setStore(prevStore => ({
+						...prevStore,
+						tasks: prevStore.tasks.map(task => task.id === id ? data : task)
+					}));
+					getActions().getTasks()
+					
 				} catch (error) {
 					console.error('Error editing task:', error);
 					Swal.fire({

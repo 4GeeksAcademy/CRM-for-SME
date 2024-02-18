@@ -9,7 +9,7 @@ export const ModalAddTask = props => {
     const [inputUserAssignTask, setInputUserAssignTask] = useState("");
     const [inputDateTask, setInputDateTask] = useState("");
     const [inputTaskPriority, setInputTaskPriority] = useState("");
-    const [inputStatus, setinputStatus] = useState("Incomplete");
+    const [inputStatus, setinputStatus] = useState("Pending");
     const { store, actions } = useContext(Context);
    
 
